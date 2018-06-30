@@ -1,0 +1,53 @@
+%!TEX root = main.tex
+
+\section{Do More Types Help Exploration?}
+
+In this section, we discuss whether having more types helps exploration. In particular, we compare our original instance with a less diverse instance. The less diverse instance has the same utility function $u$, state space $\varOmega$ and probability distribution over states. The less diverse instance has a smaller set of types $\varTheta' \subsetneq \varTheta$ and the probability of each type $\theta \in \varTheta'$ is arbitrary. 
+
+In Definition \ref{def:public_exp} in Section \ref{sec:public}, we define $\A^{exp}_{\omega,\theta}$ as the set of eventually-explorable actions for a given state $\omega$ and type $\theta$. We use $A'^{exp}_{\omega,\theta}$ to denote the set of eventually-explorable actions for the less diverse instance. 
+
+\begin{claim}
+For any $\omega \in \varOmega, \theta \in \varTheta'$, $A'^{exp}_{\omega,\theta} \subseteq \A^{exp}_{\omega,\theta}$. 
+\end{claim}
+
+\begin{proof}
+The proof simply follows from Lemma \ref{lem:exp_public}. It's easy to check that the lemma still works even if $\pi$ is a BIC scheme for the less diverse instance. This implies that for a given state $\omega$, Algorithm \ref{alg:public_main} for the original instance explores all actions in $A'^{exp}_{\omega,\theta}$ for all $\theta \in \varTheta'$. And therefore $A'^{exp}_{\omega,\theta} \subseteq \A^{exp}_{\omega,\theta}$.
+\end{proof}
+
+From Section \ref{sec:public} and \ref{sec:private}, we know that when types are public or types are private and communication is allowed, we have a BIC scheme to explore all eventually explorable actions. Therefore in these two cases, more types do help exploration.
+
+Finally we are going to look at the case when types are private and communication is not allowed. First of all, more types can help in some situations. For example, if types have disjoint set of actions, then this case is the same as the case when type are private and communication is allowed. And therefore more types help exploration in this situation. 
+
+On the other hand, we show in the following example that more types can hurt exploration when types are private and communication allowed. 
+
+\begin{example}
+$\varOmega = \{0,1\}$, $\varTheta = \{0,1\}$ and $\A =\{0,1\}$. $\Pr[\omega =0] =\Pr[\omega =1] = 1/2$ and $\Pr[\theta = 0] = \Pr[\theta=1] =1/2$. We define $u(\theta, a, \omega)$ in the following table:\\
+\begin{table}[H]
+\centering
+\begin{tabular}{|c||c|c|}
+\hline
+&$a=0$&$a=1$\\
+\hline
+\hline
+$\theta = 0$& $u = 3$ & $u =4$\\
+\hline
+$\theta = 1$& $u = 2$ & $u =0$\\
+\hline
+\end{tabular}
+\quad
+\begin{tabular}{|c||c|c|}
+\hline
+&$a=0$&$a=1$\\
+\hline
+\hline
+$\theta = 0$& $u = 2$ & $u =0$\\
+\hline
+$\theta = 1$& $u = 3$ & $u =4$\\
+\hline
+\end{tabular}
+\caption{$u(\theta,a,\omega)$ when $\omega =0 $ or 1.}
+\end{table}
+
+\end{example}
+
+In this example, it is easy to check that action 0 is preferred by both types when agents have no information about the state. On the other hand, samples from action 0 does not convey any information about the state. Therefore, the set of eventually-explorable actions for both types and both states is $\{0\}$. Now consider a less diverse instance in which only type 0 appears. After one agent in that type chooses action 0, the state is reviewed to the principal. When the state $\omega = 0$, action $1$ can be recommended to future agents. 

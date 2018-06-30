@@ -1,0 +1,333 @@
+%!TEX root = main.tex
+
+\section{Bayesian Exploration with Private Types and No Communication}
+
+In this section, we show a $\delta$-BIC scheme when types are private and no communication is allowed (as in Theorem \ref{thm:private_nocc}). We formally state Theorem \ref{thm:private_nocc} in Section \ref{sec:private_bench} and we prove it in Section \ref{sec:private_single}, \ref{sec:private_menu}, \ref{sec:private_maxe} and \ref{sec:private_main}.
+
+\subsection{Explorability and Benchmark}
+\label{sec:private_bench}
+In this subsection, we define the benchmark and state our main theorem (Theorem \ref{thm:private_nocc}). 
+
+\begin{definition}
+A menu $m: \varTheta \rightarrow \A$ is a mapping from the type space $\varTheta$ to the action space $\A$. We use $\M$ to denote the set of all menus.
+\end{definition}
+
+\begin{claim}
+Each single round of a BIC scheme can be considered as a distribution of menus.
+\end{claim}
+
+\begin{definition}
+A menu $m$ is eventually-explorable, for a given state $\omega$, if there exists a BIC recommendation policy $\pi$ and some round $t$ such that $\Pr[\pi^t= m]> 0$. The set of all such menus is denoted as $\M_{\omega}^{exp}$.
+\end{definition}
+
+\begin{definition}[Benchmark]
+Define benchmark as 
+\[
+\OPT = \sum_{\omega\in \varOmega} \Pr[\omega] \cdot\max_{m \in \M_{\omega}^{exp}}\sum_{\theta \in \varTheta} \Pr[\theta] \cdot  u(\theta, m(\theta), \omega).
+\]
+\end{definition}
+
+\begin{claim}
+Any BIC recommendation policy of $T$ rounds has expected total reward at most $T \cdot\OPT$.  
+\end{claim}
+
+\begin{theorem}
+\label{thm:private_nocc}
+For any $\delta > 0$, we have a $\delta$-BIC recommendation policy of $T$ rounds with expected total reward at least $\left(T - C\cdot \log(T) \right) \cdot \OPT$ for some constant $C$ which does not depend on $T$. 
+\end{theorem}
+
+
+\subsection{Single-round Exploration}
+\label{sec:private_single}
+
+In this subsection, we consider a single round of the Bayesian exploration. 
+
+\begin{definition}
+Consider a single-round of Bayesian exploration when the principal has signal $S$ from signal structure $\S$. A menu $m \in \M$ is called signal-explorable, for a given signal $s$, if there exists a single-round $\delta$-BIC recommendation policy $\pi$ such that $\Pr[\pi(s) = m] > 0$. The set of all such actions is denoted as $\EX^{\delta}_s[\S]$. The signal-explorable set is defined as $\EX^{\delta}[\S] = \EX^{\delta}_S[\S]$. We omit $\delta$ in $\EX^{\delta}[\S]$ when $\delta = 0$. 
+\end{definition}
+
+\begin{definition}
+We say random variable $S$ is $\alpha$-approximately informative as random variable $S'$ about state $\Omega$ if $I(S' ; \Omega|S) = \alpha$. 
+\end{definition}
+
+\begin{lemma} [Approximate Information Monotonicity]
+\label{lem:ainfomono}
+Let $S$ and $S'$ be two random variables and $\S$ and $\S'$ be their signal structures. If $S$ is $(\delta^2/8)$-approximately informative as $S'$ about state $\Omega$ (i.e. $I(S' ; \Omega|S) \leq \delta^2/8$), then $\EX_{s'}[\S'] \subseteq \EX^{\delta}_s[\S]$  for all $s' ,s$ such that $\Pr[S= s, S'= s'] > 0$.
+\end{lemma}
+
+\begin{proof}
+We have 
+\[
+\sum_{s} \Pr[S=s] \cdot \DKL\left(S'\Omega|S=s \| (S'|S=s) \times (\Omega|S=s) \right) = I(S' ; \Omega|S) \leq \delta^2/8. 
+\]
+By Pinsker's inequality, we have
+\begin{align*}
+       &\sum_{s} \Pr[S = s] \cdot  \sum_{s', \omega} \left| \Pr[S' = s', \Omega = \omega| S= s] - \Pr[S'=s'|S=s] \cdot \Pr[\Omega = \omega|S=s]\right| \\
+\leq & \sum_{s} \Pr[S=s] \cdot \sqrt{2 \DKL\left(S'\Omega|S=s \| (S'|S=s) \times (\Omega|S=s) \right)  } \\
+\leq &  \sqrt{2 \sum_{s} \Pr[S=s] \cdot  \DKL\left(S'\Omega|S=s \| (S'|S=s) \times (\Omega|S=s) \right) } \\
+\leq &\delta /2. \\
+\end{align*}
+
+Consider any $\delta$-BIC scheme $\pi'$ for signal structure $\S'$. We construct $\pi$ for signature structure $\S$ by setting $\Pr[\pi(s) = m] = \sum_{s'} \Pr[\pi'(s') = m] \cdot Pr[S' = s'|S = s]$. 
+
+Now we check $\pi$ is BIC. For any $m,m' \in \M$ and $\theta \in \varTheta$,
+\begin{align*}
+& \sum_{\omega,s} \Pr[\Omega= \omega] \cdot \Pr[S = s | \Omega = \omega] \cdot \left(u(\theta, m(\theta), \omega) - u(\theta, m'(\theta), \omega)\right) \cdot  \Pr[\pi(s) = m] \\
+=&\sum_{\omega,s,s'} \Pr[\Omega = \omega, S = s] \cdot \Pr[ S'=s'|S= s] \cdot \Pr[\pi'(s') = m]   \cdot \left(u(\theta, m(\theta), \omega) - u(\theta, m'(\theta), \omega)\right)\\
+\geq &\sum_{\omega,s,s'} \Pr[\Omega = \omega, S = s, S'=s'] \cdot \Pr[\pi'(s') = m]   \cdot \left(u(\theta, m(\theta), \omega) - u(\theta, m'(\theta),
+ \omega)\right)\\
+& -2 \cdot \sum_{\omega,s,s'} | \Pr[\Omega = \omega, S = s] \cdot \Pr[ S'=s'|S= s] -  \Pr[\Omega = \omega, S = s, S'=s']| \\
+= &\sum_{\omega,s'} \Pr[\Omega = \omega, S'=s'] \cdot \Pr[\pi'(s') = m]   \cdot \left(u(\theta, m(\theta), \omega) - u(\theta, m'(\theta),
+ \omega)\right)\\
+& -2 \cdot \sum_{s} \Pr[S = s] \cdot  \sum_{s', \omega} \left| \Pr[S' = s', \Omega = \omega| S= s] - \Pr[S'=s'|S=s] \cdot \Pr[\Omega = \omega|S=s]\right| \\
+\geq&  ~\delta - 2 \cdot \frac{\delta}{2}\\
+ =& ~0\\
+\end{align*}
+
+We also have for any $s', s ,m$ such that $Pr[S' = s',S = s] >0 $ and $\Pr[\pi'(s') = m] >0$, we have $\Pr[\pi(s) = m] > 0$. This implies $\EX^{\delta}_{s'}[\S'] \subseteq \EX_s[\S]$. 
+\end{proof}
+
+
+For a given signal $s \in \X$ and a menu $m \in \M$, we solve the following LP to check if $m$ is $\delta$-signal-exlporable given signal $s$:
+
+\begin{figure}[H]
+\begin{mdframed}
+\begin{alignat*}{2}
+ & \textbf{maximize }    x_{m,s}\  \\
+&  \textbf{subject to: }\\
+ & \sum_{\omega \in \varOmega, s' \in \X} \Pr[\omega] \cdot \Pr[s' | \omega] \cdot \left(u(\theta, m'(\theta), \omega) - u(\theta, m''(\theta), \omega) + \delta\right) \cdot x_{m',s'} \geq 0  &\ & \forall m',m'' \in \M, \theta \in \varTheta \\
+                       & \sum_{m'\in \M} x_{m',s'} = 1,  \ &\ & \forall s' \in \X \\
+                       & x_{m',s'} \geq 0,  \ &\ & \forall s' \in \X, m'\in \M \\
+\end{alignat*}
+\end{mdframed}
+%\caption{LP}
+\label{fig:nocc_lp}
+\end{figure}
+
+As the above LP constraints characterize all BIC recommendation schemes, we have the following claim. 
+
+\begin{claim}
+\label{clm:nocc_lp}
+For a given signal $s \in \X$, a menu $m \in \M$ is $\delta$-signal-explorable if and only if the above LP has a positive solution. When the LP has a positive solution, define $\pi^{m,s}$ as $\Pr[\pi^{m,s}(s') = m'] = x_{m',s', } \forall m' \in \M, s' \in \X$. Then $\pi^{m,s}$ is a single-round $\delta$-BIC recommendation policy such that $\Pr[\pi^{m,s}(s) = m] > 0$
+\end{claim}
+
+\begin{definition}[Max-support policy]
+Given a signal structure $\S$, a recommendation policy $\pi$ is called the $\delta$-max-support policy if $\forall s \in \X$  and $\delta$-signal-explorable menu $m\in \M$ given $s$, $\Pr[\pi(s) = m] > 0$. 
+\end{definition}
+
+By Claim \ref{clm:nocc_lp}, we have the following claim.
+\begin{claim}
+\label{clm:pimax_nocc}
+The following $\pi^{max}$ is a $\delta$-BIC and $\delta$-max-support policy. Here $\M'$ is the set of menus with positive solutions in the LP mentioned in Claim \ref{clm:nocc_lp}.
+\[
+\pi^{max} = \frac{1}{|\X|} \sum_{s \in \X} \frac{1}{|\M'|} \sum_{m \in \M'} \pi^{m,s}.
+\]
+\end{claim}
+
+\begin{comment}
+Sometimes the term $\Pr[s'|\omega]$ in the above LP (i.e. the probability of seeing signal $s'$ given state to be $\omega$) is hard to compute. On the other hand, it could be easy to get a approximation of $\Pr[s'|\omega]$ as $p(s',\omega)$ such that $|p(s',w) -\Pr[s'|\omega]| \leq \beta$ for all $s',\omega$. Then we can solve a modified LP using $p(s',\omega)$ instead of $\Pr[s'|\omega]$:
+
+\begin{figure}[H]
+\begin{mdframed}
+\begin{alignat*}{2}
+ & \textbf{maximize }    x_{m,s}\  \\
+&  \textbf{subject to: }\\
+ & \sum_{\omega \in \varOmega, s' \in \X} \Pr[\omega] \cdot p(s,\omega) \cdot \left(u(\theta, m'(\theta), \omega) - u(\theta, m''(\theta), \omega)\right) \cdot x_{m',s'} \geq -\delta-\beta |\X|   &\ & \forall m',m'' \in \M, \theta \in \varTheta \\
+& \sum_{m'\in \M} x_{m',s'} = 1,  \ &\ & \forall s' \in \X \\
+& x_{m',s'} \geq 0,  \ &\ & \forall s' \in \X, m'\in \M \\
+\end{alignat*}
+\end{mdframed}
+%\caption{LP}
+\label{fig:nocc_lp_a}
+\end{figure}
+
+For the modified LP, we have the following claim:
+\begin{claim}
+\label{clm:nocc_lp_a}
+For a given signal $s \in \X$, if a menu $m \in \M$ is $\delta$-signal-explorable, the above LP has a positive solution. When the LP has a positive solution, define $\pi^{m,s}$ as $\Pr[\pi^{m,s}(s') = m'] = x_{m',s', } \forall m' \in \M, s' \in \X$. Then $\pi^{m,s}$ is a single-round $(\delta+2\beta|\X|)$-BIC recommendation policy such that $\Pr[\pi^{m,s}(s) = m] > 0$
+\end{claim}
+
+\begin{definition}[Max-support policy]
+Given a signal structure $\S$, a recommendation policy $\pi$ is called the $\delta$-max-support policy if $\forall s \in \X$  and $\delta$-signal-explorable menu $m\in \M$ given $s$, $\Pr[\pi(s) = m] > 0$. 
+\end{definition}
+
+By Claim \ref{clm:nocc_lp_a}, we have the following claim.
+\begin{claim}
+\label{clm:pimax_nocc}
+The following $\pi^{max}$ is a $(\delta+2\beta|\X|)$-BIC and $\delta$-max-support policy. Here $\M'$ is the set of menus with positive solutions in the LP mentioned in Claim \ref{clm:nocc_lp_a}.
+\[
+\pi^{max} = \frac{1}{|\X|} \sum_{s \in \X} \frac{1}{|\M'|} \sum_{m \in \M'} \pi^{m,s}.
+\]
+\end{claim}
+\end{comment}
+
+\subsection{Menu Exploration}
+\label{sec:private_menu}
+Given a menu $m$, a action-reward pair will be revealed to the algorithm after the round. Assuming the agent is following the menu, such action-reward pair is called a sample of the menu $m$. We use $D_m$ to the distribution of the samples. $D_m$ is random variable depending on the state $\Omega$. For a fixed state $\omega$, we use $D_m(\omega)$ to denote the distribution of the samples of menu $m$. 
+
+\begin{lemma}
+\label{lem:deltam}
+For any $\alpha > 0$, we can compute $\Delta_m$ which is a function of $B_m = O\left(\ln\left(\frac{1}{\gamma}\right)\right)$ samples of menu $m$ such that for any state $\omega$, 
+\[
+\Pr[\Delta_m \neq D_m(\omega) | \Omega = \omega] \leq \gamma.
+\]
+\end{lemma}
+
+\begin{proof}
+Let $U$ be the union of the support of $D_m(\omega)$ for all $\omega \in \varOmega$. For each $u \in U$ ($u$ is just a sample of the menu), define $q(u,\omega) = \Pr_{v \sim D_m(\omega)}[v = u]$. Let $\delta_m$ be small enough such that for all $\omega, \omega'$ with $D_m(\omega) \neq D_m(\omega')$, there exists $u \in U$, such that $|q(u,\omega) - q(u,\omega')| > \delta_m$. 
+
+Now we compute $\Delta_m$ as following: Take $B_m = \frac{2}{\delta_m^2}\ln\left(\frac{2|U|}{\gamma}\right) $ samples and set $\hat{q}(u)$ as the empirical frequency of seeing $u$. And set $\Delta_m$ to be some $D_m(\omega)$ such that for all $u \in U$, $|q(u,\omega) - \hat{q}(u)| \leq \delta_m / 2$. Notice that if such $\omega$ exists, $\Delta_m$ will be unique. If no $\omega$ satisfies this, just pick $\Delta_m$ to be an arbitrary $D_m(\omega)$. 
+
+Now let's analyze $\Pr[\Delta_m \neq D_m(\omega)]$. Let's fixed the state $\Omega = \omega$. By Chernoff bound, for each $u \in U$, 
+\[
+\Pr[|q(u,\omega) -\hat{q}(u)| > \delta_m/2] \leq 2\exp\left(-2 \cdot \left(\frac{\delta_m}{2}\right)^2 \cdot B_m\right) \leq \frac{\gamma}{|U|}.
+\]
+By union bound, with probability at least $1-\gamma$, we have for all$u \in U$, $|q(u,\omega) - \hat{q}(u)| \leq \delta_m / 2$. This implies $\Delta_m = D_m(\omega)$. 
+\end{proof}
+
+
+\subsection{MaxExplore}
+\label{sec:private_maxe}
+In this subsection, we are going to assume $L \geq \max_{m,s} \frac{B_m}{ \Pr[\pi^{max}(s)=m]}$. 
+
+ \begin{algorithm}[H]
+    \caption{Subroutine MaxExplore}
+    	\label{alg:nocc_explore}
+    \begin{algorithmic}[1]
+	\STATE \textbf{Input:} signal $S$, signal structure $\S$.
+	\STATE \textbf{Output:} a list of menus $\mu$
+	\STATE Compute $\pi^{max}$ as stated in Claim \ref{clm:pimax_nocc}.
+	%\IF {$l \leq |\M| $}
+		\STATE Initialize $Res = L$.
+		\FOR {each menu $ m \in \M$}
+                     		\STATE Add $\lfloor L \cdot \Pr[\pi^{max}(S) = m]\rfloor$ copies of menu $m$ into list $\mu$.
+			\STATE $Res \leftarrow Res -\lfloor L \cdot \Pr[\pi^{max}(S) = m] \rfloor $.
+			\STATE $p^{Res}(a)\leftarrow  L \cdot \Pr[\pi^{max}(S) = m] -  \lfloor L \cdot \Pr[\pi^{max}(S) = m]\rfloor$
+		\ENDFOR 
+		\STATE $p^{Res}(m) \leftarrow p^{Res}(m) / Res$, $\forall m \in \M$. 
+		\STATE Sample $Res$ many actions from distribution according to $p^{Res}$ independently and add these actions into $\mu$. 
+		\STATE Randomly permute the actions in $\mu$.
+	%\ELSE
+		%\STATE Add $L$ copies of the best explored menu according to signal $S$ into action list $\mu$. 
+	%\ENDIF
+	\RETURN $\mu$.	 
+     \end{algorithmic}
+\end{algorithm}
+
+\begin{claim}
+\label{clm:maxexplore_nocc}
+Given signal $S$, MaxExplore is $\delta$-BIC and explores each $\delta$-signal-explorable menu $m$ at least $B_m$ times.  
+\end{claim}
+
+
+\subsection{Main Scheme}
+\label{sec:private_main}
+In this subsection, we show our main scheme which explores all the eventually-explorable actions and then recommends the agents the best menu given all history. We pick $L$ to be at least $\max_{m,s:\Pr[\pi(s)=m] >0} \frac{B_m}{ \Pr[\pi(s)=m]}$ for all $\pi$ that might be chosen as $\pi^{max}$ by Algorithm \ref{alg:nocc_main}.
+
+ \begin{algorithm}[H]
+    \caption{Main procedure for private types }
+    	\label{alg:nocc_main}
+    \begin{algorithmic}[1]
+    	\STATE Initial signal $S_1 = \S_l= \perp$.
+	\STATE Initial phase count $l = 1$. 
+	\FOR {$t=1$ to $T$}
+		\IF {$t \equiv 1 \pmod L$}
+			\STATE Start a new phase:
+			\STATE For each explored menu $m$ in the previous phase, use $B_m$ samples to compute $\Delta_m$ stated in Lemma \ref{lem:deltam} with $\gamma =\min\left(\frac{\delta^2}{16|\M|\log(|\varOmega|)},\left( \frac{\delta^2}{32|M|}\right)^2, \frac{1}{T|\M|}\right)$. 
+			\STATE If there does not exist a state $w$ which is consistent with $\Delta_m$ ($\Delta_m = D_m(\omega)$) for all explored menu $m$, pick an arbitrary state $\omega$ and set $\Delta_m \leftarrow D_m(\omega)$ for all explored menu $m$. This step just make sure the number of signals is bounded by $|\varOmega|$.
+			\STATE Set $S_l$ to be the collection of $\Delta_m$'s for all explored menu $m$.
+			\IF {$l \leq |\M|$}
+				\STATE Use the current $S_l$ and $\S_l$ to compute a list of $L$ actions $\mu \leftarrow $ MaxExplore($S_l, \S_l$).
+			\ELSE
+				\STATE Set menu list $\mu$ to be $L$ copies of the best explored menu according to all history. 
+			\ENDIF
+		\ENDIF
+		\STATE Suggest menu $\mu [ (t-1) \mod L + 1]$ to the agent.
+	\ENDFOR
+     \end{algorithmic}
+\end{algorithm}
+
+
+\begin{claim}
+\label{clm:nocc_BIC}
+Algorithm \ref{alg:nocc_main} is $\delta$-BIC.
+\end{claim}
+
+
+\begin{lemma}
+\label{lem:exp_nocc}
+For any $l > 0$, assume Algorithm \ref{alg:nocc_main} has at least $\min(l, |\M|)$ phases. 
+For a given state $\omega$, if a menu $m$ can be explored by a BIC recommendation policy $\pi$ at round $l$ (i.e. $ \Pr[\pi^l= m]> 0$), then such menu is guaranteed to be explored $B_m$ times by Algorithm \ref{alg:nocc_main} by the end of phase $\min(l, |\M|)$. 
+\end{lemma}
+
+\begin{proof}
+The proof is similar to Lemma \ref{lem:exp_public}. We prove by induction on $l$ for $l \leq |\M|$. 
+
+%Base case $l=1$ is trivial by Claim \ref{clm:maxexplore}. Assuming the lemma is correct for $l-1$, let's prove it's correct for $l$. 
+
+Let $S$ be the signal of Algorithm \ref{alg:nocc_main} in phase $l$. Let $S'$ be the history of $\pi$ in the first $l-1$ rounds. More precisely, $S' = R, H_1,...,H_{l-1}$. Here $R$ is the internal randomness of scheme $\pi$ and $H_t = (M_t, A_t,u(\Theta_t, M_t(\Theta_t), \Omega))$ is the menu and the action-reward pair in round $t$ of scheme $\pi$. 
+
+Let $\M'$ to be the set of menus explored in the first $l-1$ phases of Algorithm \ref{alg:nocc_main}. By the induction hypothesis, we have $\forall t\in[l-1]$, $M_t \subseteq \M'$. 
+
+First of all, we have
+\[
+I(S'; \Omega| S) = I(R,H_1,...,H_{l-1}; \Omega| S)  = I(R; \Omega| S) + I(H_1,...,H_{l-1}; \Omega|S, R) = I(H_1,...,H_{l-1}; \Omega|S, R). 
+\]
+
+By the chain rule of mutual information, we have
+\[
+ I(H_1,...,H_{l-1}; \Omega|S, R) = I(H_1;\Omega|S,R) + I(H_2;\Omega|S, R ,H_1) + \cdots + I(H_{l-1}; \Omega|S,R,H_1,...,H_{l-2}). 
+\]
+
+For all $t \in [l-1]$, we have
+\begin{align*}
+&I(H_t; \Omega|S,R,H_1,...,H_{t-1}) \\
+=& I(M_t,A_t, u(\Theta_t, M_t(\Theta_t), \Omega); \Omega|S,R,H_1,...,H_{t-1}) \\
+=& I(A_t, u(\Theta_t, M_t(\Theta_t), \Omega); \Omega | S,R,H_1,...,H_{t-1}, M_t)\\
+\leq& I(D_{M_t}; \Omega|S,R,H_1,...,H_{t-1},M_t). \\
+\end{align*}
+The second last step comes from the fact that $M_t$ is a deterministic function of $R,H_1,...,H_{t-1}$. The last step comes from the fact that $(A_t,u(\Theta_t, M_t(\Theta_t), \Omega))$ is independent with $\Omega$ given $D_{M_t}$.
+
+Then we have
+\begin{align*}
+& I(D_{M_t}; \Omega|S,R,H_1,...,H_{t-1},M_t)\\
+=& \sum_{m \in \M'} \Pr[M_t = m] \cdot I(D_m;\Omega | S,R,H_1,...,H_{t-1},M_t = m)\\
+\leq& \sum_{m \in M'} \Pr[M_t = m] \cdot I(D_m;\Omega| \Delta_m, M_t =m).\\
+\leq& \sum_{m \in M'} \Pr[M_t = m] \cdot H(D_m| \Delta_m, M_t =m).
+\end{align*}
+The last step comes from the fact that $I(D_m; (S\backslash \Delta_m),R,H_1,...,H_{t-1}|\Omega, \Delta_m, M_t =m) = 0$. By Lemma \ref{lem:deltam}, we know that $\Pr[D_m \neq \Delta_m|M_t = m] \leq \gamma$. By Fano's inequality, we have
+\[
+H(D_m| \Delta_m, M_t =m) \leq H(\gamma) + \gamma \log(|\varOmega| - 1) \leq 2\sqrt{\gamma} + \gamma \log(|\varOmega| - 1)\leq \frac{\delta^2}{16|\M|}+\frac{\delta^2}{16|\M|}  = \frac{\delta^2}{8|\M|}. 
+\]
+
+Therefore we have
+\[
+I(H_t; \Omega|S,R,H_1,...,H_{t-1}) \leq \frac{\delta^2}{8|\M|}, \forall t \in [l-1].
+\]
+Then we get 
+\[
+I(S'; \Omega | S) \leq \delta^2/8.
+\]
+
+By Lemma \ref{lem:ainfomono}, we know that $\EX_{s'}[\S'] \subseteq \EX^{\delta}_s[\S]$. By Claim \ref{clm:maxexplore_nocc}, we know that phase $l$ will explore menu $m$ at least $B_m$ times.
+
+When $l > |\M|$, the proof follows from the same argument as the last paragraph of the proof of Lemma \ref{lem:exp_public}.
+\end{proof}
+
+\begin{corollary}[Restatement of Theorem \ref{thm:private_nocc}]
+\label{cor:private_nocc}
+For any $\delta > 0$, we have a $\delta$-BIC recommendation policy of $T$ rounds with expected total reward at least $\left(T - C\cdot \log(T) \right) \cdot \OPT$ for some constant $C$ which does not depend on $T$. 
+\end{corollary}
+
+\begin{proof}
+
+First of all, by Claim \ref{clm:nocc_BIC}, Algorithm \ref{alg:nocc_main} is $\delta$-BIC. 
+
+By Lemma \ref{lem:exp_nocc}, for each state $\omega$, Algorithm \ref{alg:nocc_main} explores all the eventually explorable menus (i.e. $\M_{\omega}^{exp}$) for by the end of $|\M|$ phases. 
+
+After that, if the algorithm just pick the best explored menu according to all $\Delta_m$'s, by Lemma \ref{lem:deltam} and $\gamma \leq \frac{1}{T|\M|}$, for a fixed state $\omega$, we know that with probability $1- 1/T$, the algorithm chooses menu $\arg\max_{m \in \M_{\omega}^{exp}} \sum_{\theta \in \varTheta} \Pr[\theta] \cdot u(\theta, m(\theta), \omega)$. And since Algorithm \ref{alg:nocc_main} chooses the best menu according to all history, it should at least get $(1-1/T) \cdot \max_{m \in \M_{\omega}^{exp}} \sum_{\theta \in \varTheta} \Pr[\theta] \cdot u(\theta, m(\theta), \omega)$ in expectation.
+
+We know that the expected number of rounds of the first  $|\M|$ is $|\M| \cdot L = O(\ln(T))$. Therefore, Algorithm \ref{alg:nocc_main} has expected total reward at least $T \cdot \OPT- T \cdot (1/T) - O(\ln(T)) = T\cdot \OPT - O(\ln(T))$.
+
+\end{proof}
+

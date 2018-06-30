@@ -1,0 +1,91 @@
+\documentclass[11pt]{article}
+\usepackage{fullpage}
+\usepackage{mathrsfs}
+\usepackage{float}
+% ======    PACKAGES
+\usepackage{amsmath, amsfonts, amssymb, amsthm, amsbsy, amscd, bm, bbm}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage[small,bf]{caption}
+\setlength{\captionmargin}{30pt}
+\usepackage{subcaption}
+\captionsetup[sub]{margin=10pt,font=small}
+\usepackage{color}
+\usepackage{ifthen}
+\usepackage{xspace}
+\usepackage{algorithmic,algorithm}
+\usepackage[colorlinks,citecolor={black},urlcolor={black},linkcolor={black}]{hyperref}
+\usepackage{url}
+\usepackage{tocbibind}
+\usepackage{enumerate}
+\usepackage{mdframed}
+\usepackage{comment}
+
+
+\DeclareMathOperator*{\argmin}{argmin}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}{Remark}[section]
+\newtheorem{claim}{Claim}[section]
+\newtheorem{example}{Example}[section]
+
+
+\def\DKL{\textbf{D}_{KL}}
+\def\D{\mathbb{D}}
+\def\E{\mathbb{E}}
+
+\def\A{\mathcal{A}}
+\def\M{\mathcal{M}}
+\def\S{\mathcal{S}}
+\def\X{\mathcal{X}}
+\def\EX{EX}
+\def\OPT{OPT}
+\def\Ds{*}
+
+\title{Bayesian Exploration:\\ Incentivizing Exploration with Heterogeneous Agents}
+
+\author{
+}
+\begin{document}
+\maketitle
+
+\section{Introduction}
+
+\subsection{Model}
+The Bayesian exploration consists of $T$ rounds. The participants are $T$ agents and a principal. Each agent only participates in one round.
+
+The state of nature $\omega$ is drawn from a Bayesian prior distribution over a finite state space $\varOmega$. We use $\Pr[\omega]$ to denote the probability that state $\omega$ is sampled. We use $\Omega$ as the random variable for the state.
+
+In each round, a new agent comes and its type $\theta$ is sampled from a distribution over a finite type space $\varTheta$. The type distribution is independent with the state distribution. We use $\Pr[\theta]$ to denote the probability type $\theta$ is sampled. We use $\Theta$ as the random variable for the type.
+
+For an agent with type $\theta \in \varTheta$, it can choose an action $a$ from action space $\A$ where $\A$ is a finite set. The utility of the agent is a deterministic function of its type and action, and the state of nature: $u(\theta, a, \omega)$. We also assume the utility is bounded in $[0,1]$. 
+
+\subsubsection{Type Information}
+In terms of principal's knowledge of the agents' types, we consider three different models:
+\begin{itemize}
+\item \textbf{Public types:} Principal knows the types of agents.
+\item \textbf{Private types, communication allowed:} Only the agent knows its own type. The principal asks each agent to report its type. 
+\item \textbf{Private types, communication not allowed:}  Only the agent knows its own type. Each agent is not allowed to send any message to the principal.
+\end{itemize}  
+
+%\subsubsection{Bayesian Incentive-Compatible}
+\input{public_type}
+
+\input{private_type_c}
+
+\input{private_type_nc}
+
+\input{diversity}
+
+\bibliographystyle{alpha}
+%\bibliography{references}
+
+\end{document}
