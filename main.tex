@@ -25,6 +25,15 @@
 
 \DeclareMathOperator*{\argmin}{argmin}
 
+% a very useful package for edits and comments, from David Kempe (USC)
+\usepackage{color-edits}
+%\usepackage[suppress]{color-edits}  % use this to suppress the package
+\addauthor{as}{red}      % as for Alex
+\addauthor{jm}{blue}     % jm for Jieming
+\addauthor{ni}{green}     % ni for Nicole
+\addauthor{sw}{magenta}     % sw for Steven
+% e.g. for Alex, provides \asedit{}, \ascomment{} and \asdelete{}.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \newtheorem{theorem}{Theorem}[section]
@@ -66,15 +75,15 @@ The state of nature $\omega$ is drawn from a Bayesian prior distribution over a 
 
 In each round, a new agent comes and its type $\theta$ is sampled from a distribution over a finite type space $\varTheta$. The type distribution is independent with the state distribution. We use $\Pr[\theta]$ to denote the probability type $\theta$ is sampled. We use $\Theta$ as the random variable for the type.
 
-For an agent with type $\theta \in \varTheta$, it can choose an action $a$ from action space $\A$ where $\A$ is a finite set. The utility of the agent is a deterministic function of its type and action, and the state of nature: $u(\theta, a, \omega)$. We also assume the utility is bounded in $[0,1]$. 
+For an agent with type $\theta \in \varTheta$, it can choose an action $a$ from action space $\A$ where $\A$ is a finite set. The utility of the agent is a deterministic function of its type and action, and the state of nature: $u(\theta, a, \omega)$. We also assume the utility is bounded in $[0,1]$.
 
 \subsubsection{Type Information}
 In terms of principal's knowledge of the agents' types, we consider three different models:
 \begin{itemize}
 \item \textbf{Public types:} Principal knows the types of agents.
-\item \textbf{Private types, communication allowed:} Only the agent knows its own type. The principal asks each agent to report its type. 
+\item \textbf{Private types, communication allowed:} Only the agent knows its own type. The principal asks each agent to report its type.
 \item \textbf{Private types, communication not allowed:}  Only the agent knows its own type. Each agent is not allowed to send any message to the principal.
-\end{itemize}  
+\end{itemize}
 
 %\subsubsection{Bayesian Incentive-Compatible}
 \input{public_type}
@@ -86,6 +95,6 @@ In terms of principal's knowledge of the agents' types, we consider three differ
 \input{diversity}
 
 \bibliographystyle{alpha}
-%\bibliography{references}
+\bibliography{references,bib-abbrv,bib-slivkins,bib-bandits,bib-AGT,bib-ML}
 
 \end{document}
