@@ -1,0 +1,61 @@
+%!TEX root = main.tex
+\section{Preliminaries}
+\subsection{Information Theory}
+We briefly review some standard facts and definitions from information theory which is used in proofs. For a more detailed introduction, we refer the readers to \cite{CK11}.
+
+Throughout this paper, we use $\log$ to refer to the base $2$ logarithm and use $\ln$ to refer to the natural logarithm.
+
+\begin{definition}
+The \emph{entropy} of a random variable $X$, denoted by $H(X)$, is defined as $H(X) = \sum_x \Pr[X = x] \log(1 / \Pr[X = x])$. 
+\end{definition}
+
+If $X$ is drawn from Bernoulli distributions $Ber(p)$, we use $H(p) = -(p\log p + (1-p)(\log(1-p))$ to denote $H(X)$. 
+
+\begin{definition}
+The \emph{conditional entropy} of random variable $X$ conditioned on random variable $Y$ is defined as $H(X|Y) = \mathbb{E}_y[H(X|Y = y)]$. 
+\end{definition}
+
+\begin{fact}
+$H(XY) = H(X) + H(Y|X)$. 
+\end{fact}
+
+\begin{definition}
+\label{def:muinfo}
+The \emph{mutual information} between two random variables $X$ and $Y$ is defined as $I(X;Y) = H(X) - H(X|Y) = H(Y) - H(Y|X)$. 
+\end{definition}
+
+\begin{definition}
+The \emph{conditional mutual information} between $X$ and $Y$ given $Z$ is defined as $I(X;Y|Z) = H(X|Z) - H(X|YZ) = H(Y|Z) - H(Y|XZ)$. 
+\end{definition}
+
+\begin{fact}\label{fact:cr}
+Let $X_1,X_2,Y,Z$ be random variables, we have $I(X_1X_2;Y|Z) = I(X_1;Y|Z) + I(X_2;Y|X_1Z)$.
+\end{fact}
+
+\begin{fact}
+\label{fact:it1}
+Let $X,Y,Z,W$ be random variables. If $I(Y;W|X,Z) = 0$, then $I(X;Y|Z) \geq I(X;Y|ZW)$. 
+\end{fact}
+
+
+\begin{fact}
+\label{fact:it2}
+Let $X,Y,Z,W$ be random variables. If $I(Y;W|Z) = 0$, then $I(X;Y|Z) \leq I(X;Y|ZW)$. 
+\end{fact}
+
+\begin{definition}
+The \emph{Kullback-Leibler divergence} between two random variables $X$ and $Y$ is defined as $\DKL(X\| Y) = \sum_x \Pr[X = x] \log(\Pr[X = x] / \Pr[Y = x])$. 
+\end{definition}
+
+\begin{fact}
+\label{fact:div}
+Let $X,Y,Z$ be random variables, we have $I(X;Y|Z) = \mathbb{E}_{x,z}[\DKL((Y|X = x, Z=z)\|(Y|Z=z))]$.
+\end{fact}
+
+\begin{lemma}[Pinsker's Inequality]
+Let $X,Y$ be random variables, $\sum_x | \Pr[X=x] - \Pr[Y=x]| \leq \sqrt{2 \ln(2) \DKL(X|Y)}$.
+\end{lemma}
+
+\begin{lemma}[Fano's Inequality]
+Let $X,Y,\hat{X}$ be random variables and $\hat{X} = f(Y)$. Let $e = \Pr[\hat{X} \neq X]$. Then $H(X|Y) \leq H(e) + e \cdot (\log(|\X|-1)$ where $\X$ denotes the support of $X$.
+\end{lemma}
