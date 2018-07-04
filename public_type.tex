@@ -2,7 +2,7 @@
 
 \section{Bayesian Exploration with Public Types}
 \label{sec:public}
-In this section, we show a BIC scheme for public types (as in Theorem \ref{thm:public}). We formally state Theorem \ref{thm:public} in Section \ref{sec:public_bench} and we prove it in Section \ref{sec:public_single}, \ref{sec:public_maxe} and \ref{sec:public_main}.
+In this section, we show a BIC scheme for public types (as in Theorem \ref{thm:public}). We formally state Theorem \ref{thm:public} in Section \ref{sec:public_bench} and we prove it in Section \ref{sec:public_single} and \ref{sec:public_main}.
 
 \subsection{Explorability and Benchmark}
 \label{sec:public_bench}
@@ -37,7 +37,7 @@ We have a BIC recommendation policy of $T$ rounds with expected total reward at 
 
 In this subsection, we consider a single round of the Bayesian exploration. As we only consider one round, we fix the agent's type in this round to be $\theta$. 
 
-In a single round, the principal receives a random variable $S$ (we call it a signal) which is a function of the history of previous rounds and randomness of the recommendation policy. In this round, the principal computes a (randomized) mapping from the signal to a suggested action. We specify the signal structure $\S$ of signal $S$ by the signal support $\X$ and a joint distribution on $(\X, \varOmega)$.  
+In a single round, the principal receives a random variable $S$ (we call it a signal) which is a function of the history of previous rounds and randomness of the recommendation policy. This function is determined before all rounds start and is known to the principal and all agents. In this single round, the principal computes a (randomized) mapping from the signal to a suggested action. We specify the signal structure $\S$ of signal $S$ by the signal support $\X$ and a joint distribution on $(\X, \varOmega)$.  
 
 
 \begin{definition}
@@ -46,7 +46,8 @@ Consider a single-round of Bayesian exploration when the principal receives sign
 
 Note that $\EX_s[\S]$ is a fixed subset and $\EX[\S]$ is a random variable whose realization is determined by the realization of signal $S$.
 
-In the following definition, we define a way to compare two signals. Intuitively, the condition $I(S';\Omega|S)= 0$  means if one is given random variable $S$, one can learn no information from $S'$ about $\Omega$. 
+\subsubsection{Information Monotonicity}
+In the following definition, we define a way to compare two signals. Intuitively, the condition $I(S';\Omega|S)= 0$  means if one is given random variable $S$, one can learn no information from $S'$ about $\Omega$. In this case, we show in Lemma \ref{lem:infomono} that the signal-explorable set of $S'$ is contained the signal-explorable set of $S$.
 \begin{definition}
 Let $S$ and $S'$ be two random variables and $\S$ and $\S'$ be their signal structures. We say random variable $S$ is at least as informative as random variable $S'$ about state $\Omega$ if $I(S' ; \Omega|S) = 0$. Notice $I(S';\Omega|S)$ does not only depend on the signal structures $\S$ and $\S'$. It can also depend on the joint distribution between $S$ and $S'$.
 \end{definition}
@@ -60,6 +61,7 @@ Let $S$ and $S'$ be two random variables and $\S$ and $\S'$ be their signal stru
 Consider any BIC scheme $\pi'$ for signal structure $\S'$. We construct $\pi$ for signature structure $\S$ by setting $\Pr[\pi(s) = a] = \sum_{s'} \Pr[\pi'(s') = a] \cdot Pr[S' = s'|S = s]$. It's easy to check $\pi$ is BIC. For any $s', s ,a$ such that $Pr[S' = s',S = s] >0 $ and $\Pr[\pi'(s') = a] >0$, we have $\Pr[\pi(s) = a] > 0$. This implies $\EX_{s'}[\S'] \subseteq \EX_s[\S]$.
 \end{proof}
 
+\subsubsection{Max-Support Policy}
 For a given realized signal $s \in \X$ and an action $a \in \A$, we solve the following LP to check if $a$ is signal-exlporable given realized signal $s$. The LP is parameterized by the signal structure $\S$ together with the realized signal $s$. 
 
 \begin{figure}[H]
@@ -92,17 +94,21 @@ Given a signal structure $\S$, a BIC recommendation policy $\pi$ is called the m
 We can get a max-support policy $\pi^{max}$ by averaging over BIC recommendation policies for signal explorable actions.
 \begin{claim}
 \label{clm:pimax}
-The following $\pi^{max}$ is a BIC and max-support policy.
+The following $\pi^{max}$ is a BIC and max-support policy. 
 \[
 \pi^{max} = \frac{1}{|\X|} \sum_{s \in \X} \frac{1}{|\EX_s[\S]|} \sum_{a \in \EX_s[S]} \pi^{a,s}.
 \]
 \end{claim}
 
-\subsection{MaxExplore}
+\subsubsection{MaxExplore}
 \label{sec:public_maxe}
 %This section is very similar to the EC16's paper, we include this section to make our paper self-contained.
 
-In this subsection, we show a subroutine MaxExplore which converts $\pi^{max}$ into a sequence of actions. We are going to assume $L_{\theta} \geq \max_{a,s: \Pr[\pi^{max}(s)=a] \neq 0} \frac{1}{\Pr[\pi^{max}(s)=a]}$.
+In this subsubsection, we show a subroutine MaxExplore which converts $\pi^{max}$ into a sequence of actions. We are going to assume $L_{\theta} \geq \max_{a,s: \Pr[\pi^{max}(s)=a] \neq 0} \frac{1}{\Pr[\pi^{max}(s)=a]}$.
+
+The goal of this subroutine MaxExplore is to make sure that for any signal-explorable action $a$ (i.e. $\Pr[\pi^{max}(s) = a] > 0$), $a$ shows up at least once in the sequence with probability exactly 1. On the other hand, we want that the action of each specific location in the sequence has marginal distribution same as $\pi^{max}$. 
+
+To achieve this goal, the first idea would be to put $C_a = L_{\theta} \cdot \Pr[\pi^{max}(S) = a]$ copies of action $a$ into a sequence of length $L_{\theta}$ and randomly permute the sequence. However, the problems are that $C_a$ might not be an integer and $C_a$ can be smaller than 1. We solve the later problem by picking $L_{\theta}$ large enough such that $C_a \geq 1$ for all $a$ satisfying $\Pr[\pi^{max}(S) =a] > 0$. We solve the former problem by first putting $\lfloor C_a \rfloor$ copies of action $a$ into the sequence and then sampling the rest ($L_\theta - \sum_a \lfloor C_a \rfloor$ actions) according to $\pi^{max}$. For details, see the following pseudo-code (Algorithm \ref{alg:public_explore}). 
  \begin{algorithm}[H]
     \caption{Subroutine MaxExplore}
     	\label{alg:public_explore}
@@ -113,9 +119,10 @@ In this subsection, we show a subroutine MaxExplore which converts $\pi^{max}$ i
 	%\IF {$l \leq |\A| \cdot |\varTheta|$}
 		\STATE Initialize $Res = L_{\theta}$.
 		\FOR {each action $ a \in \A$}
-                     		\STATE Add $\lfloor L_{\theta} \cdot \Pr[\pi^{max}(S) = a]\rfloor$ copies of action $a$ into list $\alpha$.
-			\STATE $Res \leftarrow Res -\lfloor L_{\theta} \cdot \Pr[\pi^{max}(S) = a] \rfloor $.
-			\STATE $p^{Res}(a)\leftarrow  L_{\theta} \cdot \Pr[\pi^{max}(S) = a] -  \lfloor L_{\theta} \cdot \Pr[\pi^{max}(S) = a]\rfloor$
+							\STATE $C_a \leftarrow  L_{\theta} \cdot \Pr[\pi^{max}(S) = a]$
+                     		\STATE Add $\lfloor C_a \rfloor$ copies of action $a$ into list $\alpha$.
+			\STATE $Res \leftarrow Res -\lfloor C_a \rfloor $.
+			\STATE $p^{Res}(a)\leftarrow  C_a -  \lfloor C_a\rfloor$
 		\ENDFOR
 		\STATE $p^{Res}(a) \leftarrow p^{Res}(a) / Res$, $\forall a \in \A$.
 		\STATE Sample $Res$ many actions from distribution according to $p^{Res}$ independently and add these actions into $\alpha$.
@@ -135,7 +142,7 @@ Given type $\theta$ and signal $S$, MaxExplore explores all the signal-explorabl
 \end{claim}
 
 \begin{claim}
-Signals and signal structures can be efficiently computed and represented.
+MaxExplore runs in time polynomial in $L_{\theta}$, $|\A|$, $|\varOmega|$ and $|\X|$ (size of the support of the signal). 
 \end{claim}
 
 \subsection{Main Scheme}
