@@ -1,61 +1,45 @@
 %!TEX root = main.tex
 \section{Preliminaries}
-\subsection{Information Theory}
-We briefly review some standard facts and definitions from information theory which is used in proofs. For a more detailed introduction, we refer the readers to \cite{CK11}.
-
-Throughout this paper, we use $\log$ to refer to the base $2$ logarithm and use $\ln$ to refer to the natural logarithm.
-
-\begin{definition}
-The \emph{entropy} of a random variable $X$, denoted by $H(X)$, is defined as $H(X) = \sum_x \Pr[X = x] \log(1 / \Pr[X = x])$. 
-\end{definition}
-
-If $X$ is drawn from Bernoulli distributions $Ber(p)$, we use $H(p) = -(p\log p + (1-p)(\log(1-p))$ to denote $H(X)$. 
-
-\begin{definition}
-The \emph{conditional entropy} of random variable $X$ conditioned on random variable $Y$ is defined as $H(X|Y) = \mathbb{E}_y[H(X|Y = y)]$. 
-\end{definition}
-
-\begin{fact}
-$H(XY) = H(X) + H(Y|X)$. 
-\end{fact}
-
-\begin{definition}
-\label{def:muinfo}
-The \emph{mutual information} between two random variables $X$ and $Y$ is defined as $I(X;Y) = H(X) - H(X|Y) = H(Y) - H(Y|X)$. 
-\end{definition}
-
-\begin{definition}
-The \emph{conditional mutual information} between $X$ and $Y$ given $Z$ is defined as $I(X;Y|Z) = H(X|Z) - H(X|YZ) = H(Y|Z) - H(Y|XZ)$. 
-\end{definition}
-
-\begin{fact}\label{fact:cr}
-Let $X_1,X_2,Y,Z$ be random variables, we have $I(X_1X_2;Y|Z) = I(X_1;Y|Z) + I(X_2;Y|X_1Z)$.
-\end{fact}
-
-\begin{fact}
-\label{fact:it1}
-Let $X,Y,Z,W$ be random variables. If $I(Y;W|X,Z) = 0$, then $I(X;Y|Z) \geq I(X;Y|ZW)$. 
-\end{fact}
 
 
-\begin{fact}
-\label{fact:it2}
-Let $X,Y,Z,W$ be random variables. If $I(Y;W|Z) = 0$, then $I(X;Y|Z) \leq I(X;Y|ZW)$. 
-\end{fact}
+\xhdr{Information theory.}
+We briefly review some standard facts and definitions from information theory which is use in proofs. For a more detailed introduction, see \cite{CK11}. 
 
-\begin{definition}
-The \emph{Kullback-Leibler divergence} between two random variables $X$ and $Y$ is defined as $\DKL(X\| Y) = \sum_x \Pr[X = x] \log(\Pr[X = x] / \Pr[Y = x])$. 
-\end{definition}
+The fundamental notion is \emph{entropy} of a random variable $X$. In particular, if $X$ has finite support, its entropy is defined as 
+\[ H(X) = \textstyle - \sum_{x} \Pr[X = x]\cdot  \log(\Pr[X = x]). \]
+(Throughout this paper, we use $\log$ to refer to the base $2$ logarithm and use $\ln$ to refer to the natural logarithm.) If $X$ is drawn from Bernoulli distribution with $\E[X]=p$, then 
+    \[ H(p) = -(p\log p + (1-p)(\log(1-p)). \]
 
-\begin{fact}
-\label{fact:div}
-Let $X,Y,Z$ be random variables, we have $I(X;Y|Z) = \mathbb{E}_{x,z}[\DKL((Y|X = x, Z=z)\|(Y|Z=z))]$.
-\end{fact}
+Let $X,Y$ be two random variables. The \emph{conditional entropy} of $X$ conditioned on $Y$ is 
+\[ H(X|Y) 
+    = \E_y[H(X|Y = y)] 
+    = \textstyle \sum_{y} \Pr[Y=y]\cdot H(X|Y = y). \]
 
-\begin{lemma}[Pinsker's Inequality]
-Let $X,Y$ be random variables, $\sum_x | \Pr[X=x] - \Pr[Y=x]| \leq \sqrt{2 \ln(2) \DKL(X|Y)}$.
+The \emph{mutual information} between $X$ and $Y$ is 
+\[ I(X;Y) = H(X) - H(X|Y) = H(Y) - H(Y|X).\]
+
+The \emph{conditional mutual information} between $X$ and $Y$ given $Z$ is  
+\[ I(X;Y|Z) = H(X|Z) - H(X|YZ) = H(Y|Z) - H(Y|XZ).\]
+
+\ascomment{is this supposed to be $YZ$ in the conditioning, or $Y,Z$? I am confused! Same issue in several other places here and below.}
+
+The \emph{Kullback-Leibler divergence} between $X$ and $Y$ is 
+\[ \DKL(X\| Y)\textstyle  = \sum_x \Pr[X = x] \cdot \log(\Pr[X = x] / \Pr[Y = x]).\]
+
+\ascomment{are you using all of these facts in the proofs?}
+
+\begin{lemma}
+Let $X,X',Y,Z$ be random variables 
+\begin{OneLiners}
+\item[(a)] $H((X,Y)) = H(X) + H(Y|X)$.
+\item[(b)] $I(X X';Y|Z) = I(X;Y|Z) + I(X';Y|XZ)$
+\item[(c)] If $I(Y;W|X,Z) = 0$, then $I(X;Y|Z) \geq I(X;Y|ZW)$.
+\item[(d)] If $I(Y;W|Z) = 0$, then $I(X;Y|Z) \leq I(X;Y|ZW)$.
+\item[(e)] $I(X;Y|Z) = \mathbb{E}_{x,z}[\DKL((Y|X = x, Z=z)\|(Y|Z=z))]$.
+\item[(f)] [Pinsker Inequality] $\sum_x | \Pr[X=x] - \Pr[Y=x]| \leq \sqrt{2 \ln(2) \DKL(X|Y)}$.
+\end{OneLiners}
 \end{lemma}
 
 \begin{lemma}[Fano's Inequality]
 Let $X,Y,\hat{X}$ be random variables and $\hat{X} = f(Y)$. Let $e = \Pr[\hat{X} \neq X]$. Then $H(X|Y) \leq H(e) + e \cdot (\log(|\X|-1)$ where $\X$ denotes the support of $X$.
-\end{lemma}
+\end{lemma} 
