@@ -58,7 +58,7 @@ Let $S$ and $S'$ be two random variables and $\S$ and $\S'$ be their signal stru
 \end{lemma}
 
 \begin{proof}
-Consider any BIC scheme $\pi'$ for signal structure $\S'$. We construct $\pi$ for signature structure $\S$ by setting $\Pr[\pi(s) = a] = \sum_{s'} \Pr[\pi'(s') = a] \cdot Pr[S' = s'|S = s]$. It's easy to check $\pi$ is BIC. For any $s', s ,a$ such that $Pr[S' = s',S = s] >0 $ and $\Pr[\pi'(s') = a] >0$, we have $\Pr[\pi(s) = a] > 0$. This implies $\EX_{s'}[\S'] \subseteq \EX_s[\S]$.
+Consider any BIC recommendation policy $\pi'$ for signal structure $\S'$. We construct $\pi$ for signature structure $\S$ by setting $\Pr[\pi(s) = a] = \sum_{s'} \Pr[\pi'(s') = a] \cdot Pr[S' = s'|S = s]$. It's easy to check $\pi$ is BIC. For any $s', s ,a$ such that $Pr[S' = s',S = s] >0 $ and $\Pr[\pi'(s') = a] >0$, we have $\Pr[\pi(s) = a] > 0$. This implies $\EX_{s'}[\S'] \subseteq \EX_s[\S]$.
 \end{proof}
 
 \subsubsection{Max-Support Policy}
@@ -77,7 +77,7 @@ For a given realized signal $s \in \X$ and an action $a \in \A$, we solve the fo
 \label{fig:public_lp}
 \end{figure}
 
-Notice that the constraints in the above LP characterize any BIC recommendation scheme. Therefore we get the following claims.
+Notice that the constraints in the above LP characterize any BIC recommendation policy. Therefore we get the following claims.
 \begin{claim}
 For a given signal $s \in \X$, an action $a \in \A$ is signal-explorable if and only if the above LP has a positive solution. 
 \end{claim}
@@ -149,17 +149,21 @@ MaxExplore runs in time polynomial in $L_{\theta}$, $|\A|$, $|\varOmega|$ and $|
 \label{sec:public_main}
 In this subsection, we show our main scheme which explores all the eventually-explorable actions and then advises the agents to choose the best actions among eventually-explorable actions.
 
-Algorithm \ref{alg:public_main} is the main procedure of our scheme. It globally divides rounds into epochs and runs a separate thread for each type (Sub-$\theta$ for type $\theta$). We pick $L_{\theta}$ to be at least $\max_{a,s: \Pr[\pi(s)=a] \neq 0} \frac{1}{\Pr[\pi(s)=a]}$ for all $\pi$ that might be chosen as $\pi^{max}$ in Algorithm \ref{alg:public_main}.
+Algorithm \ref{alg:public_main} is the main procedure of our recommendation policy . For each type $\theta$, the algorithm activates a separate thread (Sub-$\theta$) whenever type $\theta$ shows up in a round and deactivates the thread after that round. 
+
+Algorithm \ref{alg:public_main} proceeds in phases. We have two types of phases: global phases and local phases. Each round $t$ will be placed in exactly one global phase and also one local phase of its type $\theta_t$. Global phases are applied to all $T$ rounds and these rounds are partitioned into global phases of consecutive rounds. Local phases for type $\theta$ are only applied to rounds in which the agent's type is $\theta$. These rounds are sorted according to their global orders and are partitioned into local phases of $L_\theta$ consecutive rounds in that ordering. We pick $L_{\theta}$ to be at least $\max_{a,s: \Pr[\pi(s)=a] \neq 0} \frac{1}{\Pr[\pi(s)=a]}$ for all $\pi$ that might be chosen as $\pi^{max}$ in Algorithm \ref{alg:public_main} such that $L_{\theta}$ satisfies the guarantee required in Section \ref{sec:public_maxe}.
+
+The partition of global phases depends on the partitions of local phases. In particular, Algorithm \ref{alg:public_main} starts a new global phase when all the types have complete local phases in the current global phase (here ``complete'' means the local phase both starts and ends in the current global phase). 
  \begin{algorithm}[H]
     \caption{Main procedure for public types }
     	\label{alg:public_main}
     \begin{algorithmic}[1]
     	\STATE Initial signal $S_1 = \S_1 = \perp$.
-	\STATE Initial epoch count $l = 1$.
+	\STATE Initial global phase count $l = 1$.
 	\FOR {$t=1$ to $T$}
 		\STATE Let $\theta_t$ to be the agent type of current round $t$. Run subroutine Sub-$\theta_t$.
-		\IF {every type has finished a complete phase in the current epoch}
-			\STATE Start a new epoch:
+		\IF {every type has finished a complete local phase in the current global phase}
+			\STATE Start a new global phase:
 			\STATE $l \leftarrow l + 1$.
 			\STATE Let $S_l$ be the set of type-action-reward triples and $\S_l$ be the signal structure when fixing $\theta_1,...,\theta_t$.
 		\ENDIF
@@ -167,21 +171,21 @@ Algorithm \ref{alg:public_main} is the main procedure of our scheme. It globally
      \end{algorithmic}
 \end{algorithm}
 
-Algorithm \ref{alg:public_sub} describes the thread for type $\theta$. It is activated whenever the agent in the current round has type $\theta$. It divides the rounds of type $\theta$ into phases of fixed length ($L_{\theta}$). Each phase only uses the information collected before the current epoch starts.
+Algorithm \ref{alg:public_sub} describes the thread for type $\theta$. It is activated whenever the agent in the current round has type $\theta$. It partitions the rounds of type $\theta$ into local phases of fixed length ($L_{\theta}$). Each local phase only uses the information collected before the current global phase starts.
 
  \begin{algorithm}[H]
     \caption{Subroutine for type $\theta$: Sub-$\theta$ }
     	\label{alg:public_sub}
     \begin{algorithmic}[1]
 	\FOR {each call from Algorithm \ref{alg:public_main}}
-		\IF {previous phase has finished ($i_{\theta} > L_{\theta}$) or this is the first call}
-			\STATE Start a new phase:
+		\IF {previous local phase has finished ($i_{\theta} > L_{\theta}$) or this is the first call}
+			\STATE Start a new local phase:
 			\IF {$l \leq |\A| \cdot |\varTheta|$}
 				\STATE Use the current $S_l$ and $\S_l$ to compute a list of $L_{\theta}$ actions $\alpha_{\theta} \leftarrow $ MaxExplore($\theta, S_l, \S_l$).
 			\ELSE
 				\STATE Add $L_{\theta}$ copies of the best explored action of type $\theta$ according to signal $S$ into action list $\alpha_{\theta}$.
 			\ENDIF
-			\STATE Initialize the index of current phase $i_{\theta} \leftarrow 1$.
+			\STATE Initialize the index of current local phase $i_{\theta} \leftarrow 1$.
 		\ENDIF
 		\STATE Suggest action $\alpha_{\theta} [i_{\theta}]$ to the agent.
 		\STATE $i_{\theta} \leftarrow i_{\theta} + 1$.
@@ -190,38 +194,40 @@ Algorithm \ref{alg:public_sub} describes the thread for type $\theta$. It is act
 \end{algorithm}
 
 
-The proof plan is to first give an upper bound on the expected number of rounds of an epoch in Lemma \ref{lem:epoch} and then show in Lemma \ref{lem:exp_public} that Algorithm \ref{alg:public_main} explores all the explorable type-action pair in $|\A| \cdot |\varTheta|$ epochs. We use these two lemmas to prove our main theorem (Theorem \ref{thm:public}) in Corollary \ref{cor:public}.
+The proof plan is to first give an upper bound on the expected number of rounds of a global phase in Lemma \ref{lem:epoch} and then show in Lemma \ref{lem:exp_public} that Algorithm \ref{alg:public_main} explores all the explorable type-action pairs in $|\A| \cdot |\varTheta|$ global phases. We use these two lemmas to prove our main theorem (Theorem \ref{thm:public}) in Corollary \ref{cor:public}.
 
 First of all, it's easy to check that for each agent, it is Bayesian incentive compatible to follow the recommended action if previous agents all follow the recommended actions. Therefore we have the following claim.
 \begin{claim}
 \label{clm:public_BIC}
-The scheme in this section is BIC.
+Our recommendation policy in this section is BIC.
 \end{claim}
 
 \begin{lemma}
 \label{lem:epoch}
-For any $l>0$, the expected number of rounds of the first $l$ epochs is at most $l \cdot \sum_{\theta\in\varTheta} \frac{2L_{\theta}}{\Pr[\theta]}$.
+For any $l>0$, the expected number of rounds of the first $l$ global phases is at most $l \cdot \sum_{\theta\in\varTheta} \frac{2L_{\theta}}{\Pr[\theta]}$.
 \end{lemma}
 
 \begin{proof}
-First of all, if a type $\theta$ shows up $2L_{\theta}$ times, type $\theta$ must have finished a complete phase in these rounds. Therefore, the expected number of rounds of an epoch is at most the expected number of rounds in which each type $\theta$ has shown up at least $2L_{\theta}$ times. The latter expectation can be easily bounded by $\sum_{\theta\in\varTheta} \frac{2L_{\theta}}{\Pr[\theta]}$. Therefore, the expected number of rounds of the first $l$ epochs is at most $l \cdot \sum_{\theta\in\varTheta} \frac{2L_{\theta}}{\Pr[\theta]}$.
+First of all, if a type $\theta$ shows up $2L_{\theta}$ times in a global phase, type $\theta$ must have finished a complete global phase in these rounds. Notice that $L_{\theta}$ times might not be enough to guarantee a local phase both starts and ends in the global phase because some local phase can start in one global phase and continue in the next global phase. 
+
+Therefore, the expected number of rounds of a global phase is at most the expected number of rounds in which each type $\theta$ has shown up at least $2L_{\theta}$ times. The latter expectation can be easily bounded by $\sum_{\theta\in\varTheta} \frac{2L_{\theta}}{\Pr[\theta]}$. Therefore, the expected number of rounds of the first $l$ global phase is at most $l \cdot \sum_{\theta\in\varTheta} \frac{2L_{\theta}}{\Pr[\theta]}$.
 \end{proof}
 
-Notice that in Algorithm \ref{alg:public_main} the division of phases and epochs depends only on realized types $\theta_1,...,\theta_T$ as each phase has a fixed length. We then have the following claim.
+Notice that in Algorithm \ref{alg:public_main} the partitions of global phases and local phases depend only on realized types $\theta_1,...,\theta_T$ as each local phase has a fixed length $L_{\theta}$. We then have the following claim.
 \begin{claim}
-Given $\theta_1,...,\theta_T$ as the realized types in $T$ rounds, the division of phases and epochs in Algorithm \ref{alg:public_main} is fixed.
+Given $\theta_1,...,\theta_T$ as the realized types in $T$ rounds, the partitions of global phases and local phases in Algorithm \ref{alg:public_main} are fixed.
 \end{claim}
 
 \begin{lemma}
 \label{lem:exp_public}
-For any $l>0$ and a fixed sequence of types $\theta_1,...,\theta_T$ as the types encountered by Algorithm \ref{alg:public_main}, assume Algorithm \ref{alg:public_main} has at least $\min(l, |\A|\cdot |\varTheta|)$ epochs.
-For a given state $\omega$, if an action $a$ of type $\theta$ can be explored by a BIC recommendation policy $\pi$ at round $l$ (i.e. $ \Pr[\pi^l(\theta)= a]> 0$), then such action is guaranteed to be explored by Algorithm \ref{alg:public_main} by the end of epoch $\min(l, |\A|\cdot |\varTheta|)$.
+For any $l>0$ and a fixed sequence of types $\theta_1,...,\theta_T$ as the types encountered by Algorithm \ref{alg:public_main}, assume Algorithm \ref{alg:public_main} has at least $\min(l, |\A|\cdot |\varTheta|)$ global phases.
+For a given state $\omega$, if an action $a$ of type $\theta$ can be explored by a BIC recommendation policy $\pi$ at round $l$ (i.e. $ \Pr[\pi^l(\theta)= a]> 0$), then such action is guaranteed to be explored by Algorithm \ref{alg:public_main} by the end of global phase $\min(l, |\A|\cdot |\varTheta|)$.
 \end{lemma}
 
 \begin{proof}
 We prove this by induction on $l$ for $l \leq |\A|\cdot |\varTheta|$. Base case $l=1$ is trivial by Claim \ref{clm:maxexplore}. Assuming the lemma is correct for $l-1$, let's prove it's correct for $l$.
 
-Let $S$ be the history of Algorithm \ref{alg:public_main} by the end of epoch $l-1$. By the definition of Algorithm 2, $S = S_{l-1} | \theta_1,...,\theta_T$.  Let $S'$ be the history of $\pi$ in the first $l-1$ rounds. More precisely, $S' = R, H_1,...,H_{l-1}$. Here $R$ is the internal randomness of scheme $\pi$ and $H_t = (\Theta_t, A_t, u(\Theta_t, A_t, \Omega))$ is the triple of type, action and reward in round $t$ of scheme $\pi$.
+Let $S$ be the history of Algorithm \ref{alg:public_main} by the end of global phase $l-1$. By the definition of Algorithm 2, $S = S_{l-1} | \theta_1,...,\theta_T$.  Let $S'$ be the history of $\pi$ in the first $l-1$ rounds. More precisely, $S' = R, H_1,...,H_{l-1}$. Here $R$ is the internal randomness of policy $\pi$ and $H_t = (\Theta_t, A_t, u(\Theta_t, A_t, \Omega))$ is the triple of type, action and reward in round $t$ of policy $\pi$.
 
 First of all, we have
 \[
@@ -240,7 +246,7 @@ For all $t \in [l-1]$, we have
 =& I(\Theta_t ; \Omega|S,R,H_1,...,H_{t-1}) +  I(A_t, u(\Theta_t, A_t, \Omega); \Omega|S,R,H_1,...,H_{t-1},\Theta_t) \\
 =& I(A_t, u(\Theta_t, A_t, \Omega); \Omega|S,R,H_1,...,H_{t-1},\Theta_t). \\
 \end{align*}
-Notice that $A_t$ is a deterministic function of $R,H_1,...,H_{t-1},\Theta_t$ because $A_t$ only depend on the current type $\Theta_t$. Also notice that, by induction hypothesis, $u(\Theta_t, A_t, \Omega)$ is a deterministic function of $|S,R,H_1,...,H_{t-1},\Theta_t, A_t$. Therefore we have
+Notice that the suggested action $A_t$ is a deterministic function of randomness of the recommendation policy $R$,  history of previous rounds $H_1,...,H_{t-1}$ and type in the current round $\Theta_t$. Also notice that, by induction hypothesis, $u(\Theta_t, A_t, \Omega)$ is a deterministic function of $|S,R,H_1,...,H_{t-1},\Theta_t, A_t$. Therefore we have
 \[
 I(H_t; \Omega|S,R,H_1,...,H_{t-1}) = 0, \forall t \in [l-1].
 \]
@@ -249,9 +255,9 @@ Then we get
 I(S'; \Omega | S) = 0.
 \]
 
-By Lemma \ref{lem:infomono}, we know that $\EX[\S'] \subseteq \EX[\S]$. For state $\omega$, there exists a signal $s'$ such that $\Pr[S'=s'|\Omega =\omega] >0 $ and $a \in \EX_{s'} [\S']$. Now let $s$ be the realized value of $S$ given $\Omega = \omega$, we know that $\Pr[S'=s'|S=s] >0$, so $a \in \EX_s[\S]$. By Claim \ref{clm:maxexplore}, we know that a complete phase of type $\theta$ in epoch $l$ of Algorithm \ref{alg:public_main} will choose action $a$ at least once.
+By Lemma \ref{lem:infomono}, we know that $\EX[\S'] \subseteq \EX[\S]$. For state $\omega$, there exists a signal $s'$ such that $\Pr[S'=s'|\Omega =\omega] >0 $ and $a \in \EX_{s'} [\S']$. Now let $s$ be the realized value of $S$ given $\Omega = \omega$, we know that $\Pr[S'=s'|S=s] >0$, so $a \in \EX_s[\S]$. By Claim \ref{clm:maxexplore}, we know that a complete local phase of type $\theta$ in global phase $l$ of Algorithm \ref{alg:public_main} will choose action $a$ at least once.
 
-Now we consider the case when $l > |\A| \cdot |\varTheta|$. Define Algorithm $E$ to be the variant of Algorithm \ref{alg:public_main} in the sense that Algorithm $E$ always tries to run MaxExplore (i.e. in Sub-$\theta$, ignores if condition in step 5 and always runs MaxExplore ). For $l > |\A| \cdot |\varTheta|$, the above induction proof still work on Algorithm $E$. Now notice if in some epoch, no unexplored type-action pair is played, Algorithm $E$'s signal won't change and after that Algorithm $E$ won't explore any unexplored type-action pair. As there are $ |\A| \cdot |\varTheta|$ type-action pairs, Algorithm $E$ only explores unexplored type-action pair in the first $ |\A| \cdot |\varTheta|$ epochs. Therefore, the first $\min(l,|\A|\cdot |\varTheta|)$ epochs of Algorithm \ref{alg:public_main} explores the same set of type-action pair as the first $l$ epochs of Algorithm $E$.
+Now we consider the case when $l > |\A| \cdot |\varTheta|$. Define Algorithm $E$ to be the variant of Algorithm \ref{alg:public_main} in the sense that Algorithm $E$ always tries to run MaxExplore (i.e. in Sub-$\theta$, ignores if-condition in step 5 and always runs MaxExplore ). For $l > |\A| \cdot |\varTheta|$, the above induction proof still work on Algorithm $E$. Now notice if in some global phase, no unexplored type-action pair is played, Algorithm $E$'s signal in global phases won't change and after that Algorithm $E$ won't explore any unexplored type-action pair. As there are $ |\A| \cdot |\varTheta|$ type-action pairs, Algorithm $E$ only explores unexplored type-action pair in the first $ |\A| \cdot |\varTheta|$ global phases. Therefore, the first $\min(l,|\A|\cdot |\varTheta|)$ global phases of Algorithm \ref{alg:public_main} explores the same set of type-action pair as the first $l$ global phase of Algorithm $E$.
 \end{proof}
 
 \begin{corollary}[Restatement of Theorem \ref{thm:public}]
@@ -262,6 +268,6 @@ We have a BIC recommendation policy (Algorithm \ref{alg:public_main}) of $T$ rou
 \begin{proof}
 First of all, by Claim \ref{clm:public_BIC}, Algorithm \ref{alg:public_main} is BIC.
 
-By Lemma \ref{lem:exp_public}, for each state $\omega$, Algorithm \ref{alg:public_main} explores all the eventually explorable actions (i.e. $\A_{\omega,\theta}^{exp}$) for each type $\theta$ by the end of $|\A|\cdot |\varTheta|$ epochs. After that, for each type $\theta$, Algorithm \ref{alg:public_main} will always recommend action $ \arg\max_{a \in \A_{\omega,\theta}^{exp}} u(\theta, a, \omega)$. Therefore Algorithm \ref{alg:public_main} gets reward $OPT$ except rounds in first $|\A|\cdot |\varTheta|$ epochs. By Lemma \ref{lem:epoch}, we know that the expected number of rounds of the first  $|\A|\cdot |\varTheta|$ epochs is at most $C$. Therefore, Algorithm \ref{alg:public_main} has expected total reward at least  $\left(T - C \right) \cdot \OPT$.
+By Lemma \ref{lem:exp_public}, for each state $\omega$, Algorithm \ref{alg:public_main} explores all the eventually explorable actions (i.e. $\A_{\omega,\theta}^{exp}$) for each type $\theta$ by the end of $|\A|\cdot |\varTheta|$ global phases. After that, for each type $\theta$, Algorithm \ref{alg:public_main} will always recommend action $ \arg\max_{a \in \A_{\omega,\theta}^{exp}} u(\theta, a, \omega)$. Therefore Algorithm \ref{alg:public_main} gets reward $OPT$ except rounds in first $|\A|\cdot |\varTheta|$ global phases. By Lemma \ref{lem:epoch}, we know that the expected number of rounds of the first  $|\A|\cdot |\varTheta|$ global phases is at most $C$. Therefore, Algorithm \ref{alg:public_main} has expected total reward at least  $\left(T - C \right) \cdot \OPT$.
 
 \end{proof} 
