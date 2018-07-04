@@ -3,7 +3,7 @@
 
 
 \xhdr{Information theory.}
-We briefly review some standard facts and definitions from information theory which is use in proofs. For a more detailed introduction, see \cite{CK11}. 
+We briefly review some standard facts and definitions from information theory which are used in proofs. For a more detailed introduction, see \cite{CK11}. 
 
 The fundamental notion is \emph{entropy} of a random variable $X$. In particular, if $X$ has finite support, its entropy is defined as 
 \[ H(X) = \textstyle - \sum_{x} \Pr[X = x]\cdot  \log(\Pr[X = x]). \]
@@ -19,24 +19,26 @@ The \emph{mutual information} between $X$ and $Y$ is
 \[ I(X;Y) = H(X) - H(X|Y) = H(Y) - H(Y|X).\]
 
 The \emph{conditional mutual information} between $X$ and $Y$ given $Z$ is  
-\[ I(X;Y|Z) = H(X|Z) - H(X|YZ) = H(Y|Z) - H(Y|XZ).\]
+\[ I(X;Y|Z) = H(X|Z) - H(X|Y,Z) = H(Y|Z) - H(Y|X,Z).\]
 
 \ascomment{is this supposed to be $YZ$ in the conditioning, or $Y,Z$? I am confused! Same issue in several other places here and below.}
+\jmcomment{They have the same meaning. We usually just use $YZ$ when you cannot multiply those two things but I guess it's more clear with commas. I add commas to avoid confusion.}
 
 The \emph{Kullback-Leibler divergence} between $X$ and $Y$ is 
 \[ \DKL(X\| Y)\textstyle  = \sum_x \Pr[X = x] \cdot \log(\Pr[X = x] / \Pr[Y = x]).\]
 
 \ascomment{are you using all of these facts in the proofs?}
+\jmcomment{yes}
 
 \begin{lemma}
-Let $X,X',Y,Z$ be random variables 
+Let $X,Y,Z,W$ be random variables 
 \begin{OneLiners}
-\item[(a)] $H((X,Y)) = H(X) + H(Y|X)$.
-\item[(b)] $I(X X';Y|Z) = I(X;Y|Z) + I(X';Y|XZ)$
-\item[(c)] If $I(Y;W|X,Z) = 0$, then $I(X;Y|Z) \geq I(X;Y|ZW)$.
-\item[(d)] If $I(Y;W|Z) = 0$, then $I(X;Y|Z) \leq I(X;Y|ZW)$.
+\item[(a)] $H(X,Y) = H(X) + H(Y|X)$.
+\item[(b)] $I(X,Y;Z|W) = I(X;Z|W) + I(Y;Z|W,X)$
+\item[(c)] If $I(Y;W|X,Z) = 0$, $I(X;Y|Z) \geq I(X;Y|Z,W)$.
+\item[(d)] If $I(Y;W|Z) = 0$, $I(X;Y|Z) \leq I(X;Y|Z,W)$.
 \item[(e)] $I(X;Y|Z) = \mathbb{E}_{x,z}[\DKL((Y|X = x, Z=z)\|(Y|Z=z))]$.
-\item[(f)] [Pinsker Inequality] $\sum_x | \Pr[X=x] - \Pr[Y=x]| \leq \sqrt{2 \ln(2) \DKL(X|Y)}$.
+\item[(f)] [Pinsker's Inequality] $\sum_x | \Pr[X=x] - \Pr[Y=x]| \leq \sqrt{2 \ln(2) \DKL(X\|Y)}$.
 \end{OneLiners}
 \end{lemma}
 
