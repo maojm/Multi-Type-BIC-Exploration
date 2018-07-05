@@ -35,18 +35,18 @@ We have a BIC recommendation policy of $T$ rounds with expected total reward at 
 \label{sec:public_single}
 %This section is very similar to the EC16's paper, we include this section to make our paper self-contained.
 
-In this subsection, we consider a single round of the Bayesian exploration. As we only consider one round, we fix the agent's type in this round to be $\theta$. 
+In this subsection, we consider a single round of the Bayesian exploration. As we only consider one round, we fix the agent's type in this round to be $\theta$.
 
-In a single round, the principal receives a random variable $S$ (we call it a signal) which is a function of the history of previous rounds and randomness of the recommendation policy. This function is determined before all rounds start and is known to the principal and all agents. In this single round, the principal computes a (randomized) mapping from the signal to a suggested action. We specify the signal structure $\S$ of signal $S$ by the signal support $\X$ and a joint distribution on $(\X, \varOmega)$.  
+In a single round, the principal receives a random variable $S$ (we call it a signal) which is a function of the history of previous rounds and randomness of the recommendation policy. This function is determined before all rounds start and is known to the principal and all agents. In this single round, the principal computes a (randomized) mapping from the signal to a suggested action. We specify the signal structure $\S$ of signal $S$ by the signal support $\X$ and a joint distribution on $(\X, \varOmega)$.
 
 
 \begin{definition}
-Consider a single-round of Bayesian exploration when the principal receives signal $S$ with signal structure $\S$. An action $a \in \A$ is called signal-explorable, for a given realized signal $s$, if there exists a single-round BIC recommendation policy $\pi$ such that $\Pr[\pi(s) = a] > 0$. The set of all such actions is denoted as $\EX_s[\S]$. The signal-explorable set is defined as $\EX[\S] = \EX_S[\S]$.
+Consider a single-round of Bayesian exploration when the principal receives signal $S$ with signal structure $\S$. An action $a \in \A$ is called signal-explorable, for a given type $\theta$ and a given realized signal $s$, if there exists a single-round BIC recommendation policy $\pi$ such that $\Pr[\pi(s) = a] > 0$. The set of all such actions is denoted as $\EX_s[\S]$. The signal-explorable set is defined as $\EX[\S] = \EX_S[\S]$.
 \end{definition}
 
 Note that $\EX_s[\S]$ is a fixed subset and $\EX[\S]$ is a random variable whose realization is determined by the realization of signal $S$.
 
-\subsubsection{Information Monotonicity}
+\xhdr{Information Monotonicity.}
 In the following definition, we define a way to compare two signals. Intuitively, the condition $I(S';\Omega|S)= 0$  means if one is given random variable $S$, one can learn no information from $S'$ about $\Omega$. In this case, we show in Lemma \ref{lem:infomono} that the signal-explorable set of $S'$ is contained the signal-explorable set of $S$.
 \begin{definition}
 Let $S$ and $S'$ be two random variables and $\S$ and $\S'$ be their signal structures. We say random variable $S$ is at least as informative as random variable $S'$ about state $\Omega$ if $I(S' ; \Omega|S) = 0$. Notice $I(S';\Omega|S)$ does not only depend on the signal structures $\S$ and $\S'$. It can also depend on the joint distribution between $S$ and $S'$.
@@ -61,61 +61,69 @@ Let $S$ and $S'$ be two random variables and $\S$ and $\S'$ be their signal stru
 Consider any BIC recommendation policy $\pi'$ for signal structure $\S'$. We construct $\pi$ for signature structure $\S$ by setting $\Pr[\pi(s) = a] = \sum_{s'} \Pr[\pi'(s') = a] \cdot Pr[S' = s'|S = s]$. It's easy to check $\pi$ is BIC. For any $s', s ,a$ such that $Pr[S' = s',S = s] >0 $ and $\Pr[\pi'(s') = a] >0$, we have $\Pr[\pi(s) = a] > 0$. This implies $\EX_{s'}[\S'] \subseteq \EX_s[\S]$.
 \end{proof}
 
-\subsubsection{Max-Support Policy}
-For a given realized signal $s \in \X$ and an action $a \in \A$, we solve the following LP to check if $a$ is signal-exlporable given realized signal $s$. The LP is parameterized by the signal structure $\S$ together with the realized signal $s$. 
+\xhdr{Max-Support Policy.}
+We can solve the following LP to check whether a particular action $a_0 \in\A$ is signal-explorable given a particular realized signal $s_0\in\X$. In this LP, we represent a policy $\pi$ as a set of numbers
+    $x_{a,s} = \Pr[\pi(s)=a]$,
+for each action $a\in \A$ and each feasible signal $s\in \X$. 
+
 
 \begin{figure}[H]
 \begin{mdframed}
+\vspace{-5mm}
 \begin{alignat*}{2}
-  \textbf{maximize }   & x_{a,s}\  \\
-  \textbf{subject to: } & \sum_{\omega \in \varOmega, s' \in \X} \Pr[\omega] \cdot \Pr[s' | \omega] \cdot \left(u(\theta, a', \omega) - u(\theta, a'', \omega)\right) \cdot x_{a',s'} \geq 0   &\ & \forall a',a'' \in \A \\
-                       & \sum_{a'\in \A} x_{a',s'} = 1,  \ &\ & \forall s' \in \X \\
-                       & x_{a',s'} \geq 0,  \ &\ & \forall s' \in \X, a'\in \A \\
+\textbf{maximize }   & x_{a_0,s_0}\  \\
+\textbf{subject to: }
+    & \textstyle \sum_{\omega \in \varOmega, s \in \X} \;
+    \Pr[\omega] \cdot \Pr[s | \omega] \cdot 
+        \left(u(\theta, a, \omega) - u(\theta, a', \omega)\right) \cdot x_{a,s} \geq 0   &\ & \forall a,a' \in \A \\
+    & \textstyle \sum_{a\in \A}\; x_{a,s} = 1,  \ &\ & \forall s \in \X \\
+    & x_{a,s} \geq 0,  \ &\ & \forall s \in \X, a\in \A
 \end{alignat*}
 \end{mdframed}
 %\caption{LP}
 \label{fig:public_lp}
 \end{figure}
 
-Notice that the constraints in the above LP characterize any BIC recommendation policy. Therefore we get the following claims.
-\begin{claim}
-For a given signal $s \in \X$, an action $a \in \A$ is signal-explorable if and only if the above LP has a positive solution. 
-\end{claim}
+Since the constraints in this LP characterize any BIC recommendation policy, it follows that action $a_0$ is signal-explorable given realized signal $s_0$ if and only if the LP has a positive solution. If such solution exists, define recommendation policy $\pi = \pi^{a_0,s_0}$ by setting 
+    $\Pr[\pi(s) = a] = x_{a,s}$ for all $a\in \A, s\in \X$. 
+Then this is a BIC recommendation policy such that 
+    $\Pr[\pi(s) = a] > 0$.
 
-\begin{claim}
-When the LP has a positive solution, define $\pi^{a,s}$ as $\Pr[\pi^{a,s}(s') = a'] = x_{a',s', } \forall a' \in \A, s' \in \X$. Then $\pi^{a,s}$ is a single-round BIC recommendation policy such that $\Pr[\pi^{a,s}(s) = a] > 0$
-\end{claim}
-
-\begin{definition}[Max-support policy]
-Given a signal structure $\S$, a BIC recommendation policy $\pi$ is called the max-support policy if $\forall s \in \X$  and signal-explorable action $a\in \A$ given $s$, $\Pr[\pi(s) = a] > 0$.
+\begin{definition}
+Given a signal structure $\S$, a BIC recommendation policy $\pi$ is called  \emph{max-support} if $\forall s \in \X$  and signal-explorable action $a\in \A$ given $s$, $\Pr[\pi(s) = a] > 0$.
 \end{definition}
 
 
-We can get a max-support policy $\pi^{max}$ by averaging over BIC recommendation policies for signal explorable actions.
-\begin{claim}
-\label{clm:pimax}
-The following $\pi^{max}$ is a BIC and max-support policy. 
-\[
+It is easy to see that we obtain max-support recommendation policy by averaging the $\pi^{a,s}$ policies defined above. Specifically, the following policy is BIC and max-support:
+\begin{align}\label{eq:pimax}
 \pi^{max} = \frac{1}{|\X|} \sum_{s \in \X} \frac{1}{|\EX_s[\S]|} \sum_{a \in \EX_s[S]} \pi^{a,s}.
-\]
-\end{claim}
+\end{align}
 
-\subsubsection{MaxExplore}
-\label{sec:public_maxe}
+%
+%We can get a max-support policy $\pi^{max}$ by averaging over BIC recommendation policies for signal explorable actions.
+%\begin{claim}
+%\label{clm:pimax}
+%The following policy is BIC and max-support:
+%\[
+%\pi^{max} = \frac{1}{|\X|} \sum_{s \in \X} \frac{1}{|\EX_s[\S]|} \sum_{a \in \EX_s[S]} \pi^{a,s}.
+%\]
+%\end{claim}
+
+\xhdr{Maximal exploration.}
+%\label{sec:public_maxe}
 %This section is very similar to the EC16's paper, we include this section to make our paper self-contained.
+Let us design a subroutine, called  MaxExplore, which explores all signal-explorable actions with probability $1$. We are going to assume $L_{\theta} \geq \max_{a,s: \Pr[\pi^{max}(s)=a] \neq 0} \frac{1}{\Pr[\pi^{max}(s)=a]}$.
 
-In this subsubsection, we show a subroutine MaxExplore which converts $\pi^{max}$ into a sequence of actions. We are going to assume $L_{\theta} \geq \max_{a,s: \Pr[\pi^{max}(s)=a] \neq 0} \frac{1}{\Pr[\pi^{max}(s)=a]}$.
+The goal of this subroutine MaxExplore is to make sure that for any signal-explorable action $a$ (i.e. $\Pr[\pi^{max}(s) = a] > 0$), $a$ shows up at least once in the sequence with probability exactly 1. On the other hand, we want that the action of each specific location in the sequence has marginal distribution same as $\pi^{max}$.
 
-The goal of this subroutine MaxExplore is to make sure that for any signal-explorable action $a$ (i.e. $\Pr[\pi^{max}(s) = a] > 0$), $a$ shows up at least once in the sequence with probability exactly 1. On the other hand, we want that the action of each specific location in the sequence has marginal distribution same as $\pi^{max}$. 
-
-To achieve this goal, the first idea would be to put $C_a = L_{\theta} \cdot \Pr[\pi^{max}(S) = a]$ copies of action $a$ into a sequence of length $L_{\theta}$ and randomly permute the sequence. However, the problems are that $C_a$ might not be an integer and $C_a$ can be smaller than 1. We solve the later problem by picking $L_{\theta}$ large enough such that $C_a \geq 1$ for all $a$ satisfying $\Pr[\pi^{max}(S) =a] > 0$. We solve the former problem by first putting $\lfloor C_a \rfloor$ copies of action $a$ into the sequence and then sampling the rest ($L_\theta - \sum_a \lfloor C_a \rfloor$ actions) according to $\pi^{max}$. For details, see the following pseudo-code (Algorithm \ref{alg:public_explore}). 
+To achieve this goal, the first idea would be to put $C_a = L_{\theta} \cdot \Pr[\pi^{max}(S) = a]$ copies of action $a$ into a sequence of length $L_{\theta}$ and randomly permute the sequence. However, the problems are that $C_a$ might not be an integer and $C_a$ can be smaller than 1. We solve the later problem by picking $L_{\theta}$ large enough such that $C_a \geq 1$ for all $a$ satisfying $\Pr[\pi^{max}(S) =a] > 0$. We solve the former problem by first putting $\lfloor C_a \rfloor$ copies of action $a$ into the sequence and then sampling the rest ($L_\theta - \sum_a \lfloor C_a \rfloor$ actions) according to $\pi^{max}$. For details, see the following pseudo-code (Algorithm \ref{alg:public_explore}).
  \begin{algorithm}[H]
     \caption{Subroutine MaxExplore}
     	\label{alg:public_explore}
     \begin{algorithmic}[1]
-	\STATE \textbf{Input:} type $\theta$, signal $S$ and signal structure $\S$.
+	\STATE \textbf{Input:} type $\theta$, realized signal $S$ and signal structure $\S$.
 	\STATE \textbf{Output:} a list of actions $\alpha$
-	\STATE Compute $\pi^{max}$ as stated in Claim \ref{clm:pimax}.
+	\STATE Compute $\pi^{max}$ as per \eqref{eq:pimax}
 	%\IF {$l \leq |\A| \cdot |\varTheta|$}
 		\STATE Initialize $Res = L_{\theta}$.
 		\FOR {each action $ a \in \A$}
@@ -138,22 +146,19 @@ Such conversion is exactly the same as \cite{ICexplorationGames-ec16-working}, w
 
 \begin{claim}
 \label{clm:maxexplore}
-Given type $\theta$ and signal $S$, MaxExplore explores all the signal-explorable actions.
-\end{claim}
-
-\begin{claim}
-MaxExplore runs in time polynomial in $L_{\theta}$, $|\A|$, $|\varOmega|$ and $|\X|$ (size of the support of the signal). 
+Given type $\theta$ and realized signal $S$, MaxExplore explores all actions that are signal-explorable for $\theta$ and $S$.
+MaxExplore runs in time polynomial in $L_{\theta}$, $|\A|$, $|\varOmega|$ and $|\X|$ (size of the support of the signal).
 \end{claim}
 
 \subsection{Main Scheme}
 \label{sec:public_main}
 In this subsection, we show our main scheme which explores all the eventually-explorable actions and then advises the agents to choose the best actions among eventually-explorable actions.
 
-Algorithm \ref{alg:public_main} is the main procedure of our recommendation policy . For each type $\theta$, the algorithm activates a separate thread (Sub-$\theta$) whenever type $\theta$ shows up in a round and deactivates the thread after that round. 
+Algorithm \ref{alg:public_main} is the main procedure of our recommendation policy . For each type $\theta$, the algorithm activates a separate thread (Sub-$\theta$) whenever type $\theta$ shows up in a round and deactivates the thread after that round.
 
 Algorithm \ref{alg:public_main} proceeds in phases. We have two types of phases: global phases and local phases. Each round $t$ will be placed in exactly one global phase and also one local phase of its type $\theta_t$. Global phases are applied to all $T$ rounds and these rounds are partitioned into global phases of consecutive rounds. Local phases for type $\theta$ are only applied to rounds in which the agent's type is $\theta$. These rounds are sorted according to their global orders and are partitioned into local phases of $L_\theta$ consecutive rounds in that ordering. We pick $L_{\theta}$ to be at least $\max_{a,s: \Pr[\pi(s)=a] \neq 0} \frac{1}{\Pr[\pi(s)=a]}$ for all $\pi$ that might be chosen as $\pi^{max}$ in Algorithm \ref{alg:public_main} such that $L_{\theta}$ satisfies the guarantee required in Section \ref{sec:public_maxe}.
 
-The partition of global phases depends on the partitions of local phases. In particular, Algorithm \ref{alg:public_main} starts a new global phase when all the types have complete local phases in the current global phase (here ``complete'' means the local phase both starts and ends in the current global phase). 
+The partition of global phases depends on the partitions of local phases. In particular, Algorithm \ref{alg:public_main} starts a new global phase when all the types have complete local phases in the current global phase (here ``complete'' means the local phase both starts and ends in the current global phase).
  \begin{algorithm}[H]
     \caption{Main procedure for public types }
     	\label{alg:public_main}
@@ -208,7 +213,7 @@ For any $l>0$, the expected number of rounds of the first $l$ global phases is a
 \end{lemma}
 
 \begin{proof}
-First of all, if a type $\theta$ shows up $2L_{\theta}$ times in a global phase, type $\theta$ must have finished a complete global phase in these rounds. Notice that $L_{\theta}$ times might not be enough to guarantee a local phase both starts and ends in the global phase because some local phase can start in one global phase and continue in the next global phase. 
+First of all, if a type $\theta$ shows up $2L_{\theta}$ times in a global phase, type $\theta$ must have finished a complete global phase in these rounds. Notice that $L_{\theta}$ times might not be enough to guarantee a local phase both starts and ends in the global phase because some local phase can start in one global phase and continue in the next global phase.
 
 Therefore, the expected number of rounds of a global phase is at most the expected number of rounds in which each type $\theta$ has shown up at least $2L_{\theta}$ times. The latter expectation can be easily bounded by $\sum_{\theta\in\varTheta} \frac{2L_{\theta}}{\Pr[\theta]}$. Therefore, the expected number of rounds of the first $l$ global phase is at most $l \cdot \sum_{\theta\in\varTheta} \frac{2L_{\theta}}{\Pr[\theta]}$.
 \end{proof}
