@@ -1,45 +1,71 @@
 %!TEX root = main.tex
 \section{Basics of Information Theory}
+\label{app:info-theory}
 
-We briefly review some standard facts and definitions from information theory which are used in proofs. For a more detailed introduction, see \cite{CK11}. 
+We briefly review some standard facts and definitions from information theory which are used in proofs. For a more detailed introduction, see \cite{CK11}. Throughout, $X,Y,Z,W$ are random variables that take values in an arbitrary domain (not necessarily $\R$).
 
-The fundamental notion is \emph{entropy} of a random variable $X$. In particular, if $X$ has finite support, its entropy is defined as 
-\[ H(X) = \textstyle - \sum_{x} \Pr[X = x]\cdot  \log(\Pr[X = x]). \]
-(Throughout this paper, we use $\log$ to refer to the base $2$ logarithm and use $\ln$ to refer to the natural logarithm.) If $X$ is drawn from Bernoulli distribution with $\E[X]=p$, then 
+\xhdr{Entropy.}
+The fundamental notion is \emph{entropy} of a random variable. In particular, if $X$ has finite support, its entropy is defined as
+\[ H(X) = \textstyle - \sum_{x} p(x)\cdot  \log p(x),
+\quad\text{where } p(x) = \Pr[X = x]. \]
+(Throughout this paper, we use $\log$ to refer to the base $2$ logarithm and use $\ln$ to refer to the natural logarithm.) If $X$ is drawn from Bernoulli distribution with $\E[X]=p$, then
     \[ H(p) = -(p\log p + (1-p)(\log(1-p)). \]
 
-Let $X,Y$ be two random variables. The \emph{conditional entropy} of $X$ conditioned on $Y$ is 
-\[ H(X|Y) 
-    = \E_y[H(X|Y = y)] 
+The conditional entropy of $X$ given event $E$ is the entropy of the conditional distribution $(X|E)$:
+\[ H(X|E) = \textstyle - \sum_{x} p(x)\cdot  \log p(x),
+\quad\text{where } p(x) = \Pr[X = x | E]. \]
+
+The \emph{conditional entropy} of $X$ given $Y$ is
+\[ H(X|Y)
+    := \E_y[H(X|Y = y)]
     = \textstyle \sum_{y} \Pr[Y=y]\cdot H(X|Y = y). \]
+Note that $H(X|Y) = H(X)$ if $X$ and $Y$ are independent.
 
-The \emph{mutual information} between $X$ and $Y$ is 
-\[ I(X;Y) = H(X) - H(X|Y) = H(Y) - H(Y|X).\]
+We are sometimes interested in the entropy of a tuple of random variables, such as $(X,Y,Z)$. To simplify notation, we will write $H(X,Y,Z)$ instead $H((X,Y,Z))$, and similarly in other information-theoretic notation. With this ado, we can formulate the \emph{Chain Rule} for entropy:
+\begin{align}\label{app:info-entropy-chain-rule}
+ H(X,Y) = H(X) + H(Y|X). 
+\end{align}
 
-The \emph{conditional mutual information} between $X$ and $Y$ given $Z$ is  
-\[ I(X;Y|Z) = H(X|Z) - H(X|Y,Z) = H(Y|Z) - H(Y|X,Z).\]
 
-\ascomment{is this supposed to be $YZ$ in the conditioning, or $Y,Z$? I am confused! Same issue in several other places here and below.}
-\jmcomment{They have the same meaning. We usually just use $YZ$ when you cannot multiply those two things but I guess it's more clear with commas. I add commas to avoid confusion.}
-
-The \emph{Kullback-Leibler divergence} between $X$ and $Y$ is 
-\[ \DKL(X\| Y)\textstyle  = \sum_x \Pr[X = x] \cdot \log(\Pr[X = x] / \Pr[Y = x]).\]
-
-\ascomment{are you using all of these facts in the proofs?}
-\jmcomment{yes}
-
-\begin{lemma}
-Let $X,Y,Z,W$ be random variables 
-\begin{OneLiners}
-\item[(a)] $H(X,Y) = H(X) + H(Y|X)$.
-\item[(b)] $I(X,Y;Z|W) = I(X;Z|W) + I(Y;Z|W,X)$
-\item[(c)] If $I(Y;W|X,Z) = 0$, $I(X;Y|Z) \geq I(X;Y|Z,W)$.
-\item[(d)] If $I(Y;W|Z) = 0$, $I(X;Y|Z) \leq I(X;Y|Z,W)$.
-\item[(e)] $I(X;Y|Z) = \mathbb{E}_{x,z}[\DKL((Y|X = x, Z=z)\|(Y|Z=z))]$.
-\item[(f)] [Pinsker's Inequality] $\sum_x | \Pr[X=x] - \Pr[Y=x]| \leq \sqrt{2 \ln(2) \DKL(X\|Y)}$.
-\end{OneLiners}
-\end{lemma}
+We also use the following fundamental fact about entropy:
 
 \begin{lemma}[Fano's Inequality]
-Let $X,Y,\hat{X}$ be random variables and $\hat{X} = f(Y)$. Let $e = \Pr[\hat{X} \neq X]$. Then $H(X|Y) \leq H(e) + e \cdot (\log(|\X|-1)$ where $\X$ denotes the support of $X$.
+Let $X,Y,\hat{X}$ be random variables such that $\hat{X}$ is a deterministic function of $Y$. (Informally, $\hat{X}$ is an approximate version of $X$ derived from signal $Y$.) Let $E = \{ \hat{X} \neq X \}$ be the ``error event". Then
+    \[ H(X|Y) \leq H(E) + \Pr[E] \cdot (\log(|\X|-1), \]
+where $\X$ denotes the support set of $X$.
 \end{lemma} 
+
+\xhdr{Mutual information.}
+The \emph{mutual information} between $X$ and $Y$ is
+\[ I(X;Y) := H(X) - H(X|Y) = H(Y) - H(Y|X).\]
+The \emph{conditional mutual information} between $X$ and $Y$ given $Z$ is
+\[ I(X;Y|Z) := H(X|Z) - H(X|Y,Z) = H(Y|Z) - H(Y|X,Z).\]
+Note that $I(X;Y|Z) = I(X;Y)$ if $X$ and $Z$ are conditionally independent given $Y$, and $Y$ and $Z$ are conditionally independent given $X$.
+
+Some of the fundamental properties of conditional mutual information are as follows:
+\begin{align}
+I(X,Y;Z|W) &= I(X;Z|W) + I(Y;Z|W,X) \\
+I(X;Y|Z) &\geq I(X;Y|Z,W) \qquad\text{if $I(Y;W|X,Z) = 0$} \\
+I(X;Y|Z) &\leq I(X;Y|Z,W) \qquad\text{if $I(Y;W|Z) = 0$} 
+\end{align}
+
+\xhdr{KL-divergence.}
+The \emph{Kullback-Leibler divergence} (a.k.a., \emph{KL-divergence}) between random variables $X$ and $Y$ is defined as
+\[ \DKL(X\| Y) = \sum_x \Pr[X = x] 
+    \cdot \log\left( \frac{\Pr[X = x]}{\Pr[Y = x]} \right) .\]
+Note that the definition is not symmetric, in the sense that in general 
+    $\DKL(X\| Y)\neq \DKL(Y\| X)$.
+
+KL-divergence can be related to conditional mutual information as follows:
+\begin{align}
+I(X;Y|Z) 
+    &= \mathbb{E}_{x,z}\left[ \; \DKL((Y|X = x, Z=z)\|(Y|Z=z)) \; \right] \nonumber \\
+    &= \sum_{x,z} \Pr[X=x,Z=z]\;\ \DKL((Y|X = x, Z=z)\|(Y|Z=z)). 
+\end{align}
+Here $(Y|E)$ denotes the conditional distribution of $Y$ given event $E$.
+
+We also use \emph{Pinsker Inequality}:
+\begin{align}
+\sum_x | \Pr[X=x] - \Pr[Y=x]| \leq \sqrt{2 \ln(2)\, \DKL(X\|Y)}.
+\end{align}
+
