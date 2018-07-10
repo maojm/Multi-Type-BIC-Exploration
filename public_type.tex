@@ -105,7 +105,7 @@ for each action $a\in \A$ and each feasible signal $s\in \X$.
 Since the constraints in this LP characterize any BIC recommendation policy, it follows that action $a_0$ is signal-explorable given realized signal $s_0$ if and only if the LP has a positive solution. If such solution exists, define recommendation policy $\pi = \pi^{a_0,s_0}$ by setting 
     $\Pr[\pi(s) = a] = x_{a,s}$ for all $a\in \A, s\in \X$. 
 Then this is a BIC recommendation policy such that 
-    $\Pr[\pi(s) = a] > 0$.
+    $\Pr[\pi(s_0) = a_0] > 0$.
 
 \begin{definition}
 Given a signal structure $\S$, a BIC recommendation policy $\pi$ is called  \emph{max-support} if $\forall s \in \X$  and signal-explorable action $a\in \A$ given $s$, $\Pr[\pi(s) = a] > 0$.
@@ -127,7 +127,7 @@ It is easy to see that we obtain max-support recommendation policy by averaging 
 %\]
 %\end{claim}
 
-\xhdr{Maximal exploration.}
+\xhdr{Maximal Exploration.}
 %\label{sec:public_maxe}
 %This section is very similar to the EC16's paper, we include this section to make our paper self-contained.
 Let us design a subroutine, called  MaxExplore, which outputs a sequence of $L_{\theta}$ actions for type $\theta$. We are going to assume $L_{\theta} \geq \max_{a,s: \Pr[\pi^{max}(s)=a] \neq 0} \frac{1}{\Pr[\pi^{max}(s)=a]}$.
