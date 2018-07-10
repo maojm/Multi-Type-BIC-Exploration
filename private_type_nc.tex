@@ -1,6 +1,7 @@
 %!TEX root = main.tex
 
-\section{Bayesian Exploration with Private Types and No Communication}
+\section{Bayesian Exploration with Private Types}
+\label{sec:private_nc}
 
 In this section, we show a $\delta$-BIC scheme when types are private and no communication is allowed (as in Theorem \ref{thm:private_nocc}). We formally state Theorem \ref{thm:private_nocc} in Section \ref{sec:private_bench} and we prove it in Section \ref{sec:private_single}, \ref{sec:private_menu}, \ref{sec:private_maxe} and \ref{sec:private_main}.
 
@@ -17,6 +18,7 @@ Each single round of a BIC scheme can be considered as a distribution of menus.
 \end{claim}
 
 \begin{definition}
+\label{def:private_exp}
 A menu $m$ is eventually-explorable, for a given state $\omega$, if there exists a BIC recommendation policy $\pi$ and some round $t$ such that $\Pr[\pi^t= m]> 0$. The set of all such menus is denoted as $\M_{\omega}^{exp}$.
 \end{definition}
 
@@ -239,7 +241,7 @@ In this subsection, we show our main scheme which explores all the eventually-ex
 			\IF {$l \leq |\M|$}
 				\STATE Use the current $S_l$ and $\S_l$ to compute a list of $L$ actions $\mu \leftarrow $ MaxExplore($S_l, \S_l$).
 			\ELSE
-				\STATE Set menu list $\mu$ to be $L$ copies of the best explored menu according to all history. 
+				\STATE Set menu list $\mu$ to be $L$ copies of the menu of best action of each type according to all history. 
 			\ENDIF
 		\ENDIF
 		\STATE Suggest menu $\mu [ (t-1) \mod L + 1]$ to the agent.
@@ -325,7 +327,7 @@ First of all, by Claim \ref{clm:nocc_BIC}, Algorithm \ref{alg:nocc_main} is $\de
 
 By Lemma \ref{lem:exp_nocc}, for each state $\omega$, Algorithm \ref{alg:nocc_main} explores all the eventually explorable menus (i.e. $\M_{\omega}^{exp}$) for by the end of $|\M|$ phases. 
 
-After that, if the algorithm just pick the best explored menu according to all $\Delta_m$'s, by Lemma \ref{lem:deltam} and $\gamma \leq \frac{1}{T|\M|}$, for a fixed state $\omega$, we know that with probability $1- 1/T$, the algorithm chooses menu $\arg\max_{m \in \M_{\omega}^{exp}} \sum_{\theta \in \varTheta} \Pr[\theta] \cdot u(\theta, m(\theta), \omega)$. And since Algorithm \ref{alg:nocc_main} chooses the best menu according to all history, it should at least get $(1-1/T) \cdot \max_{m \in \M_{\omega}^{exp}} \sum_{\theta \in \varTheta} \Pr[\theta] \cdot u(\theta, m(\theta), \omega)$ in expectation.
+After that, if the algorithm just pick the best explored menu according to all $\Delta_m$'s, by Lemma \ref{lem:deltam} and $\gamma \leq \frac{1}{T|\M|}$, for a fixed state $\omega$, we know that with probability $1- 1/T$, the algorithm chooses menu $\arg\max_{m \in \M_{\omega}^{exp}} \sum_{\theta \in \varTheta} \Pr[\theta] \cdot u(\theta, m(\theta), \omega)$. And since Algorithm \ref{alg:nocc_main} chooses the best action for each type according to all history, it should at least get $(1-1/T) \cdot \max_{m \in \M_{\omega}^{exp}} \sum_{\theta \in \varTheta} \Pr[\theta] \cdot u(\theta, m(\theta), \omega)$ in expectation.
 
 We know that the expected number of rounds of the first  $|\M|$ is $|\M| \cdot L = O(\ln(T))$. Therefore, Algorithm \ref{alg:nocc_main} has expected total reward at least $T \cdot \OPT- T \cdot (1/T) - O(\ln(T)) = T\cdot \OPT - O(\ln(T))$.
 

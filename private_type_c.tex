@@ -1,7 +1,7 @@
 %!TEX root = main.tex
 
-\section{Bayesian Exploration with Private Types and Communication}
-\label{sec:private}
+\section{Bayesian Exploration with Reported Types}
+\label{sec:private_c}
 In this section, we show a BIC scheme for private types when communication is allowed. The main idea is to guess the type of each agent and then use the scheme in Section \ref{sec:public}. In each round, we also ask the agent to report its type in the end. Since this report has nothing to do with the recommended actions received, the agent has no incentive to misreport its type. Our scheme only uses information collected in rounds when the guessed type equals to the actual type and therefore the expected length of each epoch becomes longer than the one in Section \ref{sec:public} (as shown in Lemma \ref{lem:epoch_private}. Once the scheme explores all the explorable type-action pairs, it just shows agents the best action for each type among all explorable actions. 
 
 Algorithm \ref{alg:private_main} is the main procedure of the scheme. It is very similar to the main procedure in Section \ref{sec:public} (Algorithm \ref{alg:public_main}). The only difference is that the scheme guesses types and only uses information collected in rounds when the scheme guesses the type correctly. 
