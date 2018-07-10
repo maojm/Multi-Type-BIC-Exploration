@@ -58,7 +58,25 @@ Let $S$ and $S'$ be two random variables and $\S$ and $\S'$ be their signal stru
 \end{lemma}
 
 \begin{proof}
-Consider any BIC recommendation policy $\pi'$ for signal structure $\S'$. We construct $\pi$ for signature structure $\S$ by setting $\Pr[\pi(s) = a] = \sum_{s'} \Pr[\pi'(s') = a] \cdot Pr[S' = s'|S = s]$. It's easy to check $\pi$ is BIC. For any $s', s ,a$ such that $Pr[S' = s',S = s] >0 $ and $\Pr[\pi'(s') = a] >0$, we have $\Pr[\pi(s) = a] > 0$. This implies $\EX_{s'}[\S'] \subseteq \EX_s[\S]$.
+Consider any BIC recommendation policy $\pi'$ for signal structure $\S'$. We construct $\pi$ for signature structure $\S$ by setting $\Pr[\pi(s) = a] = \sum_{s'} \Pr[\pi'(s') = a] \cdot Pr[S' = s'|S = s]$. Notice that $I(S' ; \Omega|S) = 0$ implies $S'$ and $\Omega$ are independent given $S$, i.e $\Pr[S' = s'|S=s] \cdot \Pr[\Omega = \omega|S=s] = \Pr[S'=s', \Omega = \omega|S=s]$ for all $s,s',\omega$. Therefore, for all $s'$ and $\omega$,  
+\begin{align*}
+ &\sum_s \Pr[S' = s'|S = s] \cdot \Pr[\Omega = \omega, S= s] \\
+=& \sum_s   \Pr[S' = s'|S=s] \cdot \Pr[\Omega = \omega|S=s] \cdot \Pr[S=s] \\
+= &\sum_s \Pr[S'=s,\Omega =\omega|S=s] \cdot \Pr[S=s] \\
+= &\sum_s \Pr[S=s,S'=s',\Omega =\omega] \\
+= &\Pr[\Omega =\omega, S'=s].\\
+\end{align*}
+
+ Therefore $\pi'$ being BIC implies that $\pi$ is also BIC. More specifically, for any $a,a' \in \A$ and $\theta \in \varTheta$,  
+\begin{align*}
+&\sum_{\omega,s} \Pr[\Omega = \omega, S = s] \cdot (u(\theta,a', \omega) - u(\theta,a,\omega)) \cdot \Pr[\pi(s) = a] \\
+=&\sum_{\omega,s'}\Pr[\Omega = \omega, S' = s'] \cdot (u(\theta,a', \omega) - u(\theta,a,\omega)) \cdot \Pr[\pi(s') = a] \\
+\geq & 0.
+\end{align*} 
+
+%It's easy to check $\pi$ is BIC. 
+
+Finally, for any $s', s ,a$ such that $Pr[S' = s',S = s] >0 $ and $\Pr[\pi'(s') = a] >0$, we have $\Pr[\pi(s) = a] > 0$. This implies $\EX_{s'}[\S'] \subseteq \EX_s[\S]$.
 \end{proof}
 
 \xhdr{Max-Support Policy.}
@@ -203,7 +221,7 @@ Algorithm \ref{alg:public_sub} describes the thread for type $\theta$. It is act
 
 The proof plan is to first give an upper bound on the expected number of rounds of a global phase in Lemma \ref{lem:epoch} and then show in Lemma \ref{lem:exp_public} that Algorithm \ref{alg:public_main} explores all the explorable type-action pairs in $|\A| \cdot |\varTheta|$ global phases. We use these two lemmas to prove our main theorem (Theorem \ref{thm:public}) in Corollary \ref{cor:public}.
 
-First of all, it's easy to check that for each agent, it is Bayesian incentive compatible to follow the recommended action if previous agents all follow the recommended actions. Therefore we have the following claim.
+First of all, it's easy to check by Claim \ref{clm:maxexplore} that for each agent, it is Bayesian incentive compatible to follow the recommended action if previous agents all follow the recommended actions. Therefore we have the following claim.
 \begin{claim}
 \label{clm:public_BIC}
 Our recommendation policy in this section is BIC.
