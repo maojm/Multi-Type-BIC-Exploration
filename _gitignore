@@ -1,0 +1,13 @@
+*/*.aux
+*/*.pdf
+*/*.ps
+*/*.dvi
+*/*.log
+*/*.synctex.gz
+*/*.blg
+*/*.out
+*/*.bbl
+*/*.*_latexmk
+*/*.fls
+*/*.latex*
+Simulations/project_files*
