@@ -10,17 +10,17 @@ In this subsection, we define the benchmark and state our main theorem (Theorem 
 
 \begin{definition}
 \label{def:public_exp}
-An action $a$ of type $\theta$ is eventually-explorable, for a given state $\omega$, if there exists a BIC recommendation policy $\pi$ and some round $t$ such that $\Pr[\pi^t(\theta)= a]> 0$. The set of all such actions for state $\omega$ and type $\theta$ is denoted as $\A_{\omega,\theta}^{exp}$.
+An action $a$ of type $\theta$ is eventually-explorable, for a given state $\omega$, if there exists a BIC recommendation policy $\pi$ and some round $t$ such that $\Pr[\pi^t(\theta)= a]> 0$. The set of all such actions for state $\omega$ and type $\theta$ is denoted as $\AExp_{\omega,\theta}$.
 \end{definition}
 
 \begin{definition}[Benchmark]
 Define benchmark as
 \[
-\OPT = \sum_{\theta \in \varTheta, \omega\in \varOmega} \Pr[\omega] \cdot \Pr[\theta] \cdot \max_{a \in \A_{\omega,\theta}^{exp}} u(\theta, a, \omega).
+\OPT = \sum_{\theta \in \varTheta, \omega\in \varOmega} \Pr[\omega] \cdot \Pr[\theta] \cdot \max_{a \in \AExp_{\omega,\theta}} u(\theta, a, \omega).
 \]
 \end{definition}
 
-Notice that for a given state $\omega$ and type $\theta$, any BIC recommendation policy can only recommend an action in $\A_{\omega,\theta}^{exp}$. We can simply get the following claim which says that no BIC recommendation policy can get expected per round reward better than the benchmark:
+Notice that for a given state $\omega$ and type $\theta$, any BIC recommendation policy can only recommend an action in $\AExp_{\omega,\theta}$. We can simply get the following claim which says that no BIC recommendation policy can get expected per round reward better than the benchmark:
 \begin{claim}
 Any BIC recommendation policy of $T$ rounds has expected total reward at most $T \cdot\OPT$.
 \end{claim}
@@ -58,7 +58,7 @@ Let $S$ and $S'$ be two random variables and $\S$ and $\S'$ be their signal stru
 \end{lemma}
 
 \begin{proof}
-Consider any BIC recommendation policy $\pi'$ for signal structure $\S'$. We construct $\pi$ for signature structure $\S$ by setting $\Pr[\pi(s) = a] = \sum_{s'} \Pr[\pi'(s') = a] \cdot Pr[S' = s'|S = s]$. Notice that $I(S' ; \Omega|S) = 0$ implies $S'$ and $\Omega$ are independent given $S$, i.e $\Pr[S' = s'|S=s] \cdot \Pr[\Omega = \omega|S=s] = \Pr[S'=s', \Omega = \omega|S=s]$ for all $s,s',\omega$. Therefore, for all $s'$ and $\omega$,  
+Consider any BIC recommendation policy $\pi'$ for signal structure $\S'$. We construct $\pi$ for signature structure $\S$ by setting $\Pr[\pi(s) = a] = \sum_{s'} \Pr[\pi'(s') = a] \cdot Pr[S' = s'|S = s]$. Notice that $I(S' ; \Omega|S) = 0$ implies $S'$ and $\Omega$ are independent given $S$, i.e $\Pr[S' = s'|S=s] \cdot \Pr[\Omega = \omega|S=s] = \Pr[S'=s', \Omega = \omega|S=s]$ for all $s,s',\omega$. Therefore, for all $s'$ and $\omega$,
 \begin{align*}
  &\sum_s \Pr[S' = s'|S = s] \cdot \Pr[\Omega = \omega, S= s] \\
 =& \sum_s   \Pr[S' = s'|S=s] \cdot \Pr[\Omega = \omega|S=s] \cdot \Pr[S=s] \\
@@ -67,14 +67,14 @@ Consider any BIC recommendation policy $\pi'$ for signal structure $\S'$. We con
 = &\Pr[\Omega =\omega, S'=s].\\
 \end{align*}
 
- Therefore $\pi'$ being BIC implies that $\pi$ is also BIC. More specifically, for any $a,a' \in \A$ and $\theta \in \varTheta$,  
+ Therefore $\pi'$ being BIC implies that $\pi$ is also BIC. More specifically, for any $a,a' \in \A$ and $\theta \in \varTheta$,
 \begin{align*}
 &\sum_{\omega,s} \Pr[\Omega = \omega, S = s] \cdot (u(\theta,a', \omega) - u(\theta,a,\omega)) \cdot \Pr[\pi(s) = a] \\
 =&\sum_{\omega,s'}\Pr[\Omega = \omega, S' = s'] \cdot (u(\theta,a', \omega) - u(\theta,a,\omega)) \cdot \Pr[\pi(s') = a] \\
 \geq & 0.
-\end{align*} 
+\end{align*}
 
-%It's easy to check $\pi$ is BIC. 
+%It's easy to check $\pi$ is BIC.
 
 Finally, for any $s', s ,a$ such that $Pr[S' = s',S = s] >0 $ and $\Pr[\pi'(s') = a] >0$, we have $\Pr[\pi(s) = a] > 0$. This implies $\EX_{s'}[\S'] \subseteq \EX_s[\S]$.
 \end{proof}
@@ -82,7 +82,7 @@ Finally, for any $s', s ,a$ such that $Pr[S' = s',S = s] >0 $ and $\Pr[\pi'(s') 
 \xhdr{Max-Support Policy.}
 We can solve the following LP to check whether a particular action $a_0 \in\A$ is signal-explorable given a particular realized signal $s_0\in\X$. In this LP, we represent a policy $\pi$ as a set of numbers
     $x_{a,s} = \Pr[\pi(s)=a]$,
-for each action $a\in \A$ and each feasible signal $s\in \X$. 
+for each action $a\in \A$ and each feasible signal $s\in \X$.
 
 
 \begin{figure}[H]
@@ -92,7 +92,7 @@ for each action $a\in \A$ and each feasible signal $s\in \X$.
 \textbf{maximize }   & x_{a_0,s_0}\  \\
 \textbf{subject to: }
     & \textstyle \sum_{\omega \in \varOmega, s \in \X} \;
-    \Pr[\omega] \cdot \Pr[s | \omega] \cdot 
+    \Pr[\omega] \cdot \Pr[s | \omega] \cdot
         \left(u(\theta, a, \omega) - u(\theta, a', \omega)\right) \cdot x_{a,s} \geq 0   &\ & \forall a,a' \in \A \\
     & \textstyle \sum_{a\in \A}\; x_{a,s} = 1,  \ &\ & \forall s \in \X \\
     & x_{a,s} \geq 0,  \ &\ & \forall s \in \X, a\in \A
@@ -102,9 +102,9 @@ for each action $a\in \A$ and each feasible signal $s\in \X$.
 \label{fig:public_lp}
 \end{figure}
 
-Since the constraints in this LP characterize any BIC recommendation policy, it follows that action $a_0$ is signal-explorable given realized signal $s_0$ if and only if the LP has a positive solution. If such solution exists, define recommendation policy $\pi = \pi^{a_0,s_0}$ by setting 
-    $\Pr[\pi(s) = a] = x_{a,s}$ for all $a\in \A, s\in \X$. 
-Then this is a BIC recommendation policy such that 
+Since the constraints in this LP characterize any BIC recommendation policy, it follows that action $a_0$ is signal-explorable given realized signal $s_0$ if and only if the LP has a positive solution. If such solution exists, define recommendation policy $\pi = \pi^{a_0,s_0}$ by setting
+    $\Pr[\pi(s) = a] = x_{a,s}$ for all $a\in \A, s\in \X$.
+Then this is a BIC recommendation policy such that
     $\Pr[\pi(s_0) = a_0] > 0$.
 
 \begin{definition}
@@ -164,15 +164,15 @@ Such conversion is exactly the same as \cite{ICexplorationGames-ec16-working}, w
 
 \begin{claim}
 \label{clm:maxexplore}
-Given type $\theta$ and realized signal $S$, MaxExplore outputs a sequence of $L_{\theta}$ actions. 
-Each action in the sequence marginally distributed as $\pi^{max}$. 
+Given type $\theta$ and realized signal $S$, MaxExplore outputs a sequence of $L_{\theta}$ actions.
+Each action in the sequence marginally distributed as $\pi^{max}$.
 For any action $a$ such that $\Pr[\pi^{max} =a] >0$, $a$ shows up in the sequence at least once with probability exactly 1.
 MaxExplore runs in time polynomial in $L_{\theta}$, $|\A|$, $|\varOmega|$ and $|\X|$ (size of the support of the signal).
 \end{claim}
 
 \subsection{Main Recommendation Policy}
 \label{sec:public_main}
-In this subsection, we show our main recommendation policy. Algorithm \ref{alg:public_main} is the main procedure of our recommendation policy. It contains two parts: exploration and exploitation. The exploration explores all the eventually-explorable actions and we will give more explanation below. The exploitation part simply advises the agents to choose the best actions among eventually-explorable actions. 
+In this subsection, we show our main recommendation policy. Algorithm \ref{alg:public_main} is the main procedure of our recommendation policy. It contains two parts: exploration and exploitation. The exploration explores all the eventually-explorable actions and we will give more explanation below. The exploitation part simply advises the agents to choose the best actions among eventually-explorable actions.
 
 The exploration part proceeds in phases. In a phase, each type $\theta$ gets a sequence of $L_{\theta}$ actions from MaxExplore using data collected before this phase starts. These $L_{\theta}$ actions are suggested to the first $L_{\theta}$ agents of type $\theta$ in the phase. The phase ends when every type $\theta$ has finished $L_{\theta}$ rounds in the current phase. If in a phase some type $\theta$ has already finished $L_{\theta}$ rounds but the phase hasn't ended, our recommended policy simply suggests the best explored action of type $\theta$ to other agents of type $\theta$. And finally after $|\A| \cdot \varTheta|$ phases, our recommendation policy enters the exploitation part.
 
@@ -195,7 +195,7 @@ See the pseudocode (Algorithm \ref{alg:public_main}) for more details. For imple
 				\STATE Let $S_l$ be the set of type-action-reward triples in $t$ rounds and $\S_l$ be the signal structure when fixing $\theta_1,...,\theta_t$.
 			\ENDIF
 		\ELSE
-			\STATE \textbf{Exploitation:} 
+			\STATE \textbf{Exploitation:}
 			\STATE Suggest the best explored action of type $\theta$ to the agent.
 		\ENDIF
 	\ENDFOR
@@ -296,6 +296,6 @@ We have a BIC recommendation policy (Algorithm \ref{alg:public_main}) of $T$ rou
 \begin{proof}
 First of all, by Claim \ref{clm:public_BIC}, Algorithm \ref{alg:public_main} is BIC.
 
-By Lemma \ref{lem:exp_public}, for each state $\omega$, Algorithm \ref{alg:public_main} explores all the eventually explorable actions (i.e. $\A_{\omega,\theta}^{exp}$) for each type $\theta$ by the end of $|\A|\cdot |\varTheta|$ phases. After that, for each type $\theta$, Algorithm \ref{alg:public_main} will always recommend action $ \arg\max_{a \in \A_{\omega,\theta}^{exp}} u(\theta, a, \omega)$. Therefore Algorithm \ref{alg:public_main} gets reward $\OPT$ except rounds in first $|\A|\cdot |\varTheta|$ phases. By Lemma \ref{lem:epoch}, we know that the expected number of rounds of the first  $|\A|\cdot |\varTheta|$ phases is at most $C$. Therefore, Algorithm \ref{alg:public_main} has expected total reward at least  $\left(T - C \right) \cdot \OPT$.
+By Lemma \ref{lem:exp_public}, for each state $\omega$, Algorithm \ref{alg:public_main} explores all the eventually explorable actions (i.e. $\AExp_{\omega,\theta}$) for each type $\theta$ by the end of $|\A|\cdot |\varTheta|$ phases. After that, for each type $\theta$, Algorithm \ref{alg:public_main} will always recommend action $ \arg\max_{a \in \AExp_{\omega,\theta}} u(\theta, a, \omega)$. Therefore Algorithm \ref{alg:public_main} gets reward $\OPT$ except rounds in first $|\A|\cdot |\varTheta|$ phases. By Lemma \ref{lem:epoch}, we know that the expected number of rounds of the first  $|\A|\cdot |\varTheta|$ phases is at most $C$. Therefore, Algorithm \ref{alg:public_main} has expected total reward at least  $\left(T - C \right) \cdot \OPT$.
 
 \end{proof} 
