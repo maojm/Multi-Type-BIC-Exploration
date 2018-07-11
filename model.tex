@@ -20,7 +20,7 @@ The BIC condition is stated as follows. Let $\EE_{t-1}$ be the event that the ag
 \]
 (The expectation is over the realized state $\omega$ and the random seed of the algorithm.)
 
-For private types, we restrict each signal to be a \emph{menu}: a mapping from types to actions, and assume that the recommendation policy satisfies a similar but technically different BIC condition. Again, this is without loss of generality by revelation principle. To state the BIC condition, let $\pi^t$ be the menu recommended in round $t$. The recommendation policy $\pi$ is BIC if for each rounds $t$, type $\theta$, and any two menus $m,m'$ such that
+For reported types and private types, we restrict each signal to be a \emph{menu}: a mapping from types to actions, and assume that the recommendation policy satisfies a similar but technically different BIC condition. Again, this is without loss of generality by revelation principle. To state the BIC condition, let $\pi^t$ be the menu recommended in round $t$. The recommendation policy $\pi$ is BIC if for each rounds $t$, type $\theta$, and any two menus $m,m'$ such that
     $\Pr[\pi^t= m|\EE_{t-1}] > 0$, we have
 \[
 \E\left[\; u(\theta,m(\theta),\omega) - u(\theta,m'(\theta),\omega)
@@ -33,7 +33,7 @@ For the sake of these definitions, let us assume that recommendation policies pr
 For public types, a type-action pair $(\theta,a)\in \Theta\times \A$ is called \emph{eventually-explorable} in state $\omega$ if there is some BIC recommendation policy that eventually recommends this action to an agent of this type with positive probability (over the random seed of the policy). We also say that action $a$ is eventually-explorable for type $\theta$ and state $\omega$. The set of all such states is denoted $\AExp_{\omega,\theta}$.
 
 
-Likewise, for private types, a menu is called \emph{eventually-explorable} in state $\omega$ if there is some BIC recommendation policy that eventually recommends this menu with positive probability (over the random seed of the policy). The set of all such menus is denoted $\MExp_{\omega}$. 
+Likewise, for private types, a menu is called \emph{eventually-explorable} in state $\omega$ if there is some BIC recommendation policy that eventually recommends this menu with positive probability (over the random seed of the policy). The set of all such menus is denoted $\MExp_{\omega}$.
 
 \xhdr{Benchmarks.}
 We measure the success of the principal with respect to the expected utility of the best eventually-explorable recommendation:
