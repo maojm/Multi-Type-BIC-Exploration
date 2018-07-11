@@ -1,68 +1,48 @@
 \section{Model and Preliminaries}
 
-In the Bayesian exploration game, a set of $T$ agents arrive sequentially and, upon a recommendation from a principal, choose an action $a$ from a finite action space $\A$.  The payoff $u(\theta,a,\omega)$ of an agent is a function of her chosen action $a$, her type $\theta\in\varTheta$, and the state of nature $\omega\in\varOmega$.  For convenience, we assume $u(\cdot,\cdot,\cdot)$ is deterministic and takes values in $[0,1]$.  The goal of the principal is to make recommendations that maximize the total expected utility of the agents.
+\emph{Bayesian Exploration} is a game between a principal and $T$ agents who arrive one by one. Each round $t$ proceeds as follows: a new agent $t$ arrives, receives a signal $s_t$ from the principal, chooses an action $a_t$ from a fixed and finite action space $\A$, and collects a reward $r_t\in [0,1]$ that is immediately observed by the principal. Each agent has a type $\theta_t\in\varTheta$, drawn independently from a fixed distribution $\DT$. There is uncertainty, captured by a latent ``state of nature" $\omega\in \varOmega$, henceforth simply the \emph{state}, drawn from a Bayesian prior. The reward $r_t = u(\theta_t,a_t,\omega)$ is determined by the triple $(\theta_t,a_t,\omega)$, for some fixed, deterministic function
+    $u:\varTheta\times \A \times \varOmega \to [0,1]$.
+The signals $s_t$ are generated according to a randomized online algorithm  termed ``recommendation policy".
 
-The state of nature $\omega$ is drawn from a commonly known prior over the finite state space $\varOmega$. We use $\Pr[\omega]$ to denote the probability that state $\omega$ is sampled. We use $\Omega$ as the random variable for the state.  Neither the principal nor the agents know $\omega$; however, the principal learns about $\omega$ over time.
+The knowledge structure is as follows. The type distribution $\DT$, the Bayesian prior, and the recommendation policy are common knowledge. Each agent $t$ knows her own type $\theta_t$, and observes nothing else except the signal $s_t$.  We consider three model variants, depending on whether and when the principal learns the agent's type: the type is revealed immediately after the agent arrives (\emph{public types}), the type is revealed only after the principal issues a recommendation (\emph{reported types}),
 
-The type $\theta_t$ of agent $t\in T$ is sampled independently from a commonly known prior over the finite type space $\varTheta$. We use $\Pr[\theta]$ to denote the probability of type $\theta$ and $\Theta_t$ as the random variable for the type of agent $t$.  Agent $t$ knows $\theta_t$.  We consider three cases for the information structure of the principal:
-\begin{itemize}
-	\item \textbf{Public types:} the principal knows $\theta_t$ for all $t\in T$.
-	\item \textbf{Reproted types:} after agent $t$ chooses an action, the principal learns her type $\theta_t$.\footnote{In our applications, we can interpret this as a survey that takes place after the interaction in which the agent truthfully reports her type to the principal as it doesn't affect her utility.}
-	\item \textbf{Private types:} the principal knows only the type distribution.\footnote{The principal can of course make inferences about the type based on the action chosen by the agent.}
-\end{itemize}
 
-The principal maintains a state summarizing her knowledge at the beginning of round $t$.  This state consists of the history of play, or potentially a summary of this history, a tape of random bits, and whatever knowledge the principal has regarding the agents' types.  The principal commits to an interactive recommendation policy $\pi$ which maps states to recommended actions. By the revelation principle, we can assume, without loss of generality, that the recommendation in each round is either an action $a$, in the public type case, or a menu $m$ specifying an action $m(\theta)\in\A$ for each type $\theta\in\varTheta$, in the private type case. For notational convenience, we will suppress elements of the state that are clear from the context when discussing the policy.
+Each agent $t$ makes its choice $a_t$ so as to maximize its Bayesian-expected utility given what she knows: the Bayesian prior, the type distribution $\DT$, the recommendation policy, and the signal $s_t$. Principal's goal is to maximize (Bayesian-expected) social welfare, \ie $\E[\sum_{t=1}^T r_t]$. 
 
-We restrict attention to {\em Bayesian incentive compatible policies} $\pi$. 
-{\bf NSI: is this WLOG by some sort of revenue-equivalence like result?} 
-\jmcomment{This is wlog since instead of allowing the principal to send some arbitrary message, we can require the principal to send the best response of the agent conditioned on that message.}
-Let $\EE_{t-1}$ be the event that the agents have followed principal's recommendations up to (but not including) round $t$. When types are public, for any type $\theta$ and round $t$, let $\pi^t(\theta)$ be the action recommended by $\pi$ in round $t$.
+We use $\Omega$ as the random variable for the state, and write $\Pr[\theta]$ for $\Pr[\Omega=\omega]$. 
 
-\begin{definition}
-When types are public, an interactive recommendation policy $\pi$ is Bayesian Incentive Compatible (BIC) if for all rounds $t$ and type $\theta$, we have
+\xhdr{Bayesian-incentive compatibility.}
+For public types, we assume that the signal in each round is an action, \ie $s_t \in \A$, and the recommendation policy $\pi$ is {\em Bayesian incentive-compatible} (\emph{BIC}). This is without loss of generality, by a suitable version of Myerson's ``revelation principle".
+
+The BIC condition is stated as follows. Let $\EE_{t-1}$ be the event that the agents have followed principal's recommendations up to (but not including) round $t$. For any type $\theta$ and round $t$, let $\pi^t(\theta)$ be the action recommended by $\pi$ in round $t$. The recommendation policy is BIC if for each round $t$, type $\theta$, and and any two actions $a,a'$ such that $\Pr[\pi^t(\theta) = a|\EE_{t-1}] > 0$ it holds that
 \[
-\E[ u(\theta,a,\omega) - u(\theta,a',\omega)| \pi^t(\theta) =a, \EE_{t-1}] \geq 0,
+\E\left[\; u(\theta,a,\omega) - u(\theta,a',\omega) \mid \pi^t(\theta) =a, \EE_{t-1}\;\right] \geq 0.
 \]
-where $a,a'$ are any two actions such that $\Pr[\pi^t(\theta) = a|\EE_{t-1}] > 0$. (The probabilities are over the realized state $\omega$ and the tape of random bits.)
-\end{definition}
+(The expectation is over the realized state $\omega$ and the random seed of the algorithm.)
 
-When types are private, we will have a slightly different definition. Let $\pi^t$ be the menu recommended by $\pi$  in round $t$.
-
-\begin{definition}
-\label{def:bic_private}
-When types are private, an interactive recommendation policy $\pi$ is Bayesian Incentive Compatible (BIC) if for all rounds $t$ and type $\theta$, we have
+For private types, we restrict each signal to be a \emph{menu}: a mapping from types to actions, and assume that the recommendation policy satisfies a similar but technically different BIC condition. Again, this is without loss of generality by revelation principle. To state the BIC condition, let $\pi^t$ be the menu recommended in round $t$. The recommendation policy $\pi$ is BIC if for each rounds $t$, type $\theta$, and any two menus $m,m'$ such that 
+    $\Pr[\pi^t= m|\EE_{t-1}] > 0$, we have
 \[
-\E[ u(\theta,m(\theta),\omega) - u(\theta,m'(\theta),\omega)| \pi^t = m, \EE_{t-1}] \geq 0,
+\E\left[\; u(\theta,m(\theta),\omega) - u(\theta,m'(\theta),\omega) 
+    \mid \pi^t = m, \EE_{t-1}\;\right] \geq 0.
 \]
-where $m,m'$ are any two menus such that $\Pr[\pi^t= m|\EE_{t-1}] > 0$. (The probabilities are over the realized state $\omega$ and the tape of random bits.)
-\end{definition}
+ 
+\xhdr{Explorability.}
+For the sake of these definitions, let us assume that recommendation policies proceed indefinitely, \ie without a particular time horizon. 
 
-The incentive compatibility constraint restricts what actions a principal can recommend.  In the setting with public types, we say an action $a$ of type $\theta$ is eventually-explorable if there is some BIC recommendation policy that eventually recommends action $a$ to type $\theta$ with positive probability (over the tape of random bits).
+For public types, a type-action pair $(\theta,a)\in \Theta\times \A$ is called \emph{eventually-explorable} in state $\omega$ if there is some BIC recommendation policy that eventually recommends this action to an agent of this type with positive probability (over the random seed of the policy). We also say that action $a$ is eventually-explorable for type $\theta$ and state $\omega$. The set of all such states is denoted $\A_{\omega,\theta}^{exp}$.
 
-\begin{definition}
-An action $a$ of type $\theta$ is eventually-explorable for a given state $\omega$ if there exists a BIC policy $\pi$ and some round $t$ such that $\Pr[\pi^t(\theta)=a]>0$.  The set of all such actions for state $\omega$ and type $\theta$ is denoted as $\A_{\omega,\theta}^{exp}$.
-\end{definition}
 
-Similarly, in the setting with private types, we say a menu $m$ is eventually-explorable if there is some BIC recommendation policy that eventually recommends menu $m$ with positive probability (over the tape of random bits).
+Likewise, for private types, a menu is called \emph{eventually-explorable} in state $\omega$ if there is some BIC recommendation policy that eventually recommends this menu with positive probability (over the random seed of the policy). The set of all such menus is denoted $\M_{\omega}^{exp}$.
 
-\begin{definition}
-	A menu $m$ is eventually-explorable for a given state $\omega$ if there exists a BIC policy $\pi$ and some round $t$ such that $\Pr[\pi^t= m]> 0$. The set of all such menus for state $\omega$ is denoted as $\M_{\omega}^{exp}$.
-\end{definition}
+\xhdr{Benchmarks.}
+We measure the success of the principal with respect to the expected utility of the best eventually-explorable recommendation:
+\begin{align*}
+\OPT_1 &= \sum_{\theta \in \varTheta, \omega\in \varOmega} \Pr[\omega] \cdot \Pr[\theta] \cdot \max_{a \in \A_{\omega,\theta}^{exp}} u(\theta, a, \omega).
+    &\qquad\text{(for public types)}\\
+\OPT_2 &= \sum_{\omega\in \varOmega} \Pr[\omega] \cdot\max_{m \in \M_{\omega}^{exp}}\sum_{\theta \in \varTheta} \Pr[\theta] \cdot  u(\theta, m(\theta), \omega)
+&\qquad\text{(for private types)}.
+\end{align*}
 
-We measure the success of the principal with respect to the utility of the best eventually-explorable recommendation.
-
-\begin{definition}[Benchmark for public types and reported types]
-	We define the benchmark as
-	\[
-	\OPT_1 = \sum_{\theta \in \varTheta, \omega\in \varOmega} \Pr[\omega] \cdot \Pr[\theta] \cdot \max_{a \in \A_{\omega,\theta}^{exp}} u(\theta, a, \omega).
-	\]
-\end{definition}
-
-\begin{definition}[Benchmark for private types]
-	We define the benchmark as
-	\[
-	\OPT_2 = \sum_{\omega\in \varOmega} \Pr[\omega] \cdot\max_{m \in \M_{\omega}^{exp}}\sum_{\theta \in \varTheta} \Pr[\theta] \cdot  u(\theta, m(\theta), \omega).
-	\]
-\end{definition}
-
-Note that, for all settings, no BIC recommendation policy can out-perform the corresponding benchmark.  Our main technical contributions are (computationally efficient) policies that get arbitrarily close to these benchmarks as the number of agents grows.
+\OMIT{
+Note that, for all settings, no BIC recommendation policy can out-perform the corresponding benchmark.  Our main technical contributions are (computationally efficient) policies that get arbitrarily close to these benchmarks as the number of agents grows.}
