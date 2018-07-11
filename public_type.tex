@@ -2,7 +2,7 @@
 
 \section{Bayesian Exploration with Public Types}
 \label{sec:public}
-In this section, we show a BIC scheme for public types (as in Theorem \ref{thm:public}). We formally state Theorem \ref{thm:public} in Section \ref{sec:public_bench} and we prove it in Section \ref{sec:public_single} and \ref{sec:public_main}.
+In this section, we show a BIC recommendation policy for public types (as in Theorem \ref{thm:public}). We formally state Theorem \ref{thm:public} in Section \ref{sec:public_bench} and we prove it in Section \ref{sec:public_single} and \ref{sec:public_main}.
 
 \subsection{Explorability and Benchmark}
 \label{sec:public_bench}
@@ -114,7 +114,7 @@ Given a signal structure $\S$, a BIC recommendation policy $\pi$ is called  \emp
 
 It is easy to see that we obtain max-support recommendation policy by averaging the $\pi^{a,s}$ policies defined above. Specifically, the following policy is BIC and max-support:
 \begin{align}\label{eq:pimax}
-\pi^{max} = \frac{1}{|\X|} \sum_{s \in \X} \frac{1}{|\EX_s[\S]|} \sum_{a \in \EX_s[S]} \pi^{a,s}.
+\pi^{max} = \frac{1}{|\X|} \sum_{s \in \X} \frac{1}{|\EX_s[\S]|} \sum_{a \in \EX_s[\S]} \pi^{a,s}.
 \end{align}
 
 %
@@ -170,7 +170,7 @@ For any action $a$ such that $\Pr[\pi^{max} =a] >0$, $a$ shows up in the sequenc
 MaxExplore runs in time polynomial in $L_{\theta}$, $|\A|$, $|\varOmega|$ and $|\X|$ (size of the support of the signal).
 \end{claim}
 
-\subsection{Main Scheme}
+\subsection{Main Recommendation Policy}
 \label{sec:public_main}
 In this subsection, we show our main recommendation policy. Algorithm \ref{alg:public_main} is the main procedure of our recommendation policy. It contains two parts: exploration and exploitation. The exploration explores all the eventually-explorable actions and we will give more explanation below. The exploitation part simply advises the agents to choose the best actions among eventually-explorable actions. 
 
