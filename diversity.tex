@@ -3,13 +3,12 @@
 \section{Conceptual Observations}
 In this section, we discuss several conceptual observations based on our results.
 
-\subsection{Explorability}
-\label{sec:exp}
-When types are public, the principal learns the reward of a type-action pair in each round. Therefore we use the set eventually-explorable actions ($\A^{exp}_{\omega,\theta}$ for state $\omega$ and type $\theta$ in Definition \ref{def:public_exp}) to measure explorability.
+\xhdr{Explorability.}
+When types are public, the principal learns the reward of a type-action pair in each round. Therefore we use the set eventually-explorable actions ($\AExp_{\omega,\theta}$ in Section~\ref{sec:model}) to measure explorability.
 
 When types are reported, although a recommendation policy is recommending a menu in each round, as the types are reported, the principal learns the reward of a type-action pair in a round. Therefore, we also use the set of eventually-explorable actions to measure explorability. As shown in Section \ref{sec:private_c}, this set is the same as the set when types are public. In other words, the public type case and the reported type case have the same explorability.
 
-When types are private, the principal might not learn the type of the agent after a round. We should use the set of eventually-explorable menus ($\M^{exp}_{\omega}$ for state $\omega$ in Definition \ref{def:private_exp}) to measure explorability. Now we want to claim that the explorability of the private type case is no better than the ones of the previous two cases. Notice that we cannot have a direct comparison as explorability is measured in different ways. However, we could still define the set of eventually-explorable actions $\A^{exp}_{\omega,\theta} = \bigcup_{m\in \M^{exp}_{\omega}} \{ m(\theta)\}$ in the private type case and use it as a middle ground. On one hand, the set of eventually-explorable actions in the private type case is no bigger than the ones in the previous two cases, as we can simulate a BIC recommendation policy of the private type case when types are public or reported. On the other hand, even if the same action-type pair is explored in the private type case, as the type is not known, the principal learns less accurate information about the state compared with the public type case or the reported type case. Therefore, we conclude that explorability of the private type case is no better than the ones of the previous two cases.  Furthermore, we show in the following example that the explorability can be strictly worse when types are private.
+When types are private, the principal might not learn the type of the agent after a round. We should use the set of eventually-explorable menus ($\MExp_{\omega}$ in Section~\ref{sec:model}) to measure explorability. Now we want to claim that the explorability of the private type case is no better than the ones of the previous two cases. Notice that we cannot have a direct comparison as explorability is measured in different ways. However, we could still define the set of eventually-explorable actions $\A^{exp}_{\omega,\theta} = \bigcup_{m\in \M^{exp}_{\omega}} \{ m(\theta)\}$ in the private type case and use it as a middle ground. On one hand, the set of eventually-explorable actions in the private type case is no bigger than the ones in the previous two cases, as we can simulate a BIC recommendation policy of the private type case when types are public or reported. On the other hand, even if the same action-type pair is explored in the private type case, as the type is not known, the principal learns less accurate information about the state compared with the public type case or the reported type case. Therefore, we conclude that explorability of the private type case is no better than the ones of the previous two cases.  Furthermore, we show in the following example that the explorability can be strictly worse when types are private.
 
 \begin{example}
 \label{exp:simple}
@@ -41,23 +40,23 @@ $\theta = 1$& $u = 3$ & $u =4$\\
 \end{table}
 
 \end{example}
-In this example, it is easy to check that action 0 is preferred by both types when agents have no information about the state. When types are public or reported, the principal learns the state after the first round and then the action of utility 4 can be explored in later rounds. For example, $\A_{0,0} = \{0,1\}$.   
+In this example, it is easy to check that action 0 is preferred by both types when agents have no information about the state. When types are public or reported, the principal learns the state after the first round and then the action of utility 4 can be explored in later rounds. For example, $\A_{0,0} = \{0,1\}$.
 
 On the other hand, when types are private, the principal can only recommend the menu of choosing action 0 for both types in the very beginning. Samples from this menu do not convey any information about the state as they distributed the same in both states. Therefore, in the private type case, the set of eventually-explorable actions for both types and both states are all $\{0\}$. Thus, in this example, the explorability in the private type case is strictly worse than the public type case or the reported type case.
 
-\subsection{Do More Types Help Exploration?}
-In this sub-section, we further discuss whether having more types helps exploration. In particular, we compare our original instance with a less diverse instance. The less diverse instance has the same utility function $u$, state space $\varOmega$ and probability distribution over states. The less diverse instance has a smaller set of types $\varTheta' \subsetneq \varTheta$ and the probability of each type $\theta \in \varTheta'$ is arbitrary. 
+\xhdr{Do More Types Help Exploration?}
+In this sub-section, we further discuss whether having more types helps exploration. In particular, we compare our original instance with a less diverse instance. The less diverse instance has the same utility function $u$, state space $\varOmega$ and probability distribution over states. The less diverse instance has a smaller set of types $\varTheta' \subsetneq \varTheta$ and the probability of each type $\theta \in \varTheta'$ is arbitrary.
 
-As we discussed in Section \ref{sec:exp}, we use $\A^{exp}_{\omega,\theta}$ to measure explorability when types are public or reported. We have the following claim showing that diversity helps exploration when types are public or reported.
+We use $\AExp_{\omega,\theta}$ to measure explorability when types are public or reported. We have the following claim showing that diversity helps exploration when types are public or reported.
 
 \begin{claim}
-For any $\omega \in \varOmega, \theta \in \varTheta'$, $A'^{exp}_{\omega,\theta} \subseteq \A^{exp}_{\omega,\theta}$. 
+For any $\omega \in \varOmega, \theta \in \varTheta'$, $\AExp'_{\omega,\theta} \subseteq \AExp_{\omega,\theta}$.
 \end{claim}
 
 \begin{proof}
-The proof simply follows from Lemma \ref{lem:exp_public}. It's easy to check that the lemma still works even if $\pi$ is a BIC recommendation policy for the less diverse instance. This implies that for a given state $\omega$, Algorithm \ref{alg:public_main} for the original instance explores all actions in $A'^{exp}_{\omega,\theta}$ for all $\theta \in \varTheta'$. And therefore $A'^{exp}_{\omega,\theta} \subseteq \A^{exp}_{\omega,\theta}$.
+The proof simply follows from Lemma \ref{lem:exp_public}. It's easy to check that the lemma still works even if $\pi$ is a BIC recommendation policy for the less diverse instance. This implies that for a given state $\omega$, Algorithm \ref{alg:public_main} for the original instance explores all actions in $\AExp'_{\omega,\theta}$ for all $\theta \in \varTheta'$. And therefore $\AExp'_{\omega,\theta} \subseteq \AExp_{\omega,\theta}$.
 \end{proof}
 
-Finally we are going to look at the case when types are private. First of all, more types can help in some situations. For example, if types have disjoint set of actions, then this case is the same as the reported type case. And therefore more types help exploration in this situation. 
+Finally we are going to look at the case when types are private. First of all, more types can help in some situations. For example, if types have disjoint set of actions, then this case is the same as the reported type case. And therefore more types help exploration in this situation.
 
 On the other hand, we use Example \ref{exp:simple} to show that more types can hurt exploration when types are private. As we discussed in Section \ref{sec:exp}, when types are private, only action 0 can be recommended to both types. Now consider a less diverse instance in which only type 0 appears. After one agent in that type chooses action 0, the state is reviewed to the principal. For example, when the state $\omega = 0$, action $1$ can be recommended to future agents. This shows that,  in this example, the explorability is better when we have fewer types. 
