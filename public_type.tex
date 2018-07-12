@@ -216,9 +216,9 @@ The thread for type $\theta$ is given in Algorithm \ref{alg:public_sub}. In a gi
      \end{algorithmic}
 \end{algorithm}
 
-The BIC property follows easily from Claim \ref{clm:maxexplore}. The performance analysis proceeds as follows. First, we upper-bound the expected number of rounds of a phase (Lemma \ref{lem:epoch}). Then we show, in Lemma \ref{lem:exp_public}, that Algorithm \ref{alg:public_main} explores all  eventually-explorable type-action pairs in $|\A| \cdot |\varTheta|$ phases. We use these two lemmas to prove the main theorem.
+The BIC property follows easily from Claim \ref{clm:maxexplore}. 
 
-
+\OMIT{The performance analysis proceeds as follows. First, we upper-bound the expected number of rounds of a phase (Lemma \ref{lem:epoch}). Then we show, in Lemma \ref{lem:exp_public}, that Algorithm \ref{alg:public_main} explores all  eventually-explorable type-action pairs in $|\A| \cdot |\varTheta|$ phases. We use these two lemmas to prove the main theorem.}
 
 \begin{lemma}
 \label{lem:epoch}
@@ -237,6 +237,8 @@ Notice that in Algorithm \ref{alg:public_main} the partition of phases depends o
 Given the sequence $\theta_1,...,\theta_T$, the partition of phases in Algorithm \ref{alg:public_main} is fixed.
 \end{claim}
 } %%%%%
+
+The key argument is that Algorithm \ref{alg:public_main} explores all  eventually-explorable type-action pairs.
 
 \begin{lemma}
 \label{lem:exp_public}
