@@ -201,9 +201,9 @@ By union bound, with probability at least $1-\gamma$, we have for all$u \in U$, 
 
 \subsection{Main Recommendation Policy}
 \label{sec:private_main}
-In this subsection, we show our main recommendation policy which explores all the eventually-explorable menus and then recommends the agents the best menu given all history. We pick $L$ to be at least $\max_{m,s:\Pr[\pi(s)=m] >0} \frac{B_m(\gamma_0)}{ \Pr[\pi(s)=m]}$ for all $\pi$ that might be chosen as $\pi^{max}$ by Algorithm \ref{alg:nocc_main}.
+In this subsection, we develop our main recommendation policy, Algorithm \ref{alg:nocc_main} (see pseudo-code), which explores all the eventually-explorable menus and then recommends the agents the best menu given all history. We pick $L$ to be at least $\max_{m,s:\Pr[\pi(s)=m] >0} \frac{B_m(\gamma_0)}{ \Pr[\pi(s)=m]}$ for all $\pi$ that might be chosen as $\pi^{max}$ by Algorithm \ref{alg:nocc_main}.
 
- \begin{algorithm}[H]
+ \begin{algorithm}[t]
     \caption{Main procedure for private types }
     	\label{alg:nocc_main}
     \begin{algorithmic}[1]
