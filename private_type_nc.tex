@@ -3,7 +3,7 @@
 \section{Bayesian Exploration with Private Types}
 \label{sec:private_nc}
 
-Our recommendation policy for private types satisfies a relaxed version of the BIC property, called \emph{$\delta$-BIC}, where the right-hand side in \eqref{eq:model-BIC-menus} is $-\delta$ for some fixed $\delta>0$. We assume a more permissive behavioral model in which agents follow recommendations of such policy. 
+Our recommendation policy for private types satisfies a relaxed version of the BIC property, called \emph{$\delta$-BIC}, where the right-hand side in \eqref{eq:model-BIC-menus} is $-\delta$ for some fixed $\delta>0$. We assume a more permissive behavioral model in which agents follow recommendations of such policy.
 
 The main result is as follows. (Throughout this section, $\OPT = \OPTpri$.)
 
@@ -13,15 +13,12 @@ The main result is as follows. (Throughout this section, $\OPT = \OPTpri$.)
 Consider Bayesian Exploration with private types, and fix $\delta > 0$. There exists a $\delta$-BIC recommendation policy with expected total reward at least $\left(T - C \log T \right) \cdot \OPT$, where $C$ depends on the problem instance but not on time horizon $T$.
 \end{theorem}
 
-\ascomment{Jieming's sketch goes here!}
-
-\jmcomment{
-Our recommendation policy and proofs for private types have a similar structure as the ones for public types. Our recommendation policy proceeds in phases. In each phase, our recommendation policy explores all the menus that can be explored given information collected so far. The crucial step in the proof is to show that the first $l$ phases of our recommendation policy explores all the menus that could be possibly explored by the first $l$ rounds of any BIC recommendation policies. 
+Our recommendation policy and proofs for private types have a similar structure as the ones for public types. Our recommendation policy proceeds in phases. In each phase, our recommendation policy explores all the menus that can be explored given information collected so far. The crucial step in the proof is to show that the first $l$ phases of our recommendation policy explores all the menus that could be possibly explored by the first $l$ rounds of any BIC recommendation policies.
 
 The new difficulty for private types comes from the fact that we are exploring menus instead of type-actions pairs and we do not learn the reward of a particular type-action pair immediately. For some menus, we could not learn the full information (i.e. distributions of action-reward pairs) about them with finite many rounds of exploration. Therefore we cannot claim that the first $l-1$ phases of our recommendation policy contains all the useful information that could be possibly collected by the first $l-1$ rounds of any BIC recommendation policies. However, we show that this claim is approximately true if we explore each menu enough times in each phase.
 
-We then show that the approximate version of such claim is good enough if we relax the BIC condition a little bit. In particular, we show an approximate information-monotonicity lemma which states that if our recommendation policy collects almost all the useful information that could be possibly collected by the first $l-1$ rounds of any BIC recommendation policies and we relax our recommendation policy from being BIC to being $\delta$-BIC, our recommendation policy can explore all the menus that could be possibly explored by the first $l$ rounds of any BIC recommendation policies. 
-}
+We then show that the approximate version of such claim is good enough if we relax the BIC condition a little bit. In particular, we show an approximate information-monotonicity lemma which states that if our recommendation policy collects almost all the useful information that could be possibly collected by the first $l-1$ rounds of any BIC recommendation policies and we relax our recommendation policy from being BIC to being $\delta$-BIC, our recommendation policy can explore all the menus that could be possibly explored by the first $l$ rounds of any BIC recommendation policies.
+
 
 \subsection{Single-round Exploration}
 \label{sec:private_single}
