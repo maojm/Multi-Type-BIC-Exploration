@@ -37,5 +37,9 @@ Our benchmark is the best eventually-explorable recommendation:
 &\qquad\text{(for private types: menus)}.
 \end{align*}
 
+\jmcomment{
+When types are public, we can always simulate a BIC policy for private types. This implies a connection between eventually-explorable actions and eventually-explorable menus: for all $\omega \in \varOmega, \theta \in \varTheta, m\in \MExp_{\omega}$, we have $m(\theta) \in \AExp_{\omega,\theta}$. Then we have $\OPTpub \geq \OPTpri$. Example \ref{exp:simple} shows that there are cases in which $\OPTpub$ is strictly larger than $\OPTpri$. 
+}
+
 \OMIT{
 Note that, for all settings, no BIC recommendation policy can out-perform the corresponding benchmark.  Our main technical contributions are (computationally efficient) policies that get arbitrarily close to these benchmarks as the number of agents grows.}
