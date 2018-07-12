@@ -125,6 +125,7 @@ We design a subroutine \term{MaxExplore} which outputs a sequence of actions wit
 L_{\theta} \geq \max_{(a,s)\in \A\times \X \text{ with }\quad \Pr[\pi^{\max}(s)=a] \neq 0} \frac{1}{\Pr[\pi^{\max}(s)=a]}.
 \end{align}
 
+This step is essentially from \cite{ICexplorationGames-ec16-working}; we provide the details below for the sake of completeness.
 The idea is to put $C_a = L_{\theta} \cdot \Pr[\pi^{\max}(S) = a]$ copies of each action $a$ into a sequence of length $L_{\theta}$ and randomly permute the sequence. However, $C_a$ might not be an integer, and in particular may be smaller than 1.The latter issue is resolved by making $L_{\theta}$ sufficiently large. For the former issue, we first put $\lfloor C_a \rfloor$ copies of each action $a$ into the sequence, and then sample the remaining
     $L_\theta - \sum_a \lfloor C_a \rfloor$
 actions according to distribution
@@ -155,8 +156,6 @@ For details, see Algorithm \ref{alg:public_explore}.
      \end{algorithmic}
 \end{algorithm}
 
-Such conversion is exactly the same as \cite{ICexplorationGames-ec16-working}, we have the following claim.
-
 \begin{claim}
 \label{clm:maxexplore}
 Given type $\theta$ and realized signal $S$, MaxExplore outputs a sequence of $L_{\theta}$ actions.
@@ -173,7 +172,7 @@ Algorithm \ref{alg:public_main} is the main procedure of our recommendation poli
 There is a separate thread for each type $\theta$, denoted $\thread(\theta)$,  which is called whenever an agent of this type shows up. For each agent type $\theta$, we pick parameter $L_{\theta}$ to be large enough so that the condition
 \eqref{eq:public-L} is satisfied for all phases $\ell$ and all possible signals $S=S_\ell$. (Note that $L_{\theta}$ is finite because there are only finitely many such signals.)
 
- \begin{algorithm}[H]
+ \begin{algorithm}[t]
     \caption{Main procedure for public types }
     	\label{alg:public_main}
     \begin{algorithmic}[1]
@@ -199,7 +198,7 @@ There is a separate thread for each type $\theta$, denoted $\thread(\theta)$,  w
 
 The thread for type $\theta$ is given in Algorithm \ref{alg:public_sub}. In a given phase, it recommends the $L_{\theta}$ actions computed by MaxExplore, then switches to the best explored action. The thread only uses the information collected before the current phase starts: the signal $S_\ell$ and signal structure $\S_\ell$.
 
- \begin{algorithm}[H]
+ \begin{algorithm}[h]
     \caption{Thread for agent type $\theta$: $\thread(\theta)$ }
     	\label{alg:public_sub}
     \begin{algorithmic}[1]
