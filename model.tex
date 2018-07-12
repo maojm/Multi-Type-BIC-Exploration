@@ -1,4 +1,5 @@
 \section{Model and Preliminaries}
+\label{sec:model}
 
 \emph{Bayesian Exploration} is a game between a principal and $T$ agents who arrive one by one. Each round $t$ proceeds as follows: a new agent $t$ arrives, receives a message $m_t$ from the principal, chooses an action $a_t$ from a fixed action space $\A$, and collects a reward $r_t\in [0,1]$ that is immediately observed by the principal. Each agent has a type $\theta_t\in\varTheta$, drawn independently from a fixed distribution. There is uncertainty, captured by a latent ``state of nature" $\omega\in \varOmega$, henceforth simply the \emph{state}, drawn from a Bayesian prior. The reward $r_t = u(\theta_t,a_t,\omega)$ is determined by the triple $(\theta_t,a_t,\omega)$, for some fixed, deterministic function
     $u:\varTheta\times \A \times \varOmega \to [0,1]$.
