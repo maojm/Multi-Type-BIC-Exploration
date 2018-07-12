@@ -1,21 +1,24 @@
 %!TEX root = main.tex
 
-\section{Bayesian Exploration with Reported Types}
+\subsection{Extension to Reported Types}
 \label{sec:private_c}
-In this section, we show a BIC recommendation policy for reported types. The main idea is to simulate the recommendation policy for public types in Section \ref{sec:public}, let's call it $\pi^{pub}$. We describe how we simulate it separately for the exploration part and the exploitation part.
 
-In the exploration part, our recommendation policy guesses the type with equal probability among all types in each round. The plan is to simulate $\pi^{pub}$ only in rounds when we guess types correctly. In each round, after we guess the type to be $\hat{\theta}$, we suggest the following menu to agents.
-\begin{itemize}
-\item For type $\hat{\theta}$, we suggest the action that $\pi^{pub}$ would suggest if the agent has type $\hat{\theta}$.
-\item For some other type which is not $\hat{\theta}$, we suggest the action which has the best expected reward given prior knowledge and the action suggested to type $\hat{\theta}$.  We just need to make sure that the suggested actions in the menu are BIC and do not convey extra information to an agent of type $\hat{\theta}$.
-\end{itemize}
-In the end of the round, we get the reported type. If our guess is correct, we input the type-action-reward triple back to $\pi^{pub}$. If our guess is wrong, we totally ignore what we learn in this round. By doing this simulation, similarly as $\pi^{pub}$, our recommendation policy explores all actions in $\AExp_{\omega,\theta}$ for any $\theta \in \varTheta$ when the state is $\omega$. Such simulation makes the exploration part to have more rounds as we guess types correctly with probability $\frac{1}{|\varTheta|}$. The expected number of rounds of the exploration part has an extra factor $|\varTheta|$: $|\A| \cdot |\varTheta| \cdot \sum_{\theta\in\varTheta} \frac{L_{\theta}\cdot |\varTheta|}{\Pr[\theta]}$.
+\newcommand{\pipub}{\pi_{\term{pub}}}
 
-The exploitation part is much easier to simulate as we don't need to know types to do exploitation. We just provide a menu consists of the best explored actions of all types. This will have the same performance as the exploitation part in $\pi^{pub}$.
+Let us sketch how to extend our ideas for public types to handle the case of reported types. We'd like to simulate the recommendation policy for public types, call it $\pipub$. We simulate it separately for the exploration part and the exploitation part. The exploitation part is fairly easy: we provide a menu that recommends the best explored action for each agent types. In the exploration part, in each round $t$ we guess the agent type to be $\hat{\theta}_t$, with equal probability among all types. The idea is to simulate $\pipub$ only in \emph{lucky rounds} when we guess correctly, \ie $\hat{\theta}_t=\theta_t$. Thus, 
+in each round $t$ we simulate the $\ell_t$-th round of $\pipub$, where $\ell_t$ is the number of lucky rounds before round $t$.
 
-To conclude, we have the following theorem.
+In each round $t$ of exploration, we suggest the following menu. For type $\hat{\theta}_t$, we recommend the same action as $\pipub$ would recommend for this type in the $\ell_t$-th round, namely $\pipub^{\ell_t}(\hat{\theta}_t)$.
+For any other type, we recommend the action which has the best expected reward given prior knowledge and the action suggested to type $\hat{\theta}$.  We need to  ensure that the suggested actions in the menu are BIC and do not convey extra information to an agent of type $\hat{\theta}$. When we receive the reported type, we can check whether our guess was correct. If so, we input the type-action-reward triple back to $\pipub$. Else, we ignore this round, as if it never happened.
+
+Thus, our recommendation policy eventually explores the same type-action pairs as $\pipub$. The expected number of rounds increases by the factor of $|\varTheta|$. Thus, we have the following theorem.
 
 \begin{theorem}
 \label{thm:reported}
-We have a BIC recommendation policy of $T$ rounds with expected total reward at least $\left(T - C \right) \cdot \OPTpub$ for some constant $C = |\A| \cdot |\varTheta| \cdot \sum_{\theta\in\varTheta} \frac{L_{\theta}\cdot |\varTheta|}{\Pr[\theta]}$. When the state is $\omega$, for any type $\theta \in \varTheta$, it explores all the actions in $\AExp_{\omega,\theta}$.
+Consider Bayesian Exploration with reported types.
+There exists a BIC recommendation policy whose expected total reward is at least $\left(T - C \right) \cdot \OPTpub$, 
+for some constant $C$ that depends on the problem instance but not on $T$.
+This policy explores all type-action pairs that are eventually-explorable for a given state in the case of public types.
 \end{theorem}
+
+%$C = |\A| \cdot |\varTheta| \cdot \sum_{\theta\in\varTheta} \frac{L_{\theta}\cdot |\varTheta|}{\Pr[\theta]}$.
