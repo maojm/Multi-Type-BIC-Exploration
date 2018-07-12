@@ -1,9 +1,9 @@
 \pagebreak
 \section{Introduction}
 
-Recommendation systems are ubiquitous in modern online economy. Well-known examples include recommendations for movies (\eg  Netflix), products (\eg  Amazon), and restaurants (\eg  Yelp).
+Recommendation systems are ubiquitous in online markets. Well-known examples include recommendations for movies (\eg  Netflix), products (\eg  Amazon), and restaurants (\eg  Yelp).
 %, and vacations (\eg Tripadvisor).
-High-quality recommendations are a crucial part of the value proposition of the respective business.
+High-quality recommendations are a crucial part of the value proposition of these businesses.
 %
 A typical recommendation system encourages its users to submit evaluations and/or reviews of their experiences, and aggregates this feedback in order to provide better recommendations to future users. Thus, each user plays a dual rule: she consumes information from the previous users (indirectly, via recommendations),
 % and other information revealed by the system),
@@ -44,7 +44,7 @@ policy: a recommendation policy whose Bayesian-expected reward is optimal for a 
 \xhdr{Explorability and public types.}
 A distinctive feature of Bayesian Exploration is that it may be impossible to incentivize some agent types to take some actions, no matter what the principal does or how much time she has. For a more precise terminology, a given type-action pair is \emph{explorable} if this agent type takes this action under some recommendation policy in some round with positive probability. This action is also called \emph{explorable} for this type. Thus: some type-action pairs might not be explorable. Moreover, one may need to explore to find out which pairs are explorable. 
 
-Recommendation policies cannot do better than the ``best explorable action" for a particular agent type: an explorable action with a largest reward in the realized state.  Our recommendation policy for public types matches this benchmark in the long run: after a ``constant" number of rounds (which depends on the problem instance but not the time horizon). While it is easy to prove that such policy exists, the challenge is to provide it as an explicit procedure. 
+Recommendation policies cannot do better than the ``best explorable action" for a particular agent type: an explorable action with a largest reward in the realized state.  Our recommendation policy for public types matches this benchmark in the long run, i.e., after a ``constant" number of rounds (which depends on the problem instance but not the time horizon). While it is easy to prove that such a policy exists, the challenge is to provide it as an explicit procedure. 
 
 Our policy focuses on exploring all explorable type-action pairs. Exploration needs to proceed gradually, whereby exploring one action may enable the policy to explore another. In fact, exploring some action for one type may enable the policy to explore some action for another type. Accordingly, our policy proceeds in phases: in each phase, we explore all actions for each type that can be explored ``immediately", with information available in the beginning of the phase.
 
@@ -53,9 +53,12 @@ An important building block is the analysis of the single-round game. We use inf
 
 
 \xhdr{Beyond public types.}
-For private or reported types, recommending one particular action to the current agent is not very meaningful because the agents' type is not yet known to the principal. Instead, one can recommend a \emph{menu}: a mapping from agent types to actions. Without loss of generality, we restrict to  Bayesian-incentive compatible (BIC) policies: essentially, policies that output menus such that the agents are incentivized to follow them. The issue of explorability is now about menus: a menu is called \emph{explorable} if some BIC policy recommends this menu in some round with a positive probability. As some menus might not be explorable, we are interested in the ``best explorable menu": an explorable menu with a largest expected reward for the realized state of the world. Our recommendation policy for private types competes with this benchmark, eventually matching its Bayesian-expected reward. Our policy focuses on exploring all explorable menus, and proceeds gradually, whereby exploring one menu may enable the policy to explore another.
-
-One difficulty is that exploring a given menu does not immediately reveal the reward of a particular type-action pair (because multiple types could map to the same action). Consequently, even keeping track of what the policy knows is now non-trivial. The analysis of the single-round game becomes more involved, as one needs to argue about ``approximate information-monotonicity". Further, our recommendation policy satisfies only a relaxed version of BIC.
+For private or reported types, recommending one particular action to the current agent is not very meaningful because the agents' type is not yet known to the principal. Instead, one can recommend a \emph{menu}: a mapping from agent types to actions. 
+%
+\niedit{Analogously to public types, we focus on explorable menus and gradually explore all such menus, eventually matching the Bayesian-expected reward of the best explorable menu.}
+\nidelete{Without loss of generality, we restrict to  Bayesian-incentive compatible (BIC) policies: essentially, policies that output menus such that the agents are incentivized to follow them. The issue of explorability is now about menus: a menu is called \emph{explorable} if some BIC policy recommends this menu in some round with a positive probability. As some menus might not be explorable, we are interested in the ``best explorable menu": an explorable menu with a largest expected reward for the realized state of the world. Our recommendation policy for private types competes with this benchmark, eventually matching its Bayesian-expected reward. Our policy focuses on exploring all explorable menus, and proceeds gradually, whereby exploring one menu may enable the policy to explore another.}
+%
+One difficulty is that exploring a given menu does not immediately reveal the reward of a particular type-action pair (because multiple types could map to the same action). Consequently, even keeping track of what the policy knows is now non-trivial. The analysis of the single-round game becomes more involved, as one needs to argue about ``approximate information-monotonicity". \nidelete{Further, our recommendation policy satisfies only a relaxed version of BIC.} \nicomment{I thought we satisfy BIC exactly but compete with policies that give agents positive incentives to follow recommendations?}
 
 Our policy for reported types does much better: we show that in the long run it matches our benchmark for public types. This may seem counterintuitive because ``reported types" are completely useless to the principal in the single-round game (whereas public types are very useful). Essentially, we reduce the problem to the public types case, at the cost of a much longer exploration.
 
