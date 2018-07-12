@@ -3,41 +3,14 @@
 \section{Bayesian Exploration with Private Types}
 \label{sec:private_nc}
 
-In this section, we show a $\delta$-BIC recommendation policy when types are private (as in Theorem \ref{thm:private_nocc}). $\delta$-BIC is defined by changing $\E[ u(\theta,m(\theta),\omega) - u(\theta,m'(\theta),\omega)| \pi^t = m, \EE_{t-1}] \geq 0$ to $\E[ u(\theta,m(\theta),\omega) - u(\theta,m'(\theta),\omega)| \pi^t = m, \EE_{t-1}] \geq -\delta$ in Definition \ref{def:bic_private}. We formally state Theorem \ref{thm:private_nocc} in Section \ref{sec:private_bench} and we prove it in Section \ref{sec:private_single} and \ref{sec:private_main}.
-
-\subsection{Explorability and Benchmark}
-\label{sec:private_bench}
-In this subsection, we define the benchmark and state our main theorem (Theorem \ref{thm:private_nocc}).
-
-\begin{definition}
-A menu $m: \varTheta \rightarrow \A$ is a mapping from the type space $\varTheta$ to the action space $\A$. We use $\M$ to denote the set of all menus.
-\end{definition}
-
-\begin{claim}
-Each single round of a BIC recommendation policy can be considered as a distribution of menus.
-\end{claim}
-
-\begin{definition}
-\label{def:private_exp}
-A menu $m$ is eventually-explorable, for a given state $\omega$, if there exists a BIC recommendation policy $\pi$ and some round $t$ such that $\Pr[\pi^t= m]> 0$. The set of all such menus is denoted as $\MExp_{\omega}$.
-\end{definition}
-
-\begin{definition}[Benchmark]
-Define benchmark as
-\[
-\OPT = \sum_{\omega\in \varOmega} \Pr[\omega] \cdot\max_{m \in \MExp_{\omega}}\sum_{\theta \in \varTheta} \Pr[\theta] \cdot  u(\theta, m(\theta), \omega).
-\]
-\end{definition}
-
-\begin{claim}
-Any BIC recommendation policy of $T$ rounds has expected total reward at most $T \cdot\OPT$.
-\end{claim}
-
+Our recommendation policy for private types satisfies a relaxed version of the BIC property, called \emph{$\delta$-BIC}, where the right-hand side in \eqref{eq:model-BIC-menus} is $-\delta$ for some fixed $\delta>0$. We assume a more permissive behavioral model in which agents follow recommendations of such policy.
+ 
 \begin{theorem}
 \label{thm:private_nocc}
 For any $\delta > 0$, we have a $\delta$-BIC recommendation policy of $T$ rounds with expected total reward at least $\left(T - C\cdot \log(T) \right) \cdot \OPT$ for some constant $C$ which does not depend on $T$.
 \end{theorem}
 
+\ascomment{stopped here.}
 
 \subsection{Single-round Exploration}
 \label{sec:private_single}
