@@ -17,41 +17,51 @@ There exists a BIC recommendation policy with expected total reward at least $\l
 
 Let us analyze a single round of the Bayesian exploration. Throughout, let $\theta$ be the agent's type.
 
-We posit that the principal receives a signal $S$ before the round starts, where $S$ is a random variable such that the joint distribution of $(S,\omega_0)$ is common knowledge. While $S$ represents the history of the previous rounds and the internal random seed, in this subsection it is more lucid to treat it as an arbitrary random variable. The \emph{signal structure} of $S$, denoted $\S$, consists of the support set $\X$ and the joint distribution of $(S, \omega_0)$. The signal structure is common knowledge.
+\xhdr{Signal and explorability.}
+We posit that the principal receives a signal $S$ before the round starts, where $S$ is a random variable.  The \emph{signal structure} of $S$, denoted $\S$, consists of the support set $\X$ and a joint distribution of $(S, \omega_0)$. Here $S$ represents the history of the previous rounds and the internal random seed, and the signal structure represents information about $S$ available to the current agent. However, for this subsection it is more lucid to consider an arbitrary signal structure. 
 
+A single-round recommendation policy $\pi$ is simply a randomized mapping from signal realizations to actions. The policy is called \emph{Bayesian-incentive compatible} (\emph{BIC}) for signal $S$ if for each type $\theta$ and any two actions $a,a'$ such that $\Pr[\pi(\theta) = a] > 0$ it holds that
+\begin{align}\label{eq:model-BIC-single-round}
+\E\left[\; u(\theta,a,\omega) - u(\theta,a',\omega) \mid \pi(S) =a\;\right] \geq 0.
+\end{align}
 
 \begin{definition}
-Consider a single-round of Bayesian exploration when the principal receives signal $S$ with signal structure $\S$. An action $a \in \A$ is called signal-explorable, for a given type $\theta$ and a given realized signal $s$, if there exists a single-round BIC recommendation policy $\pi$ such that $\Pr[\pi(s) = a] > 0$. The set of all such actions is denoted as $\EX_s[\S]$. The signal-explorable set is defined as $\EX[\S] = \EX_S[\S]$.
+Consider a single-round of Bayesian exploration when the principal receives signal $S$ with signal structure $\S$. An action $a \in \A$ is called signal-explorable, for a given type $\theta$ and realized signal $s$, if there exists a single-round BIC recommendation policy $\pi$ such that $\Pr[\pi(s) = a] > 0$. The set of all such actions is denoted as $\EX_s[\S]$. The signal-explorable set is defined as $\EX[\S] = \EX_S[\S]$.
 \end{definition}
 
-Note that $\EX_s[\S]$ is a fixed subset and $\EX[\S]$ is a random variable whose realization is determined by the realization of signal $S$.
+Note that $\EX[\S]$ is a random subset of actions whose realization is determined by $S$.
 
-\xhdr{Information Monotonicity.}
-In the following definition, we define a way to compare two signals. Intuitively, the condition $I(S';\omega_0|S)= 0$  means if one is given random variable $S$, one can learn no information from $S'$ about $\omega_0$. In this case, we show in Lemma \ref{lem:infomono} that the signal-explorable set of $S'$ is contained the signal-explorable set of $S$.
+\xhdr{Information-monotonicity.}
+We compare the information content of two signals using the notion of conditional mutual information (see Appendix~\ref{app:info-theory} for definition and background). Essentially, we show that a more informative signal leads to the same or larger explorable set. 
+
 \begin{definition}
-Let $S$ and $S'$ be two random variables and $\S$ and $\S'$ be their signal structures. We say random variable $S$ is at least as informative as random variable $S'$ about state $\omega_0$ if $I(S' ; \omega_0|S) = 0$. Notice $I(S';\omega_0|S)$ does not only depend on the signal structures $\S$ and $\S'$. It can also depend on the joint distribution between $S$ and $S'$.
+We say that signal $S$ \emph{is at least as informative} as signal $S'$ if $I(S' ; \omega_0\mid S) = 0$. 
 \end{definition}
+
+Intuitively, the condition $I(S';\omega_0|S)= 0$  means if one is given random variable $S$, one can learn no further information from $S'$ about $\omega_0$. Note that this condition depends not only the signal structures of the two signals, but also on their joint distribution.
 
 \begin{lemma}
 \label{lem:infomono}
-Let $S$ and $S'$ be two random variables and $\S$ and $\S'$ be their signal structures. If $S$ is at least as informative as $S'$ about state $\omega_0$ (i.e. $I(S' ; \omega_0|S) = 0$), then $\EX_{s'}[\S'] \subseteq \EX_s[\S]$ for all $s' ,s$ such that $\Pr[S= s, S'= s'] > 0$.
+Let $S,S'$ be two signals with signal structures $\S,\S'$. If $S$ is at least as informative as $S'$, then $\EX_{s'}[\S'] \subseteq \EX_s[\S]$ for all $s' ,s$ such that $\Pr[S= s, S'= s'] > 0$.
 \end{lemma}
 
 \begin{proof}
-Consider any BIC recommendation policy $\pi'$ for signal structure $\S'$. We construct $\pi$ for signature structure $\S$ by setting $\Pr[\pi(s) = a] = \sum_{s'} \Pr[\pi'(s') = a] \cdot Pr[S' = s'|S = s]$. Notice that $I(S' ; \omega_0|S) = 0$ implies $S'$ and $\omega_0$ are independent given $S$, i.e $\Pr[S' = s'|S=s] \cdot \Pr[\omega_0 = \omega|S=s] = \Pr[S'=s', \omega_0 = \omega|S=s]$ for all $s,s',\omega$. Therefore, for all $s'$ and $\omega$,
+Consider any BIC recommendation policy $\pi'$ for signal structure $\S'$. We construct $\pi$ for signal structure $\S$ by setting $\Pr[\pi(s) = a] = \sum_{s'} \Pr[\pi'(s') = a] \cdot Pr[S' = s'\mid S = s]$. Notice that $I(S' ; \omega_0\mid S) = 0$ implies $S'$ and $\omega_0$ are independent given $S$, i.e $\Pr[S' = s'\mid S=s] \cdot \Pr[\omega_0 = \omega\mid S=s] = \Pr[S'=s', \omega_0 = \omega\mid S=s]$ for all $s,s',\omega$. Therefore, for all $s'$ and $\omega$,
 \begin{align*}
- &\sum_s \Pr[S' = s'|S = s] \cdot \Pr[\omega_0 = \omega, S= s] \\
-=& \sum_s   \Pr[S' = s'|S=s] \cdot \Pr[\omega_0 = \omega|S=s] \cdot \Pr[S=s] \\
-= &\sum_s \Pr[S'=s,\omega_0 =\omega|S=s] \cdot \Pr[S=s] \\
-= &\sum_s \Pr[S=s,S'=s',\omega_0 =\omega] \\
-= &\Pr[\omega_0 =\omega, S'=s].\\
+\textstyle  
+\sum_s \Pr[S' = s'\mid S = s] \cdot \Pr[\omega_0 = \omega, S= s] 
+=& \textstyle \sum_s \Pr[S' = s'\mid S=s] 
+    \cdot \Pr[\omega_0 = \omega\mid S=s] \cdot \Pr[S=s] \\
+=& \textstyle  \sum_s \Pr[S'=s,\omega_0 =\omega\mid S=s] \cdot \Pr[S=s] \\
+= &\textstyle  \sum_s \Pr[S=s,S'=s',\omega_0 =\omega] \\
+= &\Pr[\omega_0 =\omega, S'=s].
 \end{align*}
 
- Therefore $\pi'$ being BIC implies that $\pi$ is also BIC. More specifically, for any $a,a' \in \A$ and $\theta \in \varTheta$,
+Therefore $\pi'$ being BIC implies that $\pi$ is also BIC. Indeed, for any $a,a' \in \A$ and $\theta \in \varTheta$,
 \begin{align*}
-&\sum_{\omega,s} \Pr[\omega_0 = \omega, S = s] \cdot (u(\theta,a', \omega) - u(\theta,a,\omega)) \cdot \Pr[\pi(s) = a] \\
-=&\sum_{\omega,s'}\Pr[\omega_0 = \omega, S' = s'] \cdot (u(\theta,a', \omega) - u(\theta,a,\omega)) \cdot \Pr[\pi(s') = a] \\
-\geq & 0.
+&\textstyle \sum_{\omega,s}\; \Pr[\omega_0 = \omega, S = s] \cdot (u(\theta,a', \omega) - u(\theta,a,\omega)) \cdot \Pr[\pi(s) = a] \\
+=& \textstyle \sum_{\omega,s'}\;\Pr[\omega_0 = \omega, S' = s'] \cdot (u(\theta,a', \omega) - u(\theta,a,\omega)) \cdot \Pr[\pi(s') = a]
+\geq 0.
 \end{align*}
 
 %It's easy to check $\pi$ is BIC.
@@ -72,7 +82,7 @@ for each action $a\in \A$ and each feasible signal $s\in \X$.
 \textbf{maximize }   & x_{a_0,s_0}\  \\
 \textbf{subject to: }
     & \textstyle \sum_{\omega \in \varOmega, s \in \X} \;
-    \Pr[\omega] \cdot \Pr[s | \omega] \cdot
+    \Pr[\omega] \cdot \Pr[s \mid  \omega] \cdot
         \left(u(\theta, a, \omega) - u(\theta, a', \omega)\right) \cdot x_{a,s} \geq 0   &\ & \forall a,a' \in \A \\
     & \textstyle \sum_{a\in \A}\; x_{a,s} = 1,  \ &\ & \forall s \in \X \\
     & x_{a,s} \geq 0,  \ &\ & \forall s \in \X, a\in \A
@@ -110,11 +120,16 @@ It is easy to see that we obtain max-support recommendation policy by averaging 
 \xhdr{Maximal Exploration.}
 %\label{sec:public_maxe}
 %This section is very similar to the EC16's paper, we include this section to make our paper self-contained.
-Let us design a subroutine, called  MaxExplore, which outputs a sequence of $L_{\theta}$ actions for type $\theta$. We are going to assume $L_{\theta} \geq \max_{a,s: \Pr[\pi^{max}(s)=a] \neq 0} \frac{1}{\Pr[\pi^{max}(s)=a]}$.
+We design a subroutine \term{MaxExplore} which outputs a sequence of actions with two properties: it includes every signal-explorable action at least once, and the marginal distribution at each location is $\pi^{max}$. The length of this sequence, denoted $L_{\theta}$, should satisfy
+\begin{align}\label{eq:public-L}
+L_{\theta} \geq L_{\theta}^*:= \max_{a,s: \Pr[\pi^{max}(s)=a] \neq 0} \frac{1}{\Pr[\pi^{max}(s)=a]}.
+\end{align}
 
-The goal of this subroutine MaxExplore is to make sure that for any signal-explorable action $a$ (i.e. $\Pr[\pi^{max}(s) = a] > 0$), $a$ shows up at least once in the sequence with probability exactly 1. On the other hand, we want that the action of each specific location in the sequence has marginal distribution same as $\pi^{max}$.
-
-To achieve this goal, the first idea would be to put $C_a = L_{\theta} \cdot \Pr[\pi^{max}(S) = a]$ copies of action $a$ into a sequence of length $L_{\theta}$ and randomly permute the sequence. However, the problems are that $C_a$ might not be an integer and $C_a$ can be smaller than 1. We solve the later problem by picking $L_{\theta}$ large enough such that $C_a \geq 1$ for all $a$ satisfying $\Pr[\pi^{max}(S) =a] > 0$. We solve the former problem by first putting $\lfloor C_a \rfloor$ copies of action $a$ into the sequence and then sampling the rest ($L_\theta - \sum_a \lfloor C_a \rfloor$ actions) according to $p^{Res}$ such that $p^{Res}(a) = \frac{C_a - \lfloor C_a \rfloor}{L_\theta - \sum_a \lfloor C_a \rfloor}$. For details, see the following pseudo-code (Algorithm \ref{alg:public_explore}).
+The idea is to put $C_a = L_{\theta} \cdot \Pr[\pi^{max}(S) = a]$ copies of each action $a$ into a sequence of length $L_{\theta}$ and randomly permute the sequence. However, $C_a$ might not be an integer, and in particular may be smaller than 1.The latter issue is resolved by making $L_{\theta}$ sufficiently large. For the former issue, we first put $\lfloor C_a \rfloor$ copies of each action $a$ into the sequence, and then sample the remaining
+    $L_\theta - \sum_a \lfloor C_a \rfloor$ 
+actions according to distribution 
+    $\pRes(a) = \frac{C_a - \lfloor C_a \rfloor}{L_\theta - \sum_a \lfloor C_a \rfloor}$. 
+For details, see Algorithm \ref{alg:public_explore}.
  \begin{algorithm}[H]
     \caption{Subroutine MaxExplore}
     	\label{alg:public_explore}
@@ -128,10 +143,10 @@ To achieve this goal, the first idea would be to put $C_a = L_{\theta} \cdot \Pr
 							\STATE $C_a \leftarrow  L_{\theta} \cdot \Pr[\pi^{max}(S) = a]$
                      		\STATE Add $\lfloor C_a \rfloor$ copies of action $a$ into list $\alpha$.
 			\STATE $Res \leftarrow Res -\lfloor C_a \rfloor $.
-			\STATE $p^{Res}(a)\leftarrow  C_a -  \lfloor C_a\rfloor$
+			\STATE $\pRes(a)\leftarrow  C_a -  \lfloor C_a\rfloor$
 		\ENDFOR
-		\STATE $p^{Res}(a) \leftarrow p^{Res}(a) / Res$, $\forall a \in \A$.
-		\STATE Sample $Res$ many actions from distribution according to $p^{Res}$ independently and add these actions into $\alpha$.
+		\STATE $\pRes(a) \leftarrow \pRes(a) / Res$, $\forall a \in \A$.
+		\STATE Sample $Res$ many actions from distribution according to $\pRes$ independently and add these actions into $\alpha$.
 		\STATE Randomly permute the actions in $\alpha$.
 	%\ELSE
 		%\STATE Add $L_{\theta}$ copies of the best explored action of type $\theta$ according to signal $S$ into action list $\alpha$.
@@ -152,130 +167,124 @@ MaxExplore runs in time polynomial in $L_{\theta}$, $|\A|$, $|\varOmega|$ and $|
 
 \subsection{Main Recommendation Policy}
 \label{sec:public_main}
-In this subsection, we show our main recommendation policy. Algorithm \ref{alg:public_main} is the main procedure of our recommendation policy. It contains two parts: exploration and exploitation. The exploration explores all the eventually-explorable actions and we will give more explanation below. The exploitation part simply advises the agents to choose the best actions among eventually-explorable actions.
 
-The exploration part proceeds in phases. In a phase, each type $\theta$ gets a sequence of $L_{\theta}$ actions from MaxExplore using data collected before this phase starts. These $L_{\theta}$ actions are suggested to the first $L_{\theta}$ agents of type $\theta$ in the phase. The phase ends when every type $\theta$ has finished $L_{\theta}$ rounds in the current phase. If in a phase some type $\theta$ has already finished $L_{\theta}$ rounds but the phase hasn't ended, our recommended policy simply suggests the best explored action of type $\theta$ to other agents of type $\theta$. And finally after $|\A| \cdot \varTheta|$ phases, our recommendation policy enters the exploitation part.
+Algorithm \ref{alg:public_main} is the main procedure of our recommendation policy. It consists of two parts: \emph{exploration}, which explores all the eventually-explorable actions, and \emph{exploitation}, which simply recommends the best explored action for a given type. The exploration part proceeds in phases. In each phase $\ell$, each type $\theta$ gets a sequence of $L_{\theta}$ actions from MaxExplore using the data collected before this phase starts. The phase ends when every agent type $\theta$ has finished $L_{\theta}$ rounds.  After $|\A| \cdot \varTheta|$ phases, our recommendation policy enters the exploitation part. See Algorithm \ref{alg:public_main} for  details.
 
-See the pseudocode (Algorithm \ref{alg:public_main}) for more details. For implementation, in the exploration part, our recommendation policy activates a separate thread (Sub-$\theta$) whenever type $\theta$ shows up in a round and deactivates the thread after that round. We pick $L_{\theta}$ to be at least $\max_{a,s: \Pr[\pi(s)=a] \neq 0} \frac{1}{\Pr[\pi(s)=a]}$ for all $\pi$ that might be chosen as $\pi^{max}$ in Algorithm \ref{alg:public_main} such that $L_{\theta}$ satisfies the guarantee required in Section \ref{sec:public_single}.
+There is a separate thread for each type $\theta$, denoted $\thread(\theta)$,  which is called whenever an agent of this type shows up. We pick $L_{\theta}$ to be at least $\max_{a,s: \Pr[\pi(s)=a] \neq 0} \frac{1}{\Pr[\pi(s)=a]}$ for all $\pi$ that might be chosen as $\pi^{max}$ in Algorithm \ref{alg:public_main} such that $L_{\theta}$ satisfies \eqref{eq:public-L}.
 
  \begin{algorithm}[H]
     \caption{Main procedure for public types }
     	\label{alg:public_main}
     \begin{algorithmic}[1]
-    	\STATE Initial signal $S_1 = \S_1 = \perp$.
-	\STATE Initial phase count $l = 1$.
-	\STATE Initial index of each type $i_{\theta} = 0$ for all $\theta \in \varTheta$.
-	\FOR {$t=1$ to $T$}
-		\IF {$l \leq |\A|\cdot \varTheta|$}
-			\STATE \textbf{Exploration:}
-			\STATE Let $\theta_t$ to be the agent type of current round $t$. Run subroutine Sub-$\theta_t$.
-			\IF {every type $\theta$ has finished $L_{\theta}$ rounds in the current phase, i.e. $i_{\theta} \geq L_{\theta}$ for all $\theta$}
-				\STATE Start a new phase:
-				\STATE $l \leftarrow l + 1$.
-				\STATE Let $S_l$ be the set of type-action-reward triples in $t$ rounds and $\S_l$ be the signal structure when fixing $\theta_1,...,\theta_t$.
+    \STATE Initialization: signal $S_1 = \S_1 = \perp$, 
+             phase count $\ell = 1$, index $i_{\theta} = 0$ for each type $\theta \in \varTheta$.
+	\FOR {rounds $t=1$ to $T$}
+		\IF {$\ell \leq |\A|\cdot \varTheta|$}
+		 \STATE \COMMENT{Exploration}
+		Call thread $\thread(\theta_t)$.
+			\IF {every type $\theta$ has finished $L_{\theta}$ rounds in the current phase ($i_{\theta} \geq L_{\theta}$)}
+				\STATE Start a new phase: $\ell \leftarrow l + 1$.
+				\STATE Let $S_\ell$ be the set of type-action-reward triples in $t$ rounds: the signal for phase $\ell$.
+        \STATE Let $\S_\ell$ be the signal structure for $S_\ell$ given the type sequence $(\theta_1,...,\theta_t)$.
 			\ENDIF
 		\ELSE
-			\STATE \textbf{Exploitation:}
-			\STATE Suggest the best explored action of type $\theta$ to the agent.
+			\STATE \COMMENT{Exploitation}
+			Recommend the best explored action for agent type $\theta_t$.
 		\ENDIF
 	\ENDFOR
      \end{algorithmic}
 \end{algorithm}
 
-Algorithm \ref{alg:public_sub} describes the thread for type $\theta$. It is activated whenever the agent in the current round has type $\theta$. In a phase, it first suggests $L_{\theta}$ actions computed by MaxExplore. After that it suggests the best explored action to agents. The thread only uses the information collected before the current phase starts.
+The thread for type $\theta$ is given in Algorithm \ref{alg:public_sub}. In a given phase, it recommends the $L_{\theta}$ actions computed by MaxExplore, then switches to the best explored action. The thread only uses the information collected before the current phase starts: the signal $S_\ell$ and signal structure $\S_\ell$.
 
  \begin{algorithm}[H]
-    \caption{Subroutine for type $\theta$: Sub-$\theta$ }
+    \caption{Thread for agent type $\theta$: $\thread(\theta)$ }
     	\label{alg:public_sub}
     \begin{algorithmic}[1]
-	\FOR {each call from Algorithm \ref{alg:public_main}}
-		\IF {this is the first call of the current phase}
-			\STATE Use the current $S_l$ and $\S_l$ to compute a list of $L_{\theta}$ actions $\alpha_{\theta} \leftarrow $ MaxExplore($\theta, S_l, \S_l$).
+	%\FOR {each call from Algorithm \ref{alg:public_main}}
+		\IF {this is the first call of $\thread(\theta)$ of the current phase}
+			\STATE Compute a list of $L_{\theta}$ actions $\alpha_{\theta} \leftarrow $ MaxExplore($\theta, S_\ell, \S_\ell$).
 			\STATE Initialize the index of type $\theta$: $i_{\theta} \leftarrow 0$.
 		\ENDIF
 		\STATE $i_{\theta} \leftarrow i_{\theta} + 1$.
 		\IF {$i_{\theta} \leq L_{\theta}$}
-			\STATE Suggest action $\alpha_{\theta} [i_{\theta}]$ to the agent.
+			\STATE Recommend action $\alpha_{\theta} [i_{\theta}]$.
 		\ELSE
-			\STATE Suggest the best explored action of type $\theta$ to the agent.
+			\STATE Recommend the best explored action of type $\theta$.
 		\ENDIF
-	\ENDFOR
+	%\ENDFOR
      \end{algorithmic}
 \end{algorithm}
 
+The BIC property follows easily from Claim \ref{clm:maxexplore}. The performance analysis proceeds as follows. First, we upper-bound the expected number of rounds of a phase (Lemma \ref{lem:epoch}). Then we show, in Lemma \ref{lem:exp_public}, that Algorithm \ref{alg:public_main} explores all  eventually-explorable type-action pairs in $|\A| \cdot |\varTheta|$ phases. We use these two lemmas to prove the main theorem.
 
-The proof plan is to first give an upper bound on the expected number of rounds of a phase in Lemma \ref{lem:epoch} and then show in Lemma \ref{lem:exp_public} that Algorithm \ref{alg:public_main} explores all the explorable type-action pairs in $|\A| \cdot |\varTheta|$ phases. We use these two lemmas to prove our main theorem (Theorem \ref{thm:public}) in Corollary \ref{cor:public}.
 
-First of all, it's easy to check by Claim \ref{clm:maxexplore} that for each agent, it is Bayesian incentive compatible to follow the recommended action if previous agents all follow the recommended actions. We have the following claim.
-\begin{claim}
-\label{clm:public_BIC}
-Our recommendation policy in this section is BIC.
-\end{claim}
 
 \begin{lemma}
 \label{lem:epoch}
-For any $l>0$, the expected number of rounds of the first $l$ phases is at most $l \cdot \sum_{\theta\in\varTheta} \frac{L_{\theta}}{\Pr[\theta]}$.
+The expected number of rounds in each phase $\ell$ at most 
+$ \sum_{\theta\in\varTheta} \frac{L_{\theta}}{\Pr[\theta]}$.
 \end{lemma}
 
 \begin{proof}
-The expected number of rounds of a phase is at most the expected number of rounds in which each type $\theta$ has shown up at least $L_{\theta}$ times. The latter expectation can be easily bounded by $\sum_{\theta\in\varTheta} \frac{L_{\theta}}{\Pr[\theta]}$. Therefore, the expected number of rounds of the first $l$ phases is at most $l \cdot \sum_{\theta\in\varTheta} \frac{L_{\theta}}{\Pr[\theta]}$.
+Phase ends as soon as each type has shown up at least $L_{\theta}$ times. The expected number of rounds by which this happens is at most 
+$ \sum_{\theta\in\varTheta} \frac{L_{\theta}}{\Pr[\theta]}$.
 \end{proof}
 
-Notice that in Algorithm \ref{alg:public_main} the partition of phases depends only on realized types $\theta_1,...,\theta_T$. We then have the following claim.
+\OMIT{
+Notice that in Algorithm \ref{alg:public_main} the partition of phases depends only on realized types $\theta_1,...,\theta_T$. 
 \begin{claim}
-Given $\theta_1,...,\theta_T$ as the realized types in $T$ rounds, the partition of phases in Algorithm \ref{alg:public_main} is fixed.
+Given the sequence $\theta_1,...,\theta_T$, the partition of phases in Algorithm \ref{alg:public_main} is fixed.
 \end{claim}
+} %%%%%
 
 \begin{lemma}
 \label{lem:exp_public}
-For any $l>0$ and a fixed sequence of types $\theta_1,...,\theta_T$ as the types encountered by Algorithm \ref{alg:public_main}, assume Algorithm \ref{alg:public_main} has at least $\min(l, |\A|\cdot |\varTheta|)$ phases.
-For a given state $\omega$, if an action $a$ of type $\theta$ can be explored by a BIC recommendation policy $\pi$ at round $l$ (i.e. $ \Pr[\pi^l(\theta)= a]> 0$), then such action is guaranteed to be explored by Algorithm \ref{alg:public_main} by the end of phase $\min(l, |\A|\cdot |\varTheta|)$.
+Fix phase $\ell>0$ and the sequence of agent types $\theta_1,...,\theta_T$. Assume Algorithm \ref{alg:public_main} has been running for at least $\min(l, |\A|\cdot |\varTheta|)$ phases.
+For a given state $\omega$, if type-action pair $(\theta,a)$ can be explored by some BIC recommendation policy $\pi$ at round $\ell$ with positive probability, then such action is explored by Algorithm \ref{alg:public_main} by the end of phase $\min(l, |\A|\cdot |\varTheta|)$ with probability $1$.
 \end{lemma}
 
 \begin{proof}
-We prove this by induction on $l$ for $l \leq |\A|\cdot |\varTheta|$. Base case $l=1$ is trivial by Claim \ref{clm:maxexplore}. Assuming the lemma is correct for $l-1$, let's prove it's correct for $l$.
+We prove this by induction on $\ell$ for $\ell \leq |\A|\cdot |\varTheta|$. Base case $\ell=1$ is trivial by Claim \ref{clm:maxexplore}. Assuming the lemma is correct for $\ell-1$, let's prove it's correct for $\ell$.
 
-Let $S$ be the history of Algorithm \ref{alg:public_main} by the end of phase $l-1$. By the definition of Algorithm 2, $S = S_{l-1} | \theta_1,...,\theta_T$.  Let $S'$ be the history of $\pi$ in the first $l-1$ rounds. More precisely, $S' = R, H_1,...,H_{l-1}$. Here $R$ is the internal randomness of policy $\pi$ and $H_t = (\Theta_t, A_t, u(\Theta_t, A_t, \omega_0))$ is the triple of type, action and reward in round $t$ of policy $\pi$.
+Let $S$ be the history of Algorithm \ref{alg:public_main} by the end of phase $\ell-1$. Recall that $S = (S_{l-1} \mid \theta_1,...,\theta_T)$.  Let $S'$ be the history of $\pi$ in the first $\ell-1$ rounds. More precisely, 
+    $S' = (R, H_1,...,H_{l-1})$, 
+where $R$ is the internal randomness of policy $\pi$, and 
+    $H_t = (\Theta_t, A_t, u(\Theta_t, A_t, \omega_0))$ 
+is the triple of type, action and reward in round $t$ of policy $\pi$.
 
 First of all, we have
-\[
-I(S'; \omega_0| S) = I(R,H_1,...,H_{l-1}; \omega_0| S)  = I(R; \omega_0| S) + I(H_1,...,H_{l-1}; \omega_0|S, R) = I(H_1,...,H_{l-1}; \omega_0|S, R).
-\]
+\begin{align*}
+I(S'; \omega_0\mid  S) 
+    &= I(R,H_1,...,H_{l-1}; \omega_0\mid  S)  
+    = I(R; \omega_0\mid  S) + I(H_1,...,H_{l-1}; \omega_0\mid S, R) \\
+    &= I(H_1,...,H_{l-1}; \omega_0\mid S, R).
+\end{align*}
 
 By the chain rule of mutual information, we have
 \[
- I(H_1,...,H_{l-1}; \omega_0|S, R) = I(H_1;\omega_0|S,R) + I(H_2;\omega_0|S, R ,H_1) + \cdots + I(H_{l-1}; \omega_0|S,R,H_1,...,H_{l-2}).
+ I(H_1,...,H_{l-1}; \omega_0\mid S, R) = I(H_1;\omega_0\mid S,R) + I(H_2;\omega_0\mid S, R ,H_1) + \cdots + I(H_{l-1}; \omega_0\mid S,R,H_1,...,H_{l-2}).
 \]
 
 For all $t \in [l-1]$, we have
 \begin{align*}
-&I(H_t; \omega_0|S,R,H_1,...,H_{t-1}) \\
-=& I(\Theta_t, A_t, u(\Theta_t, A_t, \omega_0); \omega_0|S,R,H_1,...,H_{t-1}) \\
-=& I(\Theta_t ; \omega_0|S,R,H_1,...,H_{t-1}) +  I(A_t, u(\Theta_t, A_t, \omega_0); \omega_0|S,R,H_1,...,H_{t-1},\Theta_t) \\
-=& I(A_t, u(\Theta_t, A_t, \omega_0); \omega_0|S,R,H_1,...,H_{t-1},\Theta_t). \\
+&I(H_t; \omega_0\mid S,R,H_1,...,H_{t-1}) \\
+=& I(\Theta_t, A_t, u(\Theta_t, A_t, \omega_0); \omega_0\mid S,R,H_1,...,H_{t-1}) \\
+=& I(\Theta_t ; \omega_0\mid S,R,H_1,...,H_{t-1}) +  I(A_t, u(\Theta_t, A_t, \omega_0); \omega_0\mid S,R,H_1,...,H_{t-1},\Theta_t) \\
+=& I(A_t, u(\Theta_t, A_t, \omega_0); \omega_0\mid S,R,H_1,...,H_{t-1},\Theta_t). 
 \end{align*}
-Notice that the suggested action $A_t$ is a deterministic function of randomness of the recommendation policy $R$,  history of previous rounds $H_1,...,H_{t-1}$ and type in the current round $\Theta_t$. Also notice that, by induction hypothesis, $u(\Theta_t, A_t, \omega_0)$ is a deterministic function of $|S,R,H_1,...,H_{t-1},\Theta_t, A_t$. Therefore we have
+Notice that the suggested action $A_t$ is a deterministic function of randomness of the recommendation policy $R$,  history of previous rounds $H_1,...,H_{t-1}$ and type in the current round $\Theta_t$. Also notice that, by induction hypothesis, $u(\Theta_t, A_t, \omega_0)$ is a deterministic function of $S,R,H_1,...,H_{t-1},\Theta_t, A_t$. Therefore we have
 \[
-I(H_t; \omega_0|S,R,H_1,...,H_{t-1}) = 0, \forall t \in [l-1].
+I(H_t; \omega_0\mid S,R,H_1,...,H_{t-1}) = 0, \qquad \forall t \in [l-1].
 \]
 Then we get
-\[
-I(S'; \omega_0 | S) = 0.
-\]
+$ I(S'; \omega_0 \mid  S) = 0.$
 
-By Lemma \ref{lem:infomono}, we know that $\EX[\S'] \subseteq \EX[\S]$. For state $\omega$, there exists a signal $s'$ such that $\Pr[S'=s'|\omega_0 =\omega] >0 $ and $a \in \EX_{s'} [\S']$. Now let $s$ be the realized value of $S$ given $\omega_0 = \omega$, we know that $\Pr[S'=s'|S=s] >0$, so $a \in \EX_s[\S]$. By Claim \ref{clm:maxexplore}, we know that at least one agent of type $\theta$ in phase $l$ of Algorithm \ref{alg:public_main} will choose action $a$.
+By Lemma \ref{lem:infomono}, we know that $\EX[\S'] \subseteq \EX[\S]$. For state $\omega$, there exists a signal $s'$ such that $\Pr[S'=s'\mid \omega_0 =\omega] >0 $ and $a \in \EX_{s'} [\S']$. Now let $s$ be the realized value of $S$ given $\omega_0 = \omega$, we know that $\Pr[S'=s'\mid S=s] >0$, so $a \in \EX_s[\S]$. By Claim \ref{clm:maxexplore}, we know that at least one agent of type $\theta$ in phase $\ell$ of Algorithm \ref{alg:public_main} will choose action $a$.
 
-Now we consider the case when $l > |\A| \cdot |\varTheta|$. Define Algorithm $E$ to be the variant of Algorithm \ref{alg:public_main} such that it only does exploration (removing the if-condition and exploitation in Algorithm \ref{alg:public_main}). For $l > |\A| \cdot |\varTheta|$, the above induction proof still work for Algorithm $E$, i.e. for a given state $\omega$, if an action $a$ of type $\theta$ can be explored by a BIC recommendation policy $\pi$ at round $l$, then such action is guaranteed to be explored by Algorithm $E$ by the end of phase $l$. Now we are going to argue that Algorithm $E$ won't explore any new action-type pairs after phase $|\A| \cdot |\varTheta|$. Call a phase exploring if in that phase Algorithm $E$ explores at least one new action-type pair. As there are  $ |\A| \cdot |\varTheta|$ type-action pairs, Algorithm $E$ can have at most $ |\A| \cdot |\varTheta|$ exploring phases. On the other hand, once Algorithm $E$ has a phase that is not exploring, because the signal stays the same after that phase, all phases afterwards are not exploring. Therefore Algorithm $E$ does not have any exploring phases after phase $|\A| \cdot |\varTheta|$. For $l > |\A| \cdot |\varTheta|$, the first $|   \A| \cdot |\varTheta|$ phases of Algorithm \ref{alg:public_main} explores the same set of type-action pairs as the first $l$ phases of Algorithm $E$. This concludes the proof.
+Now we consider the case when $\ell > |\A| \cdot |\varTheta|$. Define Algorithm $E$ to be the variant of Algorithm \ref{alg:public_main} such that it only does exploration (removing the if-condition and exploitation in Algorithm \ref{alg:public_main}). For $\ell > |\A| \cdot |\varTheta|$, the above induction proof still work for Algorithm $E$, i.e. for a given state $\omega$, if an action $a$ of type $\theta$ can be explored by a BIC recommendation policy $\pi$ at round $\ell$, then such action is guaranteed to be explored by Algorithm $E$ by the end of phase $\ell$. Now we are going to argue that Algorithm $E$ won't explore any new action-type pairs after phase $|\A| \cdot |\varTheta|$. Call a phase exploring if in that phase Algorithm $E$ explores at least one new action-type pair. As there are  $ |\A| \cdot |\varTheta|$ type-action pairs, Algorithm $E$ can have at most $ |\A| \cdot |\varTheta|$ exploring phases. On the other hand, once Algorithm $E$ has a phase that is not exploring, because the signal stays the same after that phase, all phases afterwards are not exploring. Therefore Algorithm $E$ does not have any exploring phases after phase $|\A| \cdot |\varTheta|$. For $\ell > |\A| \cdot |\varTheta|$, the first $|   \A| \cdot |\varTheta|$ phases of Algorithm \ref{alg:public_main} explores the same set of type-action pairs as the first $\ell$ phases of Algorithm $E$. 
 \end{proof}
 
-\begin{corollary}[Restatement of Theorem \ref{thm:public}]
-\label{cor:public}
-We have a BIC recommendation policy (Algorithm \ref{alg:public_main}) of $T$ rounds with expected total reward at least $\left(T - C \right) \cdot \OPT$ for constant $C = |\A| \cdot |\varTheta| \cdot \sum_{\theta\in\varTheta} \frac{L_{\theta}}{\Pr[\theta]}$.
-\end{corollary}
-
-\begin{proof}
-First of all, by Claim \ref{clm:public_BIC}, Algorithm \ref{alg:public_main} is BIC.
-
-By Lemma \ref{lem:exp_public}, for each state $\omega$, Algorithm \ref{alg:public_main} explores all the eventually explorable actions (i.e. $\AExp_{\omega,\theta}$) for each type $\theta$ by the end of $|\A|\cdot |\varTheta|$ phases. After that, for each type $\theta$, Algorithm \ref{alg:public_main} will always recommend action $ \arg\max_{a \in \AExp_{\omega,\theta}} u(\theta, a, \omega)$. Therefore Algorithm \ref{alg:public_main} gets reward $\OPT$ except rounds in first $|\A|\cdot |\varTheta|$ phases. By Lemma \ref{lem:epoch}, we know that the expected number of rounds of the first  $|\A|\cdot |\varTheta|$ phases is at most $C$. Therefore, Algorithm \ref{alg:public_main} has expected total reward at least  $\left(T - C \right) \cdot \OPT$.
-
+\begin{proof}[Proof of Theorem \ref{thm:public}]
+Algorithm \ref{alg:public_main} is BIC  by Claim \ref{clm:maxexplore}. By Lemma \ref{lem:exp_public}, for each state $\omega$, Algorithm \ref{alg:public_main} explores all the eventually explorable actions (i.e. $\AExp_{\omega,\theta}$) for each type $\theta$ by the end of $|\A|\cdot |\varTheta|$ phases. After that, for each type $\theta$, Algorithm \ref{alg:public_main} will always recommend action $ \arg\max_{a \in \AExp_{\omega,\theta}} u(\theta, a, \omega)$. Therefore Algorithm \ref{alg:public_main} gets reward $\OPT$ except rounds in first $|\A|\cdot |\varTheta|$ phases. By Lemma \ref{lem:epoch}, the expected number of rounds of the first  $|\A|\cdot |\varTheta|$ phases does not depend on the time horizon $T$. Therefore, Algorithm \ref{alg:public_main} has expected total reward at least  $\left(T - C \right) \cdot \OPT$.
 \end{proof} 
