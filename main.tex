@@ -16,7 +16,8 @@
 \usepackage{color}
 \usepackage{ifthen}
 \usepackage{xspace}
-\usepackage{algorithmic,algorithm}
+\usepackage[noend]{algorithmic}
+\usepackage{algorithm}
 \usepackage[colorlinks,citecolor={black},urlcolor={black},linkcolor={black}]{hyperref}
 \usepackage{url}
 \usepackage{tocbibind}
@@ -49,6 +50,7 @@
 %\newtheorem{example}{Example}[section]
 
 \newcommand{\term}[1]{\ensuremath{\mathtt{#1}}}
+\newcommand{\thread}{\term{thread}}
 
 \newcommand{\DT}{\mD} % Alex' notation for distribution over types.
 
@@ -74,6 +76,9 @@
 \def\OPT{\term{OPT}}
 \newcommand{\OPTpub}{\OPT_{\term{pub}}} 
 \newcommand{\OPTpri}{\OPT_{\term{pri}}} 
+
+% residual distribution for public types
+\newcommand{\pRes}{p^{\term{res}}}
 
 \title{Bayesian Exploration with Heterogeneous Agents}
 
