@@ -179,7 +179,7 @@ There is a separate thread for each type $\theta$, denoted $\thread(\theta)$,  w
     \STATE Initialization: signal $S_1 = \S_1 = \perp$, 
              phase count $\ell = 1$, index $i_{\theta} = 0$ for each type $\theta \in \varTheta$.
 	\FOR {rounds $t=1$ to $T$}
-		\IF {$\ell \leq |\A|\cdot \varTheta|$}
+		\IF {$\ell \leq |\A|\cdot |\varTheta|$}
 		 \STATE \COMMENT{Exploration}
 		Call thread $\thread(\theta_t)$.
 			\IF {every type $\theta$ has finished $L_{\theta}$ rounds in the current phase ($i_{\theta} \geq L_{\theta}$)}
