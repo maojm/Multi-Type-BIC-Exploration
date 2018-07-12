@@ -167,10 +167,9 @@ MaxExplore runs in time polynomial in $L_{\theta}$, $|\A|$, $|\varOmega|$ and $|
 \subsection{Main Recommendation Policy}
 \label{sec:public_main}
 
-Algorithm \ref{alg:public_main} is the main procedure of our recommendation policy. It consists of two parts: \emph{exploration}, which explores all the eventually-explorable actions, and \emph{exploitation}, which simply recommends the best explored action for a given type. The exploration part proceeds in phases. In each phase $\ell$, each type $\theta$ gets a sequence of $L_{\theta}$ actions from MaxExplore using the data collected before this phase starts. The phase ends when every agent type $\theta$ has finished $L_{\theta}$ rounds.  After $|\A| \cdot \varTheta|$ phases, our recommendation policy enters the exploitation part. See Algorithm \ref{alg:public_main} for  details.
-
-There is a separate thread for each type $\theta$, denoted $\thread(\theta)$,  which is called whenever an agent of this type shows up. For each agent type $\theta$, we pick parameter $L_{\theta}$ to be large enough so that the condition
+Algorithm \ref{alg:public_main} is the main procedure of our recommendation policy. It consists of two parts: \emph{exploration}, which explores all the eventually-explorable actions, and \emph{exploitation}, which simply recommends the best explored action for a given type. The exploration part proceeds in phases. In each phase $\ell$, each type $\theta$ gets a sequence of $L_{\theta}$ actions from MaxExplore using the data collected before this phase starts. The phase ends when every agent type $\theta$ has finished $L_{\theta}$ rounds. We pick parameter $L_{\theta}$ large enough so that the condition
 \eqref{eq:public-L} is satisfied for all phases $\ell$ and all possible signals $S=S_\ell$. (Note that $L_{\theta}$ is finite because there are only finitely many such signals.)
+  After $|\A| \cdot \varTheta|$ phases, our recommendation policy enters the exploitation part. See Algorithm \ref{alg:public_main} for  details.
 
  \begin{algorithm}[t]
     \caption{Main procedure for public types }
@@ -196,7 +195,7 @@ There is a separate thread for each type $\theta$, denoted $\thread(\theta)$,  w
      \end{algorithmic}
 \end{algorithm}
 
-The thread for type $\theta$ is given in Algorithm \ref{alg:public_sub}. In a given phase, it recommends the $L_{\theta}$ actions computed by MaxExplore, then switches to the best explored action. The thread only uses the information collected before the current phase starts: the signal $S_\ell$ and signal structure $\S_\ell$.
+There is a separate thread for each type $\theta$, denoted $\thread(\theta)$,  which is called whenever an agent of this type shows up; see Algorithm \ref{alg:public_sub}. In a given phase $\ell$, it recommends the $L_{\theta}$ actions computed by MaxExplore, then switches to the best explored action. The thread only uses the information collected before the current phase starts: the signal $S_\ell$ and signal structure $\S_\ell$.
 
  \begin{algorithm}[h]
     \caption{Thread for agent type $\theta$: $\thread(\theta)$ }
@@ -217,10 +216,12 @@ The thread for type $\theta$ is given in Algorithm \ref{alg:public_sub}. In a gi
      \end{algorithmic}
 \end{algorithm}
 
-The BIC property follows easily from Claim \ref{clm:maxexplore}.
+The BIC property follows easily from Claim \ref{clm:maxexplore}. The key argument is that Algorithm \ref{alg:public_main} explores all  eventually-explorable type-action pairs.
+
 
 \OMIT{The performance analysis proceeds as follows. First, we upper-bound the expected number of rounds of a phase (Lemma \ref{lem:epoch}). Then we show, in Lemma \ref{lem:exp_public}, that Algorithm \ref{alg:public_main} explores all  eventually-explorable type-action pairs in $|\A| \cdot |\varTheta|$ phases. We use these two lemmas to prove the main theorem.}
 
+\OMIT{ %%%%%%%%%
 \begin{lemma}
 \label{lem:epoch}
 The expected number of rounds in each phase $\ell$ at most
@@ -231,6 +232,7 @@ $ \sum_{\theta\in\varTheta} \frac{L_{\theta}}{\Pr[\theta]}$.
 Phase ends as soon as each type has shown up at least $L_{\theta}$ times. The expected number of rounds by which this happens is at most
 $ \sum_{\theta\in\varTheta} \frac{L_{\theta}}{\Pr[\theta]}$.
 \end{proof}
+} %%%%%%%%
 
 \OMIT{
 Notice that in Algorithm \ref{alg:public_main} the partition of phases depends only on realized types $\theta_1,...,\theta_T$.
@@ -239,7 +241,6 @@ Given the sequence $\theta_1,...,\theta_T$, the partition of phases in Algorithm
 \end{claim}
 } %%%%%
 
-The key argument is that Algorithm \ref{alg:public_main} explores all  eventually-explorable type-action pairs.
 
 \begin{lemma}
 \label{lem:exp_public}
@@ -291,5 +292,8 @@ Now we consider the case when $\ell > |\A| \cdot |\varTheta|$. Define Algorithm 
 \end{proof}
 
 \begin{proof}[Proof of Theorem \ref{thm:public}]
-Algorithm \ref{alg:public_main} is BIC  by Claim \ref{clm:maxexplore}. By Lemma \ref{lem:exp_public}, for each state $\omega$, Algorithm \ref{alg:public_main} explores all the eventually explorable actions (i.e. $\AExp_{\omega,\theta}$) for each type $\theta$ by the end of $|\A|\cdot |\varTheta|$ phases. After that, for each type $\theta$, Algorithm \ref{alg:public_main} will always recommend action $ \arg\max_{a \in \AExp_{\omega,\theta}} u(\theta, a, \omega)$. Therefore Algorithm \ref{alg:public_main} gets reward $\OPT$ except rounds in first $|\A|\cdot |\varTheta|$ phases. By Lemma \ref{lem:epoch}, the expected number of rounds of the first  $|\A|\cdot |\varTheta|$ phases does not depend on the time horizon $T$. Therefore, Algorithm \ref{alg:public_main} has expected total reward at least  $\left(T - C \right) \cdot \OPT$.
+Algorithm \ref{alg:public_main} is BIC  by Claim \ref{clm:maxexplore}. By Lemma \ref{lem:exp_public}, Algorithm \ref{alg:public_main} explores all the eventually-explorable type-actions pairs after $|\A|\cdot |\varTheta|$ phases. After that, for each agent type $\theta$, Algorithm \ref{alg:public_main} always recommends the best explored action: $ \arg\max_{a \in \AExp_{\omega,\theta}} u(\theta, a, \omega)$. Therefore Algorithm \ref{alg:public_main} gets reward $\OPT$ except rounds in the first $|\A|\cdot |\varTheta|$ phases.  It remains to prove that the expected number of rounds in exploration does not depend on the time horizon $T$. Let $N_\ell$ be the duration of phase $\ell$.
+Recall that the phase ends as soon as each type has shown up at least $L_{\theta}$ times. It follows that
+$ \E[N_\ell] \leq  \sum_{\theta\in\varTheta} \frac{L_{\theta}}{\Pr[\theta]}$.
+So, one can take $C = |\A|\cdot |\varTheta|\cdot \sum_{\theta\in\varTheta} \frac{L_{\theta}}{\Pr[\theta]}$.
 \end{proof} 
