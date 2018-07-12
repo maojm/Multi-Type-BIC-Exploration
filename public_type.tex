@@ -253,9 +253,9 @@ Let $S= S_l$ be the signal of Algorithm \ref{alg:public_main} by the end of phas
     $S' = (R, H_1,...,H_{l-1})$,
 where $R$ is the internal randomness of policy $\pi$, and
     $H_t = (\Theta_t, A_t, u(\Theta_t, A_t, \omega_0))$
-is the triple of type, action and reward in round $t$ of policy $\pi$.
+is the type-action-reward triple in round $t$ of policy $\pi$.
 
-\jmcomment{The proof plan is the following. We will first show that $I(S';\omega_0|S) =0 $. Informally, this means the information collected in the first $l-1$ phases of Algorithm \ref{alg:public_main} contains all the information $S'$ has about the state $w_0$. After that, we will use the information monotonicity lemma to show that phase $l$ of Algorithm \ref{alg:public_main} explores all the action-type pairs $\pi$ might explore in round $l$.}
+The proof plan is as follows. We first show that $I(S';\omega_0|S) =0 $. Informally, this means the information collected in the first $l-1$ phases of Algorithm \ref{alg:public_main} contains all the information $S'$ has about the state $w_0$. After that, we will use the information monotonicity lemma to show that phase $l$ of Algorithm \ref{alg:public_main} explores all the action-type pairs $\pi$ might explore in round $l$.
 
 First of all, we have
 \begin{align*}
