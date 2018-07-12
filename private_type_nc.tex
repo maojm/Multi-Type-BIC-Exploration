@@ -3,15 +3,17 @@
 \section{Bayesian Exploration with Private Types}
 \label{sec:private_nc}
 
-Our recommendation policy for private types satisfies a relaxed version of the BIC property, called \emph{$\delta$-BIC}, where the right-hand side in \eqref{eq:model-BIC-menus} is $-\delta$ for some fixed $\delta>0$. We assume a more permissive behavioral model in which agents follow recommendations of such policy. Throughout this section, $\OPT = \OPTpri$.
+Our recommendation policy for private types satisfies a relaxed version of the BIC property, called \emph{$\delta$-BIC}, where the right-hand side in \eqref{eq:model-BIC-menus} is $-\delta$ for some fixed $\delta>0$. We assume a more permissive behavioral model in which agents follow recommendations of such policy. 
 
- 
+The main result is as follows. (Throughout this section, $\OPT = \OPTpri$.)
+
+
 \begin{theorem}
 \label{thm:private_nocc}
-For any $\delta > 0$, we have a $\delta$-BIC recommendation policy of $T$ rounds with expected total reward at least $\left(T - C\cdot \log(T) \right) \cdot \OPT$ for some constant $C$ which does not depend on $T$.
+Consider Bayesian Exploration with private types, and fix $\delta > 0$. There exists a $\delta$-BIC recommendation policy with expected total reward at least $\left(T - C \log T \right) \cdot \OPT$, where $C$ depends on the problem instance but not on time horizon $T$.
 \end{theorem}
 
-\ascomment{stopped here.}
+\ascomment{Jieming's sketch goes here!}
 
 \subsection{Single-round Exploration}
 \label{sec:private_single}
