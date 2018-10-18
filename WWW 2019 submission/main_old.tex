@@ -1,0 +1,151 @@
+\documentclass[11pt]{article}
+\usepackage{fullpage}
+\usepackage{mathrsfs}
+\usepackage{float}
+% ======    PACKAGES
+\usepackage{slivkins-setup,slivkins-theorems}
+%\usepackage{amsmath, amsfonts, amssymb, amsthm, amsbsy, amscd, bm, bbm}
+\usepackage{amsbsy, amscd, bm, bbm}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage[small,bf]{caption}
+\setlength{\captionmargin}{30pt}
+\usepackage{subcaption}
+\captionsetup[sub]{margin=10pt,font=small}
+\usepackage{color}
+\usepackage{ifthen}
+\usepackage{xspace}
+\usepackage{algorithmic,algorithm}
+\usepackage[colorlinks,citecolor={black},urlcolor={black},linkcolor={black}]{hyperref}
+\usepackage{url}
+\usepackage{tocbibind}
+\usepackage{enumerate}
+\usepackage{mdframed}
+\usepackage{comment}
+
+
+\DeclareMathOperator*{\argmin}{argmin}
+
+% a very useful package for edits and comments, from David Kempe (USC)
+\usepackage{color-edits}
+%\usepackage[suppress]{color-edits}  % use this to suppress the package
+\addauthor{as}{red}      % as for Alex
+\addauthor{jm}{blue}     % jm for Jieming
+\addauthor{ni}{green}     % ni for Nicole
+\addauthor{sw}{magenta}     % sw for Steven
+% e.g. for Alex, provides \asedit{}, \ascomment{} and \asdelete{}.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\newtheorem{theorem}{Theorem}[section]
+%\newtheorem{corollary}[theorem]{Corollary}
+%\newtheorem{conjecture}[theorem]{Conjecture}
+%\newtheorem{proposition}[theorem]{Proposition}
+%\newtheorem{definition}[theorem]{Definition}
+%\newtheorem{lemma}[theorem]{Lemma}
+%\newtheorem{remark}{Remark}[section]
+%\newtheorem{claim}{Claim}[section]
+%\newtheorem{example}{Example}[section]
+
+\newcommand{\term}[1]{\ensuremath{\mathtt{#1}}}
+
+\def\DKL{\textbf{D}_{\term{KL}}}
+\def\D{\mathbb{D}}
+\def\E{\mathbb{E}}
+
+\def\A{\mathcal{A}}
+\def\M{\mathcal{M}}
+\def\S{\mathcal{S}}
+\def\X{\mathcal{X}}
+\def\EX{\term{EX}}
+\def\OPT{\term{OPT}}
+\def\Ds{*}
+\def\EE{\mathcal{E}}
+\def\varTheta{\bold{\Theta}}
+\def\varOmega{\bold{\Omega}}
+\title{Bayesian Exploration with Heterogeneous Agents}
+
+
+
+\author{
+Nicole Immorlica
+\and
+Jieming Mao
+\and
+Aleksandrs Slivkins
+\and
+Zhiwei Steven Wu
+}
+\begin{document}
+\maketitle
+
+
+\begin{abstract}
+It is common in recommendation systems that users both produce and consume information as they make strategic choices under uncertainty. While a social planner would balance “exploration” and “exploitation” using a multi-armed bandit algorithm, users’ incentives may tilt this balance in favor of exploitation. We consider Bayesian Exploration: a simple model in which the recommendation system (the “principal”) controls the information flow to the users (the “agents”) and strives to incentivize exploration via information asymmetry. A single round of this model is a well-known “Bayesian Persuasion game” from (Kamenica and Gentzkow, 2011). We allow heterogeneous users, relaxing a major assumption from prior work that users have the same preferences from one time step to another. The goal is now to learn the best \emph{personalized} recommendations. We consider several versions of the model, depending on whether the user types are public or private and what is the communication protocol between the principal and the users, and design a near-optimal “recommendation policy” for each version. One particular challenge is that it may be impossible to incentivize some of the user types to take some of the actions, no matter what the principal does or how much time she has. We also investigate how the model choice impacts the set of actions that can possibly be “explored” by each type.
+\end{abstract}
+
+\section{Introduction}
+
+\subsection{Ideas and Techniques}
+\begin{itemize}
+\item Global phase+local phase.
+\item Reduce from private type, communication allowed to public types.
+\item Information theory.
+\end{itemize}
+
+\subsection{Model}
+The Bayesian exploration consists of $T$ rounds. The participants are $T$ agents and a principal. Each agent only participates in one round.
+
+The state of nature $\omega$ is drawn from a Bayesian prior distribution over a finite state space $\varOmega$. We use $\Pr[\omega]$ to denote the probability that state $\omega$ is sampled. We use $\Omega$ as the random variable for the state.
+
+In each round, a new agent comes and its type $\theta$ is sampled from a distribution over a finite type space $\varTheta$. The type distribution is independent with the state distribution. We use $\Pr[\theta]$ to denote the probability type $\theta$ is sampled. We use $\Theta$ as the random variable for the type.
+
+For an agent with type $\theta \in \varTheta$, it can choose an action $a$ from action space $\A$ where $\A$ is a finite set. The utility of the agent is a deterministic function of its type and action, and the state of nature: $u(\theta, a, \omega)$. We also assume the utility is bounded in $[0,1]$.
+
+\subsubsection{Type Information}
+In terms of principal's knowledge of the agents' types, we consider three different models:
+\begin{itemize}
+\item \textbf{Public types:} Principal knows the types of agents.
+\item \textbf{Private types, communication allowed:} Only the agent knows its own type. The principal asks each agent to report its type in the end of the round.
+\item \textbf{Private types, communication not allowed:}  Only the agent knows its own type. Each agent is not allowed to send any message to the principal.
+\end{itemize}
+
+\subsubsection{Recommendation Policies and Bayesian Incentive Compatible}
+The principal commits to an interactive recommendation policy $\pi$. In each round $t$, $\pi$ takes the type as input if types are public. Then $\pi$ sends recommendation to the agent before the agent chooses an action. Then the chosen action and realized reward are inputted into $\pi$. Finally, if we are in the case when types are private and communication is allowed, the reported type is inputted into $\pi$. The principal's goal is to maximize the total sum of rewards in $T$ rounds. 
+
+By revelation principle, we can wlog assume the recommendation in each round is in some specific form. When types are public, we can assume this recommendation is a recommended action. When types are private, we can assume this recommendation is a mapping from types to recommended actions. We call such mapping a menu.
+
+Now we define the incentive compatibility constraint. Let $\EE_{t-1}$ be the event that the agents have followed principal's recommendations up to (but not including) round $t$. 
+
+When types are public, for any type $\theta$ and round $t$, let $\pi^t(\theta)$ be the action recommended by $\pi$ in round $t$. 
+\begin{definition}
+When types are public, an interactive recommendation policy $\pi$ is Bayesian Incentive Compatible (BIC) if for all rounds $t$ and type $\theta$, we have
+\[
+\E[ u(\theta,a,\omega) - u(\theta,a',\omega)| \pi^t(\theta) =a, \EE_{t-1}] \geq 0,
+\]
+where $a,a'$ are any two actions such that $\Pr[\pi^t(\theta) = a|\EE_{t-1}] > 0$. (The probabilities are over the realized state $\omega$ and internal randomness in $\pi$.)
+\end{definition}
+
+When types are private, we will have a slightly different definition. Let $\pi^t$ be the menu recommended by $\pi$  in round $t$. Notice that, when communication is allowed, since the type is reported in the end of each round, we assume it's always Bayesian incentive compatible for each agent to report its true type.  
+\begin{definition}
+When types are private, an interactive recommendation policy $\pi$ is Bayesian Incentive Compatible (BIC) if for all rounds $t$ and type $\theta$, we have
+\[
+\E[ u(\theta,m(\theta),\omega) - u(\theta,m'(\theta),\omega)| \pi^t = m, \EE_{t-1}] \geq 0,
+\]
+where $m,m'$ are any two menus such that $\Pr[\pi^t= m|\EE_{t-1}] > 0$. (The probabilities are over the realized state $\omega$ and internal randomness in $\pi$.)
+\end{definition}
+\input{public_type}
+
+\input{private_type_c}
+
+\input{private_type_nc}
+
+\input{diversity}
+
+\bibliographystyle{alpha}
+\bibliography{references,bib-abbrv,bib-slivkins,bib-bandits,bib-AGT,bib-ML}
+
+\appendix
+\input{prelim}
+\end{document}

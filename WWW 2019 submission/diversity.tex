@@ -1,0 +1,91 @@
+%!TEX root = main.tex
+
+\section{Comparative Statics for Explorability}
+\label{sec:statics}
+
+\newcommand{\pairs}{\mP_\omega}
+\newcommand{\pairsPub}{\pairs^{\term{pub}}}
+\newcommand{\pairsPri}{\pairs^{\term{pri}}}
+\newcommand{\support}{\term{support}}
+
+We discuss how the set of all explorable type-action pairs (\emph{explorable set}) is affected by the model choice and the diversity of types. In what follows, let $\pairs$ be the explorable set for state $\omega\in\varOmega$.
+
+\xhdr{Explorability and the model choice.}
+Fix an instance of Bayesian Persuasion. Recall from Section~\ref{sec:reported} that the explorable set is not affected if we switch from public types to reported types. 
+
+What if we switch from public types to private types? Let $\pairsPub$ and $\pairsPri$ denote $\pairs$ for public types and private types, respectively.\footnote{For private types, rewards for all type-action pairs in $\pairsPri$ is an ``upper bound" on the information available to the principal. The principal may know ``less" than that: it does not learn the agent type when the recommended menu maps multiple types to the chosen action.}
+Then we have: 
+ 
+\begin{claim}
+$\pairsPri \subseteq \pairsPub$.
+\end{claim}
+
+The idea in the proof is that one can simulate any BIC recommendation policy for private types with a BIC recommendation policy for public types; we omit the details from this version.%
+
+Let us prove an example when $\pairsPri$ is a strict subset of $\pairsPub$.
+
+\begin{example}
+\label{exp:simple}
+There are two states, two types and two actions: 
+    $\varOmega = \varTheta = \A = \{0,1\}$. 
+States and types are drawn uniformly at random:
+    $\Pr[\omega =0] =\Pr[\theta =0] = \tfrac12$. 
+Utilities are defined in the following table:\\
+\begin{table}[H]
+\centering
+\begin{tabular}{|c||c|c|}
+\hline
+&$a=0$&$a=1$\\
+\hline
+\hline
+$\theta = 0$& $u = 3$ & $u =4$\\
+\hline
+$\theta = 1$& $u = 2$ & $u =0$\\
+\hline
+\end{tabular}
+\quad
+\begin{tabular}{|c||c|c|}
+\hline
+&$a=0$&$a=1$\\
+\hline
+\hline
+$\theta = 0$& $u = 2$ & $u =0$\\
+\hline
+$\theta = 1$& $u = 3$ & $u =4$\\
+\hline
+\end{tabular}
+\caption{Utilities $u(\theta,a,\omega)$ when $\omega =0 $ and $\omega = 1$.}
+\end{table}
+\end{example}
+
+It is easy to check that action 0 is preferred by both types when agents have no information about the state. When types are public or reported, the principal learns the state after the first round and then the action of utility 4 can be explored in later rounds. For example, $\A_{0,0} = \{0,1\}$.
+
+For private types, in round $1$ the principal can only recommend a menu that recommends action 0 for both types. Samples from this menu do not convey any information about the state, as they are distributed the same in both states. Therefore, action $1$ is not eventually-explorable, for either type and either state.  Thus:
+
+\begin{claim}
+In Example \ref{exp:simple}, $\pairsPri$ is a strict subset of $\pairsPub$.
+\end{claim}
+
+\xhdr{Explorability and diversity of agent types.}
+Let us discuss whether and how the type distribution affects the explorable set. Fix an instance of Bayesian Exploration with type distribution $\DT$. Let us see how the explorable set changes if we change $\DT$ to some other distribution $\DT'$. 
+
+Let $\pairs$ and $\pairs'$ be the corresponding explorable sets, for each state $\omega$. Let $\support(\DT)$ be the support set of distribution $\DT$, \ie the set of all feasible agent types according to $\DT$.
+
+For public types, we show that the explorable set is determined by the support set of $\DT$, and can only increase if the support set increases:
+
+\begin{claim}\label{cl:statics-diversity-public}
+Consider Bayesian Exploration with public types. Then:
+\begin{OneLiners}
+\item[(a)] if $\support(\DT)=\support(\DT')$ then $\pairs=\pairs'$.
+\item[(b)] if $\support(\DT)\subset \support(\DT')$ then $\pairs\subseteq \pairs'$.
+\end{OneLiners}
+\end{claim}
+
+\begin{proof}[Proof Sketch]
+We follow the steps of the proof of Lemma \ref{lem:exp_public}. The idea is that the proof carries through even if $\pi$ is a BIC recommendation policy for the less diverse problem instance, \ie an instance with type distribution $\DT'$ such that $\support(\DT')\subset \support(\DT)$. Then for a given state $\omega$, Algorithm \ref{alg:public_main} for the original distribution $\DT$ instance explores all type-action pairs in $\pairs'$.
+\end{proof}
+
+The conclusions in Claim~\ref{cl:statics-diversity-public} apply to reported types, too. This is because explorable sets are the same for public and reported types.
+
+For private types, the situation is more complicated. More types can help for some problem instances. For example, if different types have disjoint sets of available actions (more formally: say, disjoint sets of actions with positive rewards) then we are essentially back to the case of reported types, and the conclusions in Claim~\ref{cl:statics-diversity-public} apply. On the other hand, 
+we can use Example \ref{exp:simple} to show that more types can hurt explorability when types are private. Recall that in this example, for private types only action 0 can be recommended. Now consider a less diverse instance in which only type 0 appears. After one agent in that type chooses action 0, the state is reviewed to the principal. For example, when the state $\omega = 0$, action $1$ can be recommended to future agents. This shows that,  in this example, explorable set increases when we have fewer types. 
