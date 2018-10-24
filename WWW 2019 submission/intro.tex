@@ -29,7 +29,7 @@ A single round of this model is a version of a well-known ``Bayesian Persuasion 
 \xhdr{Our scope.}
 We depart from prior work on Bayesian Exploration in that we allow the agents to have different preferences from one another. The preferences of an agent are encapsulated in her {\em type}, \eg vegan vs meat-lover.
 %The details of the model are as follows.
-When an agent takes a particular action, the outcome depends the action itself (\eg the selection of restaurant), the ``state" of the world (\eg the qualities of the restaurants), and the type of the agent. The state is persistent (does not change over time), but initially not known; a Bayesian prior on the state is common knowledge. In each round, the agent type is drawn independently from a fixed and known distribution. The principal strives to learn the best possible recommendation for each agent type.
+When an agent takes a particular action, the outcome depends on the action itself (\eg the selection of restaurant), the ``state" of the world (\eg the qualities of the restaurants), and the type of the agent. The state is persistent (does not change over time), but initially not known; a Bayesian prior on the state is common knowledge. In each round, the agent type is drawn independently from a fixed and known distribution. The principal strives to learn the best possible recommendation for each agent type.
 
 We consider three models, depending on whether and when the agent type is revealed to the principal: the type is revealed immediately after the agent arrives (\emph{public types}), the type is revealed only after the principal issues a recommendation (\emph{reported types}),\footnote{Reported types may arise if
 %agents are myopic and
@@ -53,7 +53,7 @@ An important building block is the analysis of the single-round game. We use inf
 
 
 \xhdr{Beyond public types.}
-For private or reported types, recommending one particular action to the current agent is not very meaningful because the agents' type is not yet known to the principal. Instead, one can recommend a \emph{menu}: a mapping from agent types to actions. Analogously to the case of public types, we focus on explorable menus and gradually explore all such menus, eventually matching the Bayesian-expected reward of the best explorable menu.
+For private or reported types, recommending one particular action to the current agent is not very meaningful because the agents' type is not yet known to the principal. Instead, one can recommend a \emph{menu}: a mapping from agent types to actions. Analogous to the case of public types, we focus on explorable menus and gradually explore all such menus, eventually matching the Bayesian-expected reward of the best explorable menu.
 %
 \OMIT{Without loss of generality, we restrict to  Bayesian-incentive compatible (BIC) policies: essentially, policies that output menus such that the agents are incentivized to follow them. The issue of explorability is now about menus: a menu is called \emph{explorable} if some BIC policy recommends this menu in some round with a positive probability. As some menus might not be explorable, we are interested in the ``best explorable menu": an explorable menu with a largest expected reward for the realized state of the world. Our recommendation policy for private types competes with this benchmark, eventually matching its Bayesian-expected reward. Our policy focuses on exploring all explorable menus, and proceeds gradually, whereby exploring one menu may enable the policy to explore another.}
 %
