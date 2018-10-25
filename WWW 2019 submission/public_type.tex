@@ -54,7 +54,7 @@ Consider any BIC recommendation policy $\pi'$ for signal structure $\S'$. We con
 &\sum_s \Pr[S' = s'\mid S = s] \cdot \Pr[\omega_0 = \omega, S= s]\\
 =& \textstyle \sum_s \Pr[S' = s'\mid S=s]
     \cdot \Pr[\omega_0 = \omega\mid S=s] \cdot \Pr[S=s] \\
-=& \textstyle  \sum_s \Pr[S'=s,\omega_0 =\omega\mid S=s] \cdot \Pr[S=s] \\
+=& \textstyle  \sum_s \Pr[S'=s',\omega_0 =\omega\mid S=s] \cdot \Pr[S=s] \\
 = &\textstyle  \sum_s \Pr[S=s,S'=s',\omega_0 =\omega] \\
 = &\Pr[\omega_0 =\omega, S'=s].
 \end{align*}
@@ -179,7 +179,7 @@ JM: Marginal distribution means is the distribution of one action not the distri
 
 Algorithm \ref{alg:public_main} is the main procedure of our recommendation policy. It consists of two parts: \emph{exploration}, which explores all the eventually-explorable actions, and \emph{exploitation}, which simply recommends the best explored action for a given type. The exploration part proceeds in phases. In each phase $\ell$, each type $\theta$ gets a sequence of $L_{\theta}$ actions from MaxExplore using the data collected before this phase starts. The phase ends when every agent type $\theta$ has finished $L_{\theta}$ rounds. We pick parameter $L_{\theta}$ large enough so that the condition
 \eqref{eq:public-L} is satisfied for all phases $\ell$ and all possible signals $S=S_\ell$. (Note that $L_{\theta}$ is finite because there are only finitely many such signals.)
-  After $|\A| \cdot \varTheta|$ phases, our recommendation policy enters the exploitation part. See Algorithm \ref{alg:public_main} for  details.
+  After $|\A| \cdot | \varTheta|$ phases, our recommendation policy enters the exploitation part. See Algorithm \ref{alg:public_main} for  details.
 
  \begin{algorithm}[t]
     \caption{Main procedure for public types }
