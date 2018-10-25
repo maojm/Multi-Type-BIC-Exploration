@@ -1,5 +1,5 @@
-%\documentclass[sigconf, anonymous, review]{acmart}
-\documentclass{article}
+\documentclass[sigconf, anonymous, review]{acmart}
+%\documentclass{article}
 
 %\usepackage{fullpage}
 %\usepackage{mathrsfs}
@@ -31,12 +31,12 @@
 \DeclareMathOperator*{\argmin}{argmin}
 
 % a very useful package for edits and comments, from David Kempe (USC)
-%\usepackage{color-edits}
+\usepackage{color-edits}
 %\usepackage[suppress]{color-edits}  % use this to suppress the package
-%\%addauthor{as}{red}      % as for Alex
-%\addauthor{jm}{blue}     % jm for Jieming
-%\addauthor{ni}{green}     % ni for Nicole
-%\addauthor{sw}{magenta}     % sw for Steven
+\addauthor{as}{red}      % as for Alex
+\addauthor{jm}{blue}     % jm for Jieming
+\addauthor{ni}{green}     % ni for Nicole
+\addauthor{sw}{magenta}     % sw for Steven
 % e.g. for Alex, provides \asedit{}, \ascomment{} and \asdelete{}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -116,10 +116,10 @@ Zhiwei Steven Wu
 \input{private_type_nc}
 
 
+\appendix
+\input{prelim}
 
 \bibliographystyle{ACM-Reference-Format}
 \bibliography{references,bib-abbrv,bib-slivkins,bib-bandits,bib-AGT,bib-ML}
 
-\appendix
-\input{prelim}
 \end{document}
