@@ -40,7 +40,7 @@ We compare the information content of two signals using the notion of conditiona
 We say that signal $S$ \emph{is at least as informative} as signal $S'$ if $I(S' ; \omega_0\mid S) = 0$.
 \end{definition}
 
-Intuitively, the condition $I(S';\omega_0|S)= 0$  means if one is given random variable $S$, one can learn no further information from $S'$ about $\omega_0$. Note that this condition depends not only the signal structures of the two signals, but also on their joint distribution.
+Intuitively, the condition $I(S';\omega_0|S)= 0$  means if one is given random variable $S$, one can learn no further information from $S'$ about $\omega_0$. Note that this condition depends not only on the signal structures of the two signals, but also on their joint distribution.
 
 \begin{lemma}
 \label{lem:infomono}
@@ -56,7 +56,7 @@ Consider any BIC recommendation policy $\pi'$ for signal structure $\S'$. We con
     \cdot \Pr[\omega_0 = \omega\mid S=s] \cdot \Pr[S=s] \\
 =& \textstyle  \sum_s \Pr[S'=s',\omega_0 =\omega\mid S=s] \cdot \Pr[S=s] \\
 = &\textstyle  \sum_s \Pr[S=s,S'=s',\omega_0 =\omega] \\
-= &\Pr[\omega_0 =\omega, S'=s].
+= &\Pr[\omega_0 =\omega, S'=s'].
 \end{align*}
 
 Therefore $\pi'$ being BIC implies that $\pi$ is also BIC. Indeed, for any $a,a' \in \A$ and $\theta \in \varTheta$, by plugging in the definition of $\pi$, 
