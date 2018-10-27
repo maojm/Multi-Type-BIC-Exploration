@@ -45,10 +45,17 @@ Then $\pi$ is {\em Bayesian incentive compatible} (\emph{BIC}) if, for all round
 
 {\bf NSI: or is the below right?} and messages $m$ such that \\ $\Pr_{(\omega,H_t)\sim\DT(\varOmega,\mH_t)}[\Pr_{\pi(H_t)}[a]\; \mid\; \EE_{t}] > 0$, it holds that
 
+
 \begin{align}\label{eq:model-BIC-actions}
 \E_{(\omega,H_t)\sim\DT(\varOmega,\mH_t)}\left[\; u(\theta,m(\theta),\omega) - u(\theta,a',\omega) \; \mid\; m_t=m, \EE_{t}\;\right] \geq 0.
 \end{align}
 \end{definition}
+
+\jmcomment{
+The expectation is also taken over the randomness of the policy. Maybe we should add a notation for it if we want to be clear with the expectations.
+
+Also it seems the definition of $\EE_{t}$ is accidentally commented.
+}
 
 \noindent The above assumptions are without loss of generality, by a suitable version of Myerson's ``revelation principle" (see {\bf NSI: citation} for more details).
 
