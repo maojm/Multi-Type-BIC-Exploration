@@ -6,9 +6,10 @@
 Then at each single round, what do principal and agents know about S? 
 }
 
-\emph{Bayesian exploration} is a game between a principal and $T$ agents who arrive one by one, with agent $t$ arriving in round $t$. Each agent $t$ has a {\em type} $\theta_t\in\varTheta$, drawn independently from a fixed distribution $\DT(\varTheta)$, and an {\em action space} $\mA$.  There is uncertainty, captured by a latent ``state of nature" $\omega\in \varOmega$, henceforth simply the \emph{state}, drawn from a Bayesian prior $\DT(\varOmega)$ at the beginning of time and fixed across rounds. The {\em reward} $r_t = u(\theta_t,a_t,\omega)\in\mathbb{R}$ of agent $t$ is determined by the type $\theta_t\in\varTheta$ of agent $t$, the action $a_t\in\mA$ chosen by agent $t$, and the state $\omega\in\varOmega$, for some fixed, deterministic function
-$u:\varTheta\times \A \times \varOmega \to [0,1]$.  We assume that the sets $\mA$, $\varTheta$ and $\varOmega$ are finite. We use $\omega_0$ as the random variable for the state, and write $\Pr[\omega]$ for $\Pr[\omega_0=\omega]$. Similarly, we write $\Pr[\theta]$ for $\Pr[\theta_t=\theta]$. {\bf NSI: do we assume $r_t$ is bounded or anything like that?}
-\jmcomment{Reward is defined as the utility which is defined to be in $[0,1]$.} 
+\emph{Bayesian exploration} is a game between a principal and $T$ agents who arrive one by one, with agent $t$ arriving in round $t$. Each agent $t$ has a {\em type} $\theta_t\in\varTheta$, drawn independently from a fixed distribution $\DT(\varTheta)$, and an {\em action space} $\mA$.  There is uncertainty, captured by a latent ``state of nature" $\omega\in \varOmega$, henceforth simply the \emph{state}, drawn from a Bayesian prior $\DT(\varOmega)$ at the beginning of time and fixed across rounds. The {\em reward} $r_t = u(\theta_t,a_t,\omega)\in[0,1]$ of agent $t$ is determined by the type $\theta_t\in\varTheta$ of agent $t$, the action $a_t\in\mA$ chosen by agent $t$, and the state $\omega\in\varOmega$, for some fixed, deterministic function
+$u:\varTheta\times \A \times \varOmega \to [0,1]$.  We assume that the sets $\mA$, $\varTheta$ and $\varOmega$ are finite. We use $\omega_0$ as the random variable for the state, and write $\Pr[\omega]$ for $\Pr[\omega_0=\omega]$. Similarly, we write $\Pr[\theta]$ for $\Pr[\theta_t=\theta]$. 
+%{\bf NSI: do we assume $r_t$ is bounded or anything like that?}
+%\jmcomment{Reward is defined as the utility which is defined to be in $[0,1]$.} 
 An {\em instance} $\I=(T,\DT(\varTheta),\mA,\DT(\varOmega),u)$ of the Bayesian exploration game consists of the time horizon $T$, the type distribution $\DT(\varTheta)$, the action space $\mA$, the prior over the state $\DT(\varOmega)$, and the reward function $u$.
 
 
@@ -42,7 +43,7 @@ Then $\pi$ is {\em Bayesian incentive compatible} (\emph{BIC}) if, for all round
 
 {\bf NSI: is this right?} states $\omega$, histories $H_t$ such that $\Pr_{\DT(\varOmega,\mH_t)}[H_t|\EE_{t},\omega]>0$, and messages $m$ such that $\Pr_{\pi(H_t)}[m] > 0$, it holds that
 
-{\bf NSI: or is the below right?} and messages $m$ such that $\Pr_{(\omega,H_t)\sim\DT(\varOmega,\mH_t)}[\Pr_{\pi(H_t)}[a]\; \mid\; \EE_{t}] > 0$, it holds that
+{\bf NSI: or is the below right?} and messages $m$ such that \\ $\Pr_{(\omega,H_t)\sim\DT(\varOmega,\mH_t)}[\Pr_{\pi(H_t)}[a]\; \mid\; \EE_{t}] > 0$, it holds that
 
 \begin{align}\label{eq:model-BIC-actions}
 \E_{(\omega,H_t)\sim\DT(\varOmega,\mH_t)}\left[\; u(\theta,m(\theta),\omega) - u(\theta,a',\omega) \; \mid\; m_t=m, \EE_{t}\;\right] \geq 0.
