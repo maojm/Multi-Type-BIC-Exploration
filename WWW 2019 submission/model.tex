@@ -1,0 +1,78 @@
+%!Tex root = main.tex
+\section{Model and Preliminaries}
+\label{sec:model}
+\jmcomment{Reviewer 2: The model description is not clear. In particular, it did not describe what the principal knows about the states, agents' reward functions etc., and what the agents know. Note that it is crucial to be clear about who knows what since the information asymmetry is essential to the model. Is a new state drawn at every round t or is the state of nature the same across all rounds? I think for the model to make sense, it should be the latter case. Then, the questions are: (1) how does the principal's belief about the state of nature evolve? (2) in the benchmark $OPT_{pub}s$ rightly above Section 3, why you need to take expectation over w? Why not just the particular w realized at the beginning of the game?
+
+Then at each single round, what do principal and agents know about S? 
+}
+
+\emph{Bayesian exploration} is a game between a principal and $T$ agents who arrive one by one, with agent $t$ arriving in round $t$. Each agent $t$ has a {\em type} $\theta_t\in\varTheta$, drawn independently from a fixed distribution $\DT(\varTheta)$, and an {\em action space} $\mA$.  There is uncertainty, captured by a latent ``state of nature" $\omega\in \varOmega$, henceforth simply the \emph{state}, drawn from a Bayesian prior $\DT(\varOmega)$ at the beginning of time and fixed across rounds. The {\em reward} $r_t = u(\theta_t,a_t,\omega)\in\mathbb{R}$ of agent $t$ is determined by the type $\theta_t\in\varTheta$ of agent $t$, the action $a_t\in\mA$ chosen by agent $t$, and the state $\omega\in\varOmega$, for some fixed, deterministic function
+$u:\varTheta\times \A \times \varOmega \to [0,1]$.  We assume that the sets $\mA$, $\varTheta$ and $\varOmega$ are finite. We use $\omega_0$ as the random variable for the state, and write $\Pr[\omega]$ for $\Pr[\omega_0=\omega]$. Similarly, we write $\Pr[\theta]$ for $\Pr[\theta_t=\theta]$. {\bf NSI: do we assume $r_t$ is bounded or anything like that?}
+\jmcomment{Reward is defined as the utility which is defined to be in $[0,1]$.} 
+An {\em instance} $\I=(T,\DT(\varTheta),\mA,\DT(\varOmega),u)$ of the Bayesian exploration game consists of the time horizon $T$, the type distribution $\DT(\varTheta)$, the action space $\mA$, the prior over the state $\DT(\varOmega)$, and the reward function $u$.
+
+
+The Bayesian exploration game proceeds sequentially in rounds $t=1,\ldots, T$.  The {\em history} $H_t$ observed by the principal at time $t$ includes the rewards and any agent type information revealed in the past and current rounds.{\bf NSI: is the following footnote required? I don't think so, but if so, need to define the policy first.}\footnote{Formally, for randomized policies, we also assume the history contains the random seed and so can simulate the algorithm on prior rounds given the history.} We consider three model variants, depending on whether and when the principal learns the agent's type: the type is revealed immediately after the agent arrives (\emph{public types}), the type is revealed only after the principal issues a recommendation (\emph{reported types}), the type is not revealed (\emph{private types}). Hence the history at round $t$ is $\{(r_1,\theta_1),\ldots,(r_{t-1},\theta_{t-1}),r_t\}$ for public types, $\{(r_1,\theta_1),\ldots,(r_{t-1},\theta_{t-1})\}$ for reported types, and $\{r_1,\ldots,r_{t-1}\}$ for private types.  
+
+A solution to an instance $\I$ of the Bayesian exploration game is a randomized online algorithm $\pi$ termed ``recommendation policy" which, at each round $t$, maps %instance $\I$ and 
+the current history $H_t$ to a distribution over messages $m_t$ which, in general, are arbitrary bit strings of length polynomial in the size of the instance.  
+Borrowing terminology from the Bayesian Persuasion literature, to which our problem is closely related, we will often refer to the history as the {\em signal}.  We denote the set of all possible histories (signals) at time $t$ by $\mH_t$ and note that the policy $\pi$, the type distribution $\DT(\varTheta)$, and the state distribution $\DT(\varOmega)$ induce a joint distribution $\DT(\varOmega,\mH_t)$ over states and histories, henceforth called the {\em signal structure}.
+
+Agent $t$, given a policy $\pi$ and instance $\I$ (from which she can infer the signal structure $\DT(\varOmega,\mH_t)$), her type $\theta_t$, and the message $m_t$, chooses an action $a_t$ so as to maximize her {\em Bayesian-expected reward}
+$$\E[r_t]\equiv\E_{(\omega,H_t)\sim\DT(\varOmega,\mH_t)}[\; \E_{m_t\sim\pi(H_t)}[u(\theta_t,a_t,\omega)\; ]].$$
+Given the instance $\I$, the goal of the principal is to choose a policy $\pi$ that maximizes (Bayesian-expected) {\em total} reward, \ie $\sum_{t=1}^T \E[r_t].$\footnote{Note, the principal must commit to the policy, given only the instance.  The policy, however, includes the history and thus can adapt recommendations to inferences about the state based on the history.  See Example~\ref{exp:simple}.}
+
+\xhdr{Bayesian-incentive compatibility.}
+For public types, we assume the message $m_t$ in each round is a recommended action $a \in \mA$ which, for convenience, we sometimes write as $m_t(\theta)$. For private and reported types, we assume that the message $m_t$ in each round is a \emph{menu} mapping types to actions, i.e., $m_t:\varTheta\rightarrow\mA$.  In either case, we can write the {\em recommended action} for agent $t$ as $m_t(\theta_t)$.  We further assume $\pi$ is Bayesian incentive-compatible: 
+%
+\begin{definition}
+%Consider a randomized recommendation policy $\pi$ mapping $\mH$ to $\mA$. 
+%Let $m_t(\theta_t)$ for $m_t\sim\pi(H_t)$ be the recommended action for agent $t$ of type $\theta_t$ given history $H_t$, and 
+%Let $\EE_{t}$ be the event that the action $a_{t'}$ chosen by agent $t'$ equals the recommended action $m_{t'}(\theta_{t'})$ for all $t'<t$. Then $\pi$ is {\em Bayesian incentive compatible} (\emph{BIC}) for public types if, for all rounds $t$, types $\theta$, actions $a'$, 
+
+%{\bf NSI: is this right?} states $\omega$, histories $H_t$ such that $\Pr_{\DT(\varOmega,\mH_t)}[H_t|\EE_{t},\omega]>0$, and actions $a$ such that $\Pr_{\pi(H_t)}[a] > 0$, it holds that
+
+%{\bf NSI: or is the below right?} and actions $a$ such that $\Pr_{(\omega,H_t)\sim\DT(\varOmega,\mH_t)}[\Pr_{\pi(H_t)}[a]\; \mid\; \EE_{t}] > 0$, it holds that
+
+%\begin{align}\label{eq:model-BIC-actions}
+%\E_{(\omega,H_t)\sim\DT(\varOmega,\mH_t)}\left[\; u(\theta,a,\omega) - u(\theta,a',\omega) \; \mid\; m_t=a, \EE_{t}\;\right] \geq 0.
+%\end{align}
+
+Then $\pi$ is {\em Bayesian incentive compatible} (\emph{BIC}) if, for all rounds $t$, types $\theta$, actions $a'$, 
+
+{\bf NSI: is this right?} states $\omega$, histories $H_t$ such that $\Pr_{\DT(\varOmega,\mH_t)}[H_t|\EE_{t},\omega]>0$, and messages $m$ such that $\Pr_{\pi(H_t)}[m] > 0$, it holds that
+
+{\bf NSI: or is the below right?} and messages $m$ such that $\Pr_{(\omega,H_t)\sim\DT(\varOmega,\mH_t)}[\Pr_{\pi(H_t)}[a]\; \mid\; \EE_{t}] > 0$, it holds that
+
+\begin{align}\label{eq:model-BIC-actions}
+\E_{(\omega,H_t)\sim\DT(\varOmega,\mH_t)}\left[\; u(\theta,m(\theta),\omega) - u(\theta,a',\omega) \; \mid\; m_t=m, \EE_{t}\;\right] \geq 0.
+\end{align}
+\end{definition}
+
+\noindent The above assumptions are without loss of generality, by a suitable version of Myerson's ``revelation principle" (see {\bf NSI: citation} for more details).
+
+\iffalse
+For reported types and private types, we assume that the message in each round is a \emph{menu} a mapping types to actions, and assume that the recommendation policy satisfies a similar but technically different BIC condition. Again, this is without loss of generality by revelation principle. to state the BIC condition, let $\pi^t$ be the menu recommended in round $t$. The recommendation policy $\pi$ is BIC if for each round $t$, type $\theta$, and any two menus $m,m'$ such that
+    $\Pr[\pi^t= m|\EE_{t-1}] > 0$, we have
+\begin{align}\label{eq:model-BIC-menus}
+\E\left[\; u(\theta,m(\theta),\omega) - u(\theta,m'(\theta),\omega)
+    \mid \pi^t = m, \EE_{t-1}\;\right] \geq 0.
+\end{align}
+(Again, the expectation is over the realized state $\omega$ and the randomness in the policy.)
+\fi
+
+\xhdr{Explorability and benchmarks.}
+%For these definitions, recommendation policies proceed indefinitely. 
+For public types, a type-action pair $(\theta,a)\in \Theta\times \A$ is called \emph{eventually-explorable} in state $\omega$ if there is some BIC recommendation policy that, for $T$ large enough, eventually recommends this action to this agent type with positive probability. Then action $a$ is called \emph{eventually-explorable} for type $\theta$ and state $\omega$. The set of all such actions is denoted $\AExp_{\omega,\theta}$. Likewise, for private types, a menu is called \emph{eventually-explorable} in state $\omega$ if there is some BIC recommendation policy that eventually recommends this menu with positive probability. The set of all such menus is denoted $\MExp_{\omega}$.
+
+Our benchmark is the best eventually-explorable recommendation:
+\begin{align*}
+\OPTpub &= \sum_{\theta \in \varTheta, \omega\in \varOmega} \Pr[\omega] \cdot \Pr[\theta] \cdot \max_{a \in \AExp_{\omega,\theta}} u(\theta, a, \omega).\\
+    &\qquad\text{(for public types: actions)}\\
+\OPTpri &= \sum_{\omega\in \varOmega} \Pr[\omega] \cdot\max_{m \in \MExp_{\omega}}\sum_{\theta \in \varTheta} \Pr[\theta] \cdot  u(\theta, m(\theta), \omega)\\
+&\qquad\text{(for private types: menus)}.
+\end{align*}
+We have $\OPTpub \geq \OPTpri$, essentially because any BIC policy for private types can be simulated as a BIC policy for public types. We provide an example (Example \ref{exp:simple}) when $\OPTpub > \OPTpri$.
+
+\OMIT{
+Note that, for all settings, no BIC recommendation policy can out-perform the corresponding benchmark.  Our main technical contributions are (computationally efficient) policies that get arbitrarily close to these benchmarks as the number of agents grows.}

@@ -1,0 +1,65 @@
+%\pagebreak
+\section{Introduction}
+%\jmcomment{Reviewer 4: the authors interchange between $l$ and $\ell$. Please commit to one of the two and use this consistently.}
+Recommendation systems are ubiquitous in online markets. Well-known examples include recommendations for movies (\eg  Netflix), products (\eg  Amazon), and restaurants (\eg  Yelp).
+%, and vacations (\eg Tripadvisor).
+High-quality recommendations are a crucial part of the value proposition of these businesses.
+%
+A typical recommendation system encourages its users to submit evaluations and/or reviews of their experiences, and aggregates this feedback in order to provide better recommendations to future users. Thus, each user plays a dual rule: she consumes information from the previous users (indirectly, via recommendations),
+% and other information revealed by the system),
+and produces new information (\eg  a review) that benefits future users. This dual role creates a tension between exploration, exploitation, and users' incentives.
+
+%On a very abstract level, users of a recommendation system make decisions, \eg which movie to watch or which restaurant to go to, facing uncertainty about the outcomes of these decisions.
+A social planner -- a hypothetical entity that controls users for the sake of common good -- would balance ``exploration" vs.  ``exploitation", \ie  trying out insufficiently known alternatives for the sake of acquiring new information vs. making myopic decisions based on this information. Designing algorithms to trade off these two objectives is a well-researched subject in machine learning and operations research.
+%A common term for this subject is \emph{multi-armed bandits}.
+%
+However, user incentives with respect to exploration are misaligned with those of society. To the extent that a given user decides to ``explore", she experiences all the downside of this decision (a potentially suboptimal experience), whereas the upside (improved recommendations) is spread over many users in the future. Absent an adequate mechanism to compensate for the risks of exploration, self-interested users have incentives to exploit. This may result in outcomes that are very suboptimal. First, it may take much longer to arrive at good recommendations. Second, the recommendations may consistently suffer from selection bias in the data: \eg  ratings of a particular movie may mostly come from people who like this type or genre. Third, in some natural but idealized models (\eg  \cite{Kremer-JPE14,ICexploration-ec15}), there are simple  examples when optimal recommendations are never found because the corresponding actions are never taken.
+
+Thus, we have a problem of \emph{incentivizing exploration}.
+%: creating incentives for self-interested users to explore so as to benefit others.
+Relying on monetary incentives or the natural human propensity for exploration can be financially and technologically infeasible, and/or introduce selection bias.
+%
+%While monetary incentives such as discounts are sometimes used for this purpose, they are often prohibitively expensive and/or may result in additional selection bias, as the feedback would come from users that are more sensitive to the said discounts. Likewise, just relying on a natural human propensity for exploration creates a different selection bias, as the data is skewed in favor of users who are more adventurous.
+%
+A recent line of work, started by \cite{Kremer-JPE14}, instead strives to incentivize exploration by taking advantage of the inherent \emph{information asymmetry} -- the fact that the recommendation system has more information than a typical user -- by restricting the information revealed to the agents. These papers posit a simple model, termed \emph{Bayesian Exploration} in \cite{ICexplorationGames-ec16}. The recommendation system is a ``principal" that interacts with a stream of self-interested ``agents" arriving one by one. Each agent needs to make a decision: take an action from a given set of alternatives. The principal issues a recommendation, %perhaps along with some other information,
+and observes the outcome, but cannot direct the agent to take a particular action. The problem is to design a ``recommendation policy" for the principal that learns over time to make good recommendations \emph{and} ensures that the agents are incentivized to follow this recommendation.
+%Essentially, this is a multi-armed bandit problem with substantial constraints due to the user incentives.
+A single round of this model is a version of a well-known ``Bayesian Persuasion game" \cite{Kamenica-aer11}.
+
+\xhdr{Our scope.}
+We depart from prior work on Bayesian Exploration in that we allow the agents to have different preferences from one another. The preferences of an agent are encapsulated in her {\em type}, \eg vegan vs meat-lover.
+%The details of the model are as follows.
+When an agent takes a particular action, the outcome depends on the action itself (\eg the selection of restaurant), the ``state" of the world (\eg the qualities of the restaurants), and the type of the agent. The state is persistent (does not change over time), but initially not known; a Bayesian prior on the state is common knowledge. In each round, the agent type is drawn independently from a fixed and known distribution. The principal strives to learn the best possible recommendation for each agent type.
+
+We consider three models, depending on whether and when the agent type is revealed to the principal: the type is revealed immediately after the agent arrives (\emph{public types}), the type is revealed only after the principal issues a recommendation (\emph{reported types}),\footnote{Reported types may arise if
+%agents are myopic and
+the principal asks agents to report the type after the recommendation is issued, \eg in a survey. While the agents are allowed to misreport their respective types, they have no incentives to do that.}
+and the type is never revealed (\emph{private types}).
+%
+We design a near-optimal recommendation policy for each modeling choice. The ``benchmark" that our policies compete with is the ``best-in-hindsight"
+policy: a recommendation policy whose Bayesian-expected reward is optimal for a particular problem instance.
+\jmcomment{Reviewer 2: what is a particular problem instance?}
+\OMIT{In fact, we consider a stronger benchmark: optimal Bayesian-expected reward achieved by any recommendation policy in any one round.}
+
+\xhdr{Explorability.}
+A distinctive feature of Bayesian Exploration is that it may be impossible to incentivize some agent types to take some actions, no matter what the principal does or how much time she has. For a more precise terminology, a given type-action pair is \emph{explorable} if this agent type takes this action under some recommendation policy in some round with positive probability. This action is also called \emph{explorable} for this type. Thus: some type-action pairs might not be explorable. Moreover, one may need to explore to find out which pairs are explorable.  The set of explorable pairs is interesting in its own right as they bound the welfare of a setting. Recommendation policies cannot do better than the ``best explorable action" for a particular agent type: an explorable action with a largest reward in the realized state.  
+
+\xhdr{Comparative statics for explorability.}
+We study how the set of all explorable type-action pairs (\emph{explorable set}) is affected by the model choice and the diversity of types. First, we fix an arbitrary problem instance, and we find that the explorable set stays the same if we transition from public types to reported types, and can only decrease if we transition from reported types to private types\jmcomment{Reviewer 2: not a valid sentence}. We provide a concrete example when the latter transition makes a huge difference. Second, we vary the distribution $\DT$ of agent types. For public types (and therefore also for reported types), we find that the explorable set is determined by the support set of $\DT$. Further, if we increase the support set, then the explorable set can only increase. In other words, \emph{diversity of agent types helps exploration}. We provide a concrete example when the explorable set increases very substantially even if the support set increases by a single type. However, for private types the picture is quite different: we provide an example when \emph{diversity hurts}, in the same sense as above. Intuitively, with private types, diversity muddles the information available to the principal making it harder to learn about the state of the world, whereas for public types diversity helps the principal refine her belief about the state.
+
+\xhdr{Public Types.} Our recommendation policy for public types matches the benchmark of ``best explorable action'' in the long run, i.e., after a ``constant" number of rounds (which depends on the problem instance but not the time horizon). While it is easy to prove that such a policy exists, the challenge is to provide it as an explicit procedure. {\bf NSI: cite old paper here and say we differentiate by providing it as an explicit procedure? maybe also say ``As a warm-up, we first develop a recommendation policy for public types.'' at the beginning of this paragraph so people don't think it's our main result.}
+
+Our policy focuses on exploring all explorable type-action pairs. Exploration needs to proceed gradually, whereby exploring one action may enable the policy to explore another. In fact, exploring some action for one type may enable the policy to explore some action for another type. Accordingly, our policy proceeds in phases: in each phase, we explore all actions for each type that can be explored ``immediately", with information available in the beginning of the phase.
+
+
+An important building block is the analysis of the single-round game. We use information theory to characterize how much state-relevant information the principal has. In particular, we prove a version of \emph{information-monotonicity}: essentially, the set of all explorable type-action pairs can only increase if the principal has more information.
+
+
+\xhdr{Beyond public types.}
+{\bf NSI: Say ``As our main contribution, we develop a policy for private types.''?} For private or reported types, recommending one particular action to the current agent is not very meaningful because the agents' type is not yet known to the principal. Instead, one can recommend a \emph{menu}: a mapping from agent types to actions. Analogous to the case of public types, we focus on explorable menus and gradually explore all such menus, eventually matching the Bayesian-expected reward of the best explorable menu.
+%
+\OMIT{Without loss of generality, we restrict to  Bayesian-incentive compatible (BIC) policies: essentially, policies that output menus such that the agents are incentivized to follow them. The issue of explorability is now about menus: a menu is called \emph{explorable} if some BIC policy recommends this menu in some round with a positive probability. As some menus might not be explorable, we are interested in the ``best explorable menu": an explorable menu with a largest expected reward for the realized state of the world. Our recommendation policy for private types competes with this benchmark, eventually matching its Bayesian-expected reward. Our policy focuses on exploring all explorable menus, and proceeds gradually, whereby exploring one menu may enable the policy to explore another.}
+%
+One difficulty is that exploring a given menu does not immediately reveal the reward of a particular type-action pair (because multiple types could map to the same action). Consequently, even keeping track of what the policy knows is now non-trivial. The analysis of the single-round game becomes more involved, as one needs to argue about ``approximate information-monotonicity". To handle these issues, our recommendation policy satisfies only a relaxed version of incentive-compatibility.
+
+Our policy for reported types does much better: we show that in the long run it matches our benchmark for public types. This may seem counterintuitive because ``reported types" are completely useless to the principal in the single-round game (whereas public types are very useful). Essentially, we reduce the problem to the public types case, at the cost of a much longer exploration.

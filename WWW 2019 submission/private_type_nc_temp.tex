@@ -1,0 +1,66 @@
+%!TEX root = main.tex
+
+\section{Bayesian Exploration with Private Types and No Communication (Approach 1)}
+
+
+
+\subsection{Exporability and Benchmark}
+
+\begin{definition}
+A menu $m: \varTheta \rightarrow \A$ is a mapping from the type space $\varTheta$ to the action space $\A$. We use $\M$ to denote the set of all menus.
+\end{definition}
+
+\begin{claim}
+Each single round of a BIC scheme can be considered as a distribution of menus.
+\end{claim}
+
+\begin{definition}
+A menu $m$ is eventually-explorable, for a given state $\omega$, if there exists a BIC recommendation policy $\pi$ and some round $t$ such that $\Pr[\pi^t= m]> 0$. The set of all such menus is denoted as $\M_{\omega}^{exp}$.
+\end{definition}
+
+\begin{definition}[Benchmark]
+Define benchmark as 
+\[
+\OPT = \sum_{\theta \in \varTheta, \omega\in \varOmega} \Pr[\omega] \cdot \Pr[\theta] \cdot \max_{m \in \M_{\omega}^{exp}} u(\theta, m(\theta), \omega).
+\]
+\end{definition}
+
+\begin{claim}
+Any $\delta$-BIC recommendation policy of $T$ rounds has expected total reward at most $T \cdot\OPT$.  
+\end{claim}
+
+\begin{theorem}
+\label{thm:private_nocc}
+We have a BIC recommendation policy of $T$ rounds with expected total reward at least $\left(T - C \right) \cdot \OPT$. 
+\end{theorem}
+
+\subsection{BIC Exploration Scheme with Sample Distributions}
+In this subsection, we consider a simpler case in which the description of the distribution of samples of a menu is directly given to the scheme. Samples of a menu is defined as following: 
+\begin{definition}[Samples of a Menu]
+Given a menu $m$ and an agent's type $\theta$ sampled from the type distribution, an action-reward pair will be deteremined assuming the agent is following the menu. Such action-reward pair is called a sample of the menu $m$. 
+\end{definition}
+Notice that the description of the distribution of samples of a menu $m$ is a deterministic function of $m$ and state $\omega$. 
+
+In this simpler setting, we can also define eventually-explorable menus and the benchmark. To distiguish this simpler setting with the original setting, we put a $\Ds$ in the notations:
+
+\begin{definition}
+A menu $m$ is eventually-explorable in the simpler setting, for a given state $\omega$, if there exists a BIC recommendation policy $\pi$ in the simpler setting and some round $t$ such that $\Pr[\pi^t= m]> 0$. The set of all such menus is denoted as $\Ds\M_{\omega}^{exp}$.
+\end{definition}
+
+\begin{definition}[Benchmark]
+Define benchmark in the simpler setting as 
+\[
+\Ds\OPT = \sum_{\theta \in \varTheta, \omega\in \varOmega} \Pr[\omega] \cdot \Pr[\theta] \cdot \max_{m \in \Ds\M_{\omega}^{exp}} u(\theta, m(\theta), \omega).
+\]
+\end{definition}
+
+To connect the simpler setting with the original setting, we use the following claim to show that simpler setting is easier in terms of exploration and has a no smaller benchmark.
+\begin{claim}
+$\Ds OPT \geq OPT$ and for all $\omega$, $\M_{\omega}^{exp} \subseteq \Ds\M_{\omega}^{exp}$. 
+\end{claim}
+
+\begin{theorem}
+\label{thm:private_noccd}
+We have a BIC recommendation policy in the simpler setting of $T$ rounds with expected total reward at least $\left(T - C \right) \cdot \OPT$. 
+\end{theorem}
+
