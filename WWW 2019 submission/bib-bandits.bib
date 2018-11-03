@@ -1,6 +1,52 @@
 % proc # "" #
 
+
+%%%%%% greedy %%%%%%
+
+
+@inproceedings{kannan2018smoothed,
+  title={A Smoothed Analysis of the Greedy Algorithm for the Linear Contextual Bandit Problem},
+  author={Kannan, Sampath and Morgenstern, Jamie and Roth, Aaron and Waggoner, Bo and Wu, Zhiwei Steven},
+  booktitle = NIPS,
+  year={2018}
+}
+
+@article{bastani2017exploiting,
+  title={Mostly Exploration-Free Algorithms for Contextual Bandits},
+  author={Bastani, Hamsa and Bayati, Mohsen and Khosravi, Khashayar},
+  note = {Working paper},
+  journal={CoRR arXiv:1704.09011},
+  year={2018}
+}
+
+@article{practicalCB-arxiv18,
+  author    = {Alberto Bietti and Alekh Agarwal and John Langford},
+  title     = {Practical Evaluation and Optimization of Contextual Bandit Algorithms},
+  year      = {2018},
+  journal={CoRR arXiv:1802.04064},
+}
+
+
+
+%%%%%%%%%%%%
+
+@article{Perchet2015BatchedBP,
+author = "Perchet, Vianney and Rigollet, Philippe and Chassang, Sylvain and Snowberg, Erik",
+doi = "10.1214/15-AOS1381",
+fjournal = "The Annals of Statistics",
+journal = "Ann. Statist.",
+month = "04",
+number = "2",
+pages = "660--681",
+publisher = "The Institute of Mathematical Statistics",
+title = "Batched bandit problems",
+url = "https://doi.org/10.1214/15-AOS1381",
+volume = "44",
+year = "2016"
+}
+
 %%%%%%% Dueling bandits %%%%%%%
+
 
 @article{Yue-dueling12,
   author    = {Yisong Yue and
@@ -310,7 +356,7 @@
    journal 	= "J. Amer. Statist. Assoc.",
    volume 	= "74",
    number	= "368",
-   pagesX 	= {799–-806},
+   pagesX 	= {799ï¿½-806},
    year 	= {1979}
 } % "bandits with covariates"
 
@@ -320,7 +366,7 @@
    journal 	= "IEEE Trans. on Automatic Control",
    volume 	= "50",
    number	= "3",
-   pages 	= {338–355},
+   pages 	= {338ï¿½355},
    year 	= {2005}
 } % "bandits with covariates"
 
@@ -400,13 +446,6 @@
  author = {Alina Beygelzimer and John Langford and Lihong Li and Lev Reyzin and Robert E. Schapire},
  BOOKTITLE    = proc # "14th" # AISTATS,
  year = {2011},
-}
-
-@inproceedings{regressor_elim,
- title = {Contextual Bandit Learning Under the Realizability Assumption},
- author = {Alekh Agarwal and Miroslav Dud{\'{\i}}ik and Satyen Kale and John Langford},
- BOOKTITLE    = proc # "15th" # AISTATS,
- year = {2012},
 }
 
 @inproceedings{monster-icml14,
@@ -589,6 +628,20 @@
 
 
 %%%%%%%%% BOOKS, SURVEYS, THESIS, LECTURE NOTES %%%%%%%%%%%%%%%
+
+@article{TS-survey-FTML18,
+  author    = {Daniel Russo and
+               Benjamin Van Roy and
+               Abbas Kazerouni and
+               Ian Osband and
+               Zheng Wen},
+  title     = {A Tutorial on Thompson Sampling},
+  journal   = {Foundations and Trends in Machine Learning},
+  volume    = {11},
+  number    = {1},
+  pages     = {1--96},
+  year      = {2018}
+}
 
 @misc{Counterfactual-turorial-sigir16,
     author = "Thorsten Joachims and Adith Swaminathan",
@@ -895,6 +948,16 @@
    year 	= "2011"
 }
 
+@inproceedings{Maillard-colt11-KL,
+  author    = {Odalric{-}Ambrym Maillard and
+               R{\'{e}}mi Munos and
+               Gilles Stoltz},
+  title     = {A Finite-Time Analysis of Multi-armed Bandits Problems with Kullback-Leibler
+               Divergences},
+  booktitle = proc # "24th" #COLT,
+  year      = {2011}
+}
+
 @article{Auer-UCB-10,
  author = {Peter Auer and Ronald Ortner},
  title = {UCB revisited: Improved regret bounds for the stochastic multi-armed bandit problem},
@@ -1108,6 +1171,38 @@
   booktitle = proc # "27th" # COLT,
   pages     = {975--999},
   year      = {2014}
+}
+
+@inproceedings{Grill-nips15,
+  author    = {Jean{-}Bastien Grill and
+               Michal Valko and
+               R{\'{e}}mi Munos},
+  title     = {Black-box optimization of noisy functions with unknown smoothness},
+  booktitle = proc # "28th" # NIPS,
+  year      = {2015}
+}
+
+@inproceedings{AlgoChaining-colt17,
+  author    = {Nicol{\`{o}} Cesa{-}Bianchi and
+               Pierre Gaillard and
+               Claudio Gentile and
+               S{\'{e}}bastien Gerchinovitz},
+  title     = {Algorithmic Chaining and the Role of Partial Feedback in Online Nonparametric
+               Learning},
+  booktitle = proc # "30th" # COLT,
+  pages     = {465--481},
+  year      = {2017}
+}
+
+@article{Rakhlin-jmlr15,
+  author    = {Alexander Rakhlin and
+               Karthik Sridharan and
+               Ambuj Tewari},
+  title     = {Online learning via sequential complexities},
+  journal   = JMLR,
+  volume    = {16},
+  pages     = {155--186},
+  year      = {2015}
 }
 
 %%%%%%%% DETERMINISTIC GLOBAL OPTIMIZATION %%%%%%%%
@@ -1560,7 +1655,7 @@
    }
 
 @article{BertsimasMora-2000,
-  author       = {D. Bertsimas and J. Ni˜no-Mora},
+  author       = {D. Bertsimas and J. Niï¿½no-Mora},
   title        = "{Restless bandits, linear programming relaxations, and a primal-dual index heuristic}",
   journal      = "Operations Research",
   volume       = "48",
@@ -1570,7 +1665,7 @@
 }
 
 @article{NinoMora-01,
-  author       = {J. Ni˜no-Mora},
+  author       = {J. Niï¿½no-Mora},
   title        = "{Restless bandits, partial conservation laws and indexability}",
   journal      = "Advances in Applied Probability",
   volume       = "33",
@@ -1663,7 +1758,7 @@
    journal 	= "Biometrika",
    volume 	= "25",
    number	= "3-4",
-   pages 	= {285–294},
+   pages 	= {285ï¿½294},
    year 	= {1933}
 }
 
@@ -1693,13 +1788,13 @@
    title 	= "{A modern bayesian look at the multi-armed bandit}",
    journal 	= "Applied Stochastic Models in Business and Industry",
    volume 	= "26",
-   pages 	= {639–658},
+   pages 	= {639ï¿½658},
    year 	= {2010}
 }
 
 @inproceedings{Thompson-Bing-icml10,
    author = 	"Thore Graepel and Joaquin Quinonero Candela and Thomas Borchert and Ralf Herbrich.",
-   title = 	"{Web-scale Bayesian click-through rate prediction for sponsored search advertising in Microsoft’s Bing search engine.}",
+   title = 	"{Web-scale Bayesian click-through rate prediction for sponsored search advertising in Microsoftï¿½s Bing search engine.}",
    booktitle 	= proc # "27th" # ICML,
    pages 	= {13-20},
    year 	= "2010"

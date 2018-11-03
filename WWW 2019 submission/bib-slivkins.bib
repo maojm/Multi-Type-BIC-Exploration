@@ -399,6 +399,59 @@ year = {2016}
   year      = {2017}
 }
 
+%%%%%%%% DYNAMIC PRICING AND BwK
+
+@Misc{AdsWithBudgets-arxiv13,
+  author    = {Aleksandrs Slivkins},
+  title		= {Dynamic Ad Allocation: Bandits with Budgets},
+  howpublished = "A technical report on {\tt arxiv.org/abs/1306.0155}",
+  month     = "June",
+  year =         "2013"
+}
+
+@inproceedings{cBwK-colt14,
+  author =       "Ashwinkumar Badanidiyuru and John Langford and Aleksandrs Slivkins",
+  title =        "Resourceful Contextual Bandits",
+  booktitle 	= proc # "27th" # COLT,
+  year = "2014"
+}
+
+@Misc{BwK-full,
+  author =       "Ashwinkumar Badanidiyuru and Robert Kleinberg and Aleksandrs Slivkins",
+  title =        "Bandits with Knapsacks",
+  howpublished = "A technical report on {\tt arxiv.org}.",
+  month     = "May",
+  year =         "2013",
+}
+
+
+@article{BwK-focs13,
+  author =       "Ashwinkumar Badanidiyuru and Robert Kleinberg and Aleksandrs Slivkins",
+  title =        "Bandits with Knapsacks",
+  journal   = JACM,
+  volume    = {65},
+  number    = {3},
+  year      = {2018},
+  note = "Preliminary version in {\em FOCS 2013}."
+}
+
+
+@misc{DynPricing-tutorial-ec15,
+    author = {Aleksandrs Slivkins and Assaf Zeevi},
+    title = {Dynamic Pricing with Model Uncertainty},
+    year = {2015},
+    note = {Tutorial at \emph{ACM EC 2015}. Slides can be found at
+        {\tt http://slivkins.com/work/EC15-tutorial-merged.pdf}.}
+}
+
+@inproceedings{Karthik-aistats18,
+  author    = {Karthik Abinav Sankararaman and Aleksandrs Slivkins},
+  title     = {Combinatorial Semi-Bandits with Knapsacks},
+  booktitle = proc # AISTATS,
+  pages     = {1760--1770},
+  year      = {2018}
+}
+
 
 %%%%%%% AMD %%%%%%%%%%%%%%
 
@@ -459,25 +512,6 @@ year = {2016}
   note      = {Special issue for \emph{13th ACM EC}, 2012.}
 }
 
-@Misc{BwK-full,
-  author =       "Ashwinkumar Badanidiyuru and Robert Kleinberg and Aleksandrs Slivkins",
-  title =        "Bandits with Knapsacks",
-  howpublished = "A technical report on {\tt arxiv.org}.",
-  month     = "May",
-  year =         "2013",
-}
-
-
-@article{BwK-focs13,
-  author =       "Ashwinkumar Badanidiyuru and Robert Kleinberg and Aleksandrs Slivkins",
-  title =        "Bandits with Knapsacks",
-  journal   = JACM,
-  volume    = {65},
-  number    = {3},
-  year      = {2018},
-  note = "Preliminary version in {\em FOCS 2013}."
-}
-
 @inproceedings{BKS2-ec13,
   author    = {Moshe Babaioff and Robert Kleinberg and Aleksandrs Slivkins},
   title     = {Multi-parameter mechanisms with implicit payment computation},
@@ -493,22 +527,6 @@ year = {2016}
   month     = "February",
   year =         "2013"
 }
-
-@Misc{AdsWithBudgets-arxiv13,
-  author    = {Aleksandrs Slivkins},
-  title		= {Dynamic Ad Allocation: Bandits with Budgets},
-  howpublished = "A technical report on {\tt arxiv.org/abs/1306.0155}",
-  month     = "June",
-  year =         "2013"
-}
-
-@inproceedings{cBwK-colt14,
-  author =       "Ashwinkumar Badanidiyuru and John Langford and Aleksandrs Slivkins",
-  title =        "Resourceful Contextual Bandits",
-  booktitle 	= proc # "27th" # COLT,
-  year = "2014"
-}
-
 
 @inproceedings{ICexploration-ec15,
   author    = {Yishay Mansour and
@@ -536,7 +554,8 @@ year = {2016}
                Vasilis Syrgkanis},
   title     = {Bayesian Incentive-Compatible Bandit Exploration},
   howpublished = {Working paper},
-  note      = "Available at {\tt https://arxiv.org/abs/1502.04147}. Preliminary version in \emph{ACM EC 2015}",
+  note      = "Available at {\tt https://arxiv.org/abs/1502.04147}.
+  Preliminary version in \emph{ACM EC 2015}. To be published in \emph{Operations Research}.",
   year      = {2018}
 }
 
@@ -548,18 +567,11 @@ year = {2016}
                Steven Wu},
   title     = {Bayesian Exploration: Incentivizing Exploration in Bayesian Games},
   howpublished = {Working paper},
-  note      = "Available at {\tt https://arxiv.org/abs/1602.07570}. Preliminary version in \emph{ACM EC 2016}",
+  note      = "Available at {\tt https://arxiv.org/abs/1602.07570}.
+  Preliminary version in \emph{ACM EC 2016}",
   year      = {2018}
 }
 
-
-@misc{DynPricing-tutorial-ec15,
-    author = {Aleksandrs Slivkins and Assaf Zeevi},
-    title = {Dynamic Pricing with Model Uncertainty},
-    year = {2015},
-    note = {Tutorial at \emph{ACM EC 2015}. Slides can be found at
-        {\tt http://slivkins.com/work/EC15-tutorial-merged.pdf}.}
-}
 
 @misc{IncentivizingExploration-tutorial-ec17,
     author = {Robert D. Kleinberg and Aleksandrs Slivkins},
@@ -578,7 +590,31 @@ year = {2016}
   year      = {2018}
 }
 
+@inproceedings{externalities-colt18,
+  author    = {Manish Raghavan and
+               Aleksandrs Slivkins and
+               Jennifer Wortman Vaughan and
+               Zhiwei Steven Wu},
+  title     = {The Externalities of Exploration and How Data Diversity Helps Exploitation},
+  booktitle = proc # COLT,
+  pages     = {1724--1738},
+  year      = {2018}
+}
 
+
+@misc{Jieming-multitypes18,
+  author    = {Nicole Immorlica and Jieming Mao and Aleksandrs Slivkins and Steven Wu},
+  title     = {Bayesian Exploration with Heterogenous Agents},
+  howpublished = {Working paper},
+  year      = {2018}
+}
+
+@misc{Jieming-unbiased18,
+  author    = {Nicole Immorlica and Jieming Mao and Aleksandrs Slivkins and Steven Wu},
+  title     = {Incentivizing Exploration with Unbiased History},
+  howpublished = {Working paper},
+  year      = {2018}
+}
 
 
 %%%%%%%%%%% CROWDSOURCING
