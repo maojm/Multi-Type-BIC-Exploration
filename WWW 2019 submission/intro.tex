@@ -2,7 +2,7 @@
 \section{Introduction}
 %\jmcomment{Reviewer 4: the authors interchange between $l$ and $\ell$. Please commit to one of the two and use this consistently.}
 Recommendation systems are ubiquitous in online markets \asedit{(\eg Netflix for movies, Amazon for products, Yelp for restaurants, etc.),
-%Well-known examples include recommendations for movies 
+%Well-known examples include recommendations for movies
 %(\eg  Netflix), products (\eg  Amazon), and restaurants (\eg  Yelp).
 %, and vacations (\eg Tripadvisor).
 high-quality recommendations being a crucial part of their value proposition.}
@@ -18,7 +18,7 @@ A social planner -- a hypothetical entity that controls users for the sake of co
 \asedit{However, a given user who decides to ``explore" typically suffers all the downside of this decision, whereas the upside (improved recommendations) is spread over many users in the future. Therefore, users' incentives are skewed in favor of exploitation. As a result, observations may be collected at a slower rate, and suffer from selection bias (\eg  ratings of a particular movie may mostly come from people who like this type of movies). Moreover, in some natural but idealized examples (\eg  \cite{Kremer-JPE14,ICexploration-ec15}) optimal recommendations are never found because they are never explored.}
 
 Thus, we have a problem of \emph{incentivizing exploration}.
-\asedit{Providing monetary incentives can be financially or technologically unfeasible, and relying on voluntary exploration can lead to selection biases.} A recent line of work, started by \cite{Kremer-JPE14}, relies on the inherent \emph{information asymmetry} between the recommendation system and a user. These papers posit a simple model, termed \emph{Bayesian Exploration} in \cite{ICexplorationGames-ec16}. The recommendation system is a ``principal" that interacts with a stream of self-interested ``agents" arriving one by one. Each agent needs to make a decision: take an action from a given set of alternatives. The principal issues a recommendation,
+\asedit{Providing monetary incentives can be financially or technologically unfeasible, and relying on voluntary exploration can lead to selection biases.} A recent line of work, started by \cite{Kremer-JPE14}, relies on the inherent \emph{information asymmetry} between the recommendation system and a user. These papers posit a simple model, termed \emph{Bayesian Exploration} in \cite{ICexplorationGames-ec16-working}. The recommendation system is a ``principal" that interacts with a stream of self-interested ``agents" arriving one by one. Each agent needs to make a decision: take an action from a given set of alternatives. The principal issues a recommendation,
 %perhaps along with some other information,
 and observes the outcome, but cannot direct the agent to take a particular action. The problem is to design a ``recommendation policy" for the principal that learns over time to make good recommendations \emph{and} ensures that the agents are incentivized to follow this recommendation.
 %Essentially, this is a multi-armed bandit problem with substantial constraints due to the user incentives.
@@ -34,7 +34,7 @@ We consider three models, depending on whether and when the agent type is reveal
 the principal asks agents to report the type after the recommendation is issued, \eg in a survey. While the agents are allowed to misreport their respective types, they have no incentives to do that.}
 and the type is never revealed (\emph{private types}).
 %
-We design a near-optimal recommendation policy for each modeling choice. 
+We design a near-optimal recommendation policy for each modeling choice.
 \asdelete{Our policies compete with the ``best-in-hindsight"
 policy: a recommendation policy whose Bayesian-expected reward is optimal for a particular problem instance.}
 %\jmcomment{Reviewer 2: what is a particular problem instance?}
@@ -45,14 +45,14 @@ A distinctive feature of Bayesian Exploration is that it may be impossible to in
 
 \xhdr{Comparative statics for explorability.}
 We study how the set of all explorable type-action pairs (\emph{explorable set}) is affected by the model choice and the diversity of types. First, \asedit{we find that for each problem instance} the explorable set stays the same if we transition from public types to reported types, and can only become smaller if we transition from reported types to private types.
-%\jmcomment{Reviewer 2: not a valid sentence}. 
+%\jmcomment{Reviewer 2: not a valid sentence}.
 We provide a concrete example when the latter transition makes a huge difference. Second, we vary the distribution $\DT$ of agent types. For public types (and therefore also for reported types), we find that the explorable set is determined by the support set of $\DT$. Further, if we make the support set larger, then the explorable set can only become larger. In other words, \emph{diversity of agent types helps exploration}. We provide a concrete example when the explorable set increases very substantially even if the support set increases by a single type. However, for private types the picture is quite different: we provide an example when \emph{diversity hurts}, in the same sense as above. Intuitively, with private types, diversity muddles the information available to the principal making it harder to learn about the state of the world, whereas for public types diversity helps the principal refine her belief about the state.
 
-\asedit{\xhdr{Our techniques.} 
+\asedit{\xhdr{Our techniques.}
 As a warm-up, we first develop a recommendation policy for public types. In the long run, our policy}
-matches the benchmark of ``best explorable action''.  
+matches the benchmark of ``best explorable action''.
 \asdelete{in the long run, i.e., after a ``constant" number of rounds (which depends on the problem instance but not the time horizon).}
-While it is easy to prove that such a policy exists, the challenge is to provide it as an explicit procedure. 
+While it is easy to prove that such a policy exists, the challenge is to provide it as an explicit procedure.
 %{\bf NSI: cite old paper here and say we differentiate by providing it as an explicit procedure? maybe also say ``As a warm-up, we first develop a recommendation policy for public types.'' at the beginning of this paragraph so people don't think it's our main result.}
 % A.S.: the old paper just doesn't do it.
 Our policy focuses on exploring all explorable type-action pairs. Exploration needs to proceed gradually, whereby exploring one action may enable the policy to explore another. In fact, exploring some action for one type may enable the policy to explore some action for another type. Our policy proceeds in phases: in each phase, we explore all actions for each type that can be explored using information available at the start of the phase.
