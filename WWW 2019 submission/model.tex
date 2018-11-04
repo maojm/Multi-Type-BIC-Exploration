@@ -86,12 +86,13 @@ For public types, a type-action pair $(\theta,a)\in \Theta\times \A$ is called \
 Likewise, for private types, a menu is called \emph{eventually-explorable} in state $\omega$ if there is some BIC recommendation policy that eventually recommends this menu with positive probability. The set of all such menus is denoted $\MExp_{\omega}$.
 
 Our benchmark is the best eventually-explorable recommendation for each type. For public and private types, resp., this is
-\begin{align*}
-\OPTpub &= \sum_{\theta \in \varTheta, \omega\in \varOmega} \Pr[\omega] \cdot \Pr[\theta] \cdot \max_{a \in \AExp_{\omega,\theta}} u(\theta, a, \omega).\\
-    %&\qquad\text{(for public types: actions)}\\
-\OPTpri &= \sum_{\omega\in \varOmega} \Pr[\omega] \cdot\max_{m \in \MExp_{\omega}}\sum_{\theta \in \varTheta} \Pr[\theta] \cdot  u(\theta, m(\theta), \omega).
+\begin{align}
+\OPTpub &= \sum_{\theta \in \varTheta, \omega\in \varOmega} \Pr[\omega] \cdot \Pr[\theta] \cdot \max_{a \in \AExp_{\omega,\theta}} u(\theta, a, \omega).
+    %&\qquad\text{(for public types: actions)}
+    \label{eq:bench-public}\\
+\OPTpri &= \sum_{\omega\in \varOmega} \Pr[\omega] \cdot\max_{m \in \MExp_{\omega}}\sum_{\theta \in \varTheta} \Pr[\theta] \cdot  u(\theta, m(\theta), \omega).\label{eq:bench-private}
 %&\qquad\text{(for private types: menus)}.
-\end{align*}
+\end{align}
 We have $\OPTpub \geq \OPTpri$, essentially because any BIC policy for private types can be simulated as a BIC policy for public types. We provide an example (Example \ref{exp:simple}) when $\OPTpub > \OPTpri$.
 
 \OMIT{
