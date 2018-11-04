@@ -1,6 +1,6 @@
 %!TEX root = main.tex
 
-\section{Bayesian Exploration with Public Types}
+\section{Public Types}
 \label{sec:public}
 
 In this section, we develop our recommendation policy for public types. Throughout, $\OPT = \OPTpub$.
@@ -15,8 +15,8 @@ There exists a BIC recommendation policy with expected total reward at least $\l
 \label{sec:public_single}
 
 \xhdr{Signal and explorability.}
-We first analyze what actions can be explored by a BIC policy in a single round $t$ of Bayesian exploration for public types, as a function of the history. Throughout, we suppress $\theta$ and $t$ from our notation. 
-%and let $\theta$ be the agent's type.  
+We first analyze what actions can be explored by a BIC policy in a single round $t$ of Bayesian exploration for public types, as a function of the history. Throughout, we suppress $\theta$ and $t$ from our notation.
+%and let $\theta$ be the agent's type.
 Let $S$ be a random variable equal to the history at round $t$ (referred to as a {\em signal} throughout this section), $s$ be a realization of $S$, and $\S=\DT(\Omega,\mH)$ be the signal structure.  Note different policies induce different histories and hence different signal structures.  Thus it will be important to be explicit about the signal structure throughout this section.
 
 %We posit that the principal receives a signal $S$ before the round starts, where $S$ is a random variable.  The \emph{signal structure} of $S$, denoted $\S$, consists of the support set $\X$ and a joint distribution of $(S, \omega_0)$. Here $S$ represents the history of the previous rounds and the internal random seed, and the signal structure represents information about $S$ available to the current agent. However, for this subsection it is more lucid to consider an arbitrary signal structure.
@@ -54,20 +54,19 @@ Intuitively, the condition $I(S';\omega_0|S)= 0$  means if one is given random v
 \begin{proof}
 Consider any BIC recommendation policy $\pi'$ for signal structure $\S'$. We construct $\pi$ for signal structure $\S$ by setting $\Pr[\pi(s) = a] = \sum_{s'} \Pr[\pi'(s') = a] \cdot Pr[S' = s'\mid S = s]$. Notice that $I(S' ; \omega_0\mid S) = 0$ implies $S'$ and $\omega_0$ are independent given $S$, i.e $\Pr[S' = s'\mid S=s] \cdot \Pr[\omega_0 = \omega\mid S=s] = \Pr[S'=s', \omega_0 = \omega\mid S=s]$ for all $s,s',\omega$. Therefore, for all $s'$ and $\omega$,
 \begin{align*}
-\textstyle
-&\sum_s \Pr[S' = s'\mid S = s] \cdot \Pr[\omega_0 = \omega, S= s]\\
-=& \textstyle \sum_s \Pr[S' = s'\mid S=s]
+& \textstyle \sum_s \Pr[S' = s'\mid S = s] \cdot \Pr[\omega_0 = \omega, S= s]\\
+&\qquad=\textstyle \sum_s \Pr[S' = s'\mid S=s]
     \cdot \Pr[\omega_0 = \omega\mid S=s] \cdot \Pr[S=s] \\
-=& \textstyle  \sum_s \Pr[S'=s',\omega_0 =\omega\mid S=s] \cdot \Pr[S=s] \\
-= &\textstyle  \sum_s \Pr[S=s,S'=s',\omega_0 =\omega] \\
-= &\Pr[\omega_0 =\omega, S'=s'].
+&\qquad= \textstyle  \sum_s \Pr[S'=s',\omega_0 =\omega\mid S=s] \cdot \Pr[S=s] \\
+&\qquad=\textstyle  \sum_s \Pr[S=s,S'=s',\omega_0 =\omega] \\
+&\qquad=\Pr[\omega_0 =\omega, S'=s'].
 \end{align*}
 
-Therefore $\pi'$ being BIC implies that $\pi$ is also BIC. Indeed, for any $a,a' \in \A$ and $\theta \in \varTheta$, by plugging in the definition of $\pi$, 
+Therefore $\pi'$ being BIC implies that $\pi$ is also BIC. Indeed, for any $a,a' \in \A$ and $\theta \in \varTheta$, by plugging in the definition of $\pi$,
 \begin{align*}
 &\textstyle \sum_{\omega,s}\; \Pr[\omega_0 = \omega, S = s] \cdot (u(\theta,a', \omega) - u(\theta,a,\omega)) \cdot \Pr[\pi(s) = a] \\
-=& \textstyle \sum_{\omega,s'}\;\Pr[\omega_0 = \omega, S' = s'] \cdot (u(\theta,a', \omega) - u(\theta,a,\omega)) \cdot \Pr[\pi'(s') = a]\\
-\geq& 0.
+&\;= \textstyle \sum_{\omega,s'}\;\Pr[\omega_0 = \omega, S' = s'] \cdot (u(\theta,a', \omega) - u(\theta,a,\omega)) \cdot \Pr[\pi'(s') = a]\\
+&\;\geq 0.
 \end{align*}
 
 %It's easy to check $\pi$ is BIC.
@@ -131,7 +130,9 @@ L_{\theta} \geq \max_{(a,s)\in \A\times \X \text{ with }\quad \Pr[\pi^{\max}(s)=
 \end{align}
 
 This step is essentially from \cite{ICexplorationGames-ec16-working};
-\jmcomment{Reviewer 2 mentioned that we cite your EC paper twice. I know Alex wants to show that this is from your working paper which is not the version for EC.  But it might confuse the reviewer. Not sure if we should do this.}
+%%%%%%% A.S. removed the citation to the ec16 version.
+\OMIT{\jmcomment{Reviewer 2 mentioned that we cite your EC paper twice. I know Alex wants to show that this is from your working paper which is not the version for EC.  But it might confuse the reviewer. Not sure if we should do this.}}
+%%%%%%%
  we provide the details below for the sake of completeness.
 The idea is to put $C_a = L_{\theta} \cdot \Pr[\pi^{\max}(S) = a]$ copies of each action $a$ into a sequence of length $L_{\theta}$ and randomly permute the sequence.
 \jmcomment{Reviewer 2: Equation (5) used $\pi^{max}(s)$, but rightly after $\pi^{max}(S)$ is used. JM: reviewer's confusion about realized vs random values continue.}
@@ -176,7 +177,7 @@ MaxExplore runs in time polynomial in $L_{\theta}$, $|\A|$, $|\varOmega|$ and $|
 \jmcomment{
 Reviewer 2: In the definition of Maximal Exploration, you mentioned``the marginal distribution at each location is $\pi^max$''. Whose marginal distribution do you mean? Actions’? But $\pi^{max}$ is a randomized map from S to actions, how could it be a marginal distribution of actions? Do you mean $\pi^{max}(S)$?
 
-JM: Marginal distribution means is the distribution of one action not the distribution of joint actions. 
+JM: Marginal distribution means is the distribution of one action not the distribution of joint actions.
 }
 \subsection{Main Recommendation Policy}
 \label{sec:public_main}
@@ -197,7 +198,7 @@ Algorithm \ref{alg:public_main} is the main procedure of our recommendation poli
 		Call thread $\thread(\theta_t)$.
 			\IF {every type $\theta$ has finished $L_{\theta}$ rounds in the current phase ($i_{\theta} \geq L_{\theta}$)}
 				\STATE Start a new phase: $\ell \leftarrow \ell + 1$.
-				\STATE Let $S_\ell$ be the signal for phase $\ell$: 
+				\STATE Let $S_\ell$ be the signal for phase $\ell$:
                  the set of all observed type-action-reward triples.
         \STATE Let $\S_\ell$ be the signal structure for $S_\ell$ given the realized type sequence $(\theta_1,...,\theta_t)$.
 			\ENDIF
@@ -289,16 +290,16 @@ I(S'; \omega_0\mid  S)
 By the chain rule of mutual information, we have
 \begin{align*}
  &I(H_1,...,H_{l-1}; \omega_0\mid S, R) \\
- &= I(H_1;\omega_0\mid S,R) + \cdots + I(H_{l-1}; \omega_0\mid S,R,H_1,...,H_{l-2}).
+ &\qquad = I(H_1;\omega_0\mid S,R) + \cdots + I(H_{l-1}; \omega_0\mid S,R,H_1,...,H_{l-2}).
 \end{align*}
 
 For all $t \in [l-1]$, we have
 \begin{align*}
 &I(H_t; \omega_0\mid S,R,H_1,...,H_{t-1}) \\
-=& I(\Theta_t, A_t, u(\Theta_t, A_t, \omega_0); \omega_0\mid S,R,H_1,...,H_{t-1}) \\
-=& I(\Theta_t ; \omega_0\mid S,R,H_1,...,H_{t-1})\\
-& +  I(A_t, u(\Theta_t, A_t, \omega_0); \omega_0\mid S,R,H_1,...,H_{t-1},\Theta_t) \\
-=& I(A_t, u(\Theta_t, A_t, \omega_0); \omega_0\mid S,R,H_1,...,H_{t-1},\Theta_t).
+&\qquad= I(\Theta_t, A_t, u(\Theta_t, A_t, \omega_0); \omega_0\mid S,R,H_1,...,H_{t-1}) \\
+&\qquad= I(\Theta_t ; \omega_0\mid S,R,H_1,...,H_{t-1})\\
+&\qquad\qquad+  I(A_t, u(\Theta_t, A_t, \omega_0); \omega_0\mid S,R,H_1,...,H_{t-1},\Theta_t) \\
+&\qquad= I(A_t, u(\Theta_t, A_t, \omega_0); \omega_0\mid S,R,H_1,...,H_{t-1},\Theta_t).
 \end{align*}
 Notice that the suggested action $A_t$ is a deterministic function of randomness of the recommendation policy $R$,  history of previous rounds $H_1,...,H_{t-1}$ and type in the current round $\Theta_t$. Also notice that, by induction hypothesis, $u(\Theta_t, A_t, \omega_0)$ is a deterministic function of $S,R,H_1,...,H_{t-1},\Theta_t, A_t$. Therefore we have
 \[
@@ -309,7 +310,7 @@ $ I(S'; \omega_0 \mid  S) = 0.$
 
 By Lemma \ref{lem:infomono}, we know that $\EX[\S'] \subseteq \EX[\S]$. For state $\omega$, there exists a signal $s'$ such that $\Pr[S'=s'\mid \omega_0 =\omega] >0 $ and $a \in \EX_{s'} [\S']$. Now let $s$ be the realized value of $S$ given $\omega_0 = \omega$, we know that $\Pr[S'=s'\mid S=s] >0$, so $a \in \EX_s[\S]$. By Claim \ref{clm:maxexplore}, we know that at least one agent of type $\theta$ in phase $\ell$ of Algorithm \ref{alg:public_main} will choose action $a$.
 
-Now we consider the case when $\ell > |\A| \cdot |\varTheta|$. Define Algorithm $E$ to be the variant of Algorithm \ref{alg:public_main} such that it only does exploration (removing the if-condition and exploitation in Algorithm \ref{alg:public_main}). For $\ell > |\A| \cdot |\varTheta|$, the above induction proof still work for Algorithm $E$, i.e. for a given state $\omega$, if an action $a$ of type $\theta$ can be explored by a BIC recommendation policy $\pi$ at round $\ell$, then such action is guaranteed to be explored by Algorithm $E$ by the end of phase $\ell$. Now we are going to argue that Algorithm $E$ won't explore any new action-type pairs after phase $|\A| \cdot |\varTheta|$. Call a phase exploring if in that phase Algorithm $E$ explores at least one new action-type pair. As there are  $ |\A| \cdot |\varTheta|$ type-action pairs, Algorithm $E$ can have at most $ |\A| \cdot |\varTheta|$ exploring phases. On the other hand, once Algorithm $E$ has a phase that is not exploring, because the signal stays the same after that phase, all phases afterwards are not exploring. Therefore Algorithm $E$ does not have any exploring phases after phase $|\A| \cdot |\varTheta|$. For $\ell > |\A| \cdot |\varTheta|$, the first $|   \A| \cdot |\varTheta|$ phases of Algorithm \ref{alg:public_main} explores the same set of type-action pairs as the first $\ell$ phases of Algorithm $E$.
+Now we consider the case when $\ell > |\A| \cdot |\varTheta|$. Define Algorithm $E$ to be the variant of Algorithm \ref{alg:public_main} such that it only does exploration (removing the if-condition and exploitation in Algorithm \ref{alg:public_main}). For $\ell > |\A| \cdot |\varTheta|$, the above induction proof still work for Algorithm $E$, i.e. for a given state $\omega$, if an action $a$ of type $\theta$ can be explored by a BIC recommendation policy $\pi$ at round $\ell$, then such action is guaranteed to be explored by Algorithm $E$ by the end of phase $\ell$. Now we are going to argue that Algorithm $E$ won't explore any new action-type pairs after phase $|\A| \cdot |\varTheta|$. Call a phase exploring if in that phase Algorithm $E$ explores at least one new action-type pair. As there are  $ |\A| \cdot |\varTheta|$ type-action pairs, Algorithm $E$ can have at most $ |\A| \cdot |\varTheta|$ exploring phases. On the other hand, once Algorithm $E$ has a phase that is not exploring, because the signal stays the same after that phase, all phases afterwards are not exploring. So, Algorithm $E$ does not have any exploring phases after phase $|\A| \cdot |\varTheta|$. For $\ell > |\A| \cdot |\varTheta|$, the first $|   \A| \cdot |\varTheta|$ phases of Algorithm \ref{alg:public_main} explores the same set of type-action pairs as the first $\ell$ phases of Algorithm $E$.
 \end{proof}
 
 \begin{proof}[Proof of Theorem \ref{thm:public}]
@@ -317,9 +318,9 @@ Algorithm \ref{alg:public_main} is BIC  by Claim \ref{clm:maxexplore}. By Lemma 
 Recall that the phase ends as soon as each type has shown up at least $L_{\theta}$ times. It follows that
 $ \E[N_\ell] \leq  \sum_{\theta\in\varTheta} \frac{L_{\theta}}{\Pr[\theta]}$.
 So, one can take $C = |\A|\cdot |\varTheta|\cdot \sum_{\theta\in\varTheta} \frac{L_{\theta}}{\Pr[\theta]}$.
-\end{proof} 
+\end{proof}
 \jmcomment{
-Reviewer 2: Above Section 3.3, I also did not follow the proof of Theorem 3.1. It claims that "Algorithm 2 always recommends the best explored action" after some phases, why? Is this a high-probability guarantee or 100 percent guarantee? It seems to me that this should have been a high-probability guarantee since there is a strictly positive probability that the agent comes at each round has exactly the same agent type and in this case you can never learn the other agent's best action. If so, what's the algorithm's success probability? If not, why the above is not a concern? At the end, I also did not see why C depends linearly on the expectation of $N_l$ (the duration of phase l). Do we need to guarantee that each type has shown up at least $L_{\theta}$ times FOR SURE, which may never happen if you get unlucky?  
+Reviewer 2: Above Section 3.3, I also did not follow the proof of Theorem 3.1. It claims that "Algorithm 2 always recommends the best explored action" after some phases, why? Is this a high-probability guarantee or 100 percent guarantee? It seems to me that this should have been a high-probability guarantee since there is a strictly positive probability that the agent comes at each round has exactly the same agent type and in this case you can never learn the other agent's best action. If so, what's the algorithm's success probability? If not, why the above is not a concern? At the end, I also did not see why C depends linearly on the expectation of $N_l$ (the duration of phase l). Do we need to guarantee that each type has shown up at least $L_{\theta}$ times FOR SURE, which may never happen if you get unlucky?
 
 JM: It seems the reviewer does not understand we are proving expected regret bound. The example mentioned by the reviewer will stop us from getting enough phases. But once we have enough phases, it is 100 percent guarantee.
-}
+} 

@@ -1,11 +1,11 @@
 %!TEX root = main.tex
 
-\section{Bayesian Exploration with Private Types}
+\section{Private Types}
 \label{sec:private_nc}
 
-Our recommendation policy for private types satisfies a relaxed version of the BIC property, called \emph{$\delta$-BIC}, where the right-hand side in \eqref{eq:model-BIC-menus} is $-\delta$ for some fixed $\delta>0$. We assume a more permissive behavioral model in which agents follow recommendations of such policy.
+Our recommendation policy for private types satisfies a relaxed version of the BIC property, called \emph{$\delta$-BIC}, where the right-hand side in \eqref{eq:model-BIC} is $-\delta$ for some fixed $\delta>0$. We assume a more permissive behavioral model in which agents obey such policy.
 
-The main result is as follows. (Throughout this section, $\OPT = \OPTpri$.)
+The main result is as follows. (Throughout, $\OPT = \OPTpri$.)
 
 
 \begin{theorem}
@@ -13,14 +13,14 @@ The main result is as follows. (Throughout this section, $\OPT = \OPTpri$.)
 Consider Bayesian Exploration with private types, and fix $\delta > 0$. There exists a $\delta$-BIC recommendation policy with expected total reward at least $\left(T - C \log T \right) \cdot \OPT$, where $C$ depends on the problem instance but not on time horizon $T$.
 \end{theorem}
 
-Our recommendation policy and proofs have a similar structure as the ones for public types. The recommendation policy proceeds in phases: in each phase, it explores all menus that can be explored given the information collected so far. The crucial step in the proof is to show that: 
+Our recommendation policy and proofs have a similar structure as the ones for public types. The recommendation policy proceeds in phases: in each phase, it explores all menus that can be explored given the information collected so far. The crucial step in the proof is to show that:
 
 \begin{property}
 \item the first $l$ phases of our recommendation policy explore all the menus that could be possibly explored by the first $l$ rounds of any BIC recommendation policy.
     \label{prop:private-exploration}
 \end{property}
 
-The new difficulty for private types comes from the fact that we are exploring menus instead of type-actions pairs, and we do not learn the reward of a particular type-action pair immediately. This is because a recommended menu may map several different types to the chosen action, so knowing the latter does not immediately reveal the agent's type. Moreover, the full ``outcome" of a particular menu is a distribution over action-reward pairs, it is, in general, impossible to learn this outcome exactly in any finite number of rounds.  Because of these issues, we cannot obtain Property \refprop{prop:private-exploration} exactly. Instead, we achieve an approximate version of this property, as long as we explore each menu enough times in each phase. 
+The new difficulty for private types comes from the fact that we are exploring menus instead of type-actions pairs, and we do not learn the reward of a particular type-action pair immediately. This is because a recommended menu may map several different types to the chosen action, so knowing the latter does not immediately reveal the agent's type. Moreover, the full ``outcome" of a particular menu is a distribution over action-reward pairs, it is, in general, impossible to learn this outcome exactly in any finite number of rounds.  Because of these issues, we cannot obtain Property \refprop{prop:private-exploration} exactly. Instead, we achieve an approximate version of this property, as long as we explore each menu enough times in each phase.
 
 We then show that this approximate version of \refprop{prop:private-exploration}  suffices to guarantee explorability, if we relax the incentives property of our policy from BIC to $\delta$-BIC, for any fixed $\delta>0$. In particular, we prove an approximate version of the information-monotonicity lemma (Lemma~\ref{lem:infomono}) which (given the approximate version of \refprop{prop:private-exploration}) ensures that our recommendation policy can explore all the menus that could be possibly explored by the first $l$ rounds of any BIC recommendation policy.
 
@@ -46,45 +46,48 @@ Let $S$ and $S'$ be two random variables and $\S$ and $\S'$ be their signal stru
 \end{lemma}
 
 \begin{proof}
+\asedit{For each signal realization $s$, denote 
+\[ D_s =  \DKL\left(\; ((S',\omega_0) \mid S=s) \quad \|\quad  (S'|S=s) \times (\omega_0\mid S=s) \;\right).  \]
+}
 We have
 \begin{align*}
-&\sum_{s} \Pr[S=s] \cdot \DKL\left(S'\omega_0|S=s \| (S'|S=s) \times (\omega_0|S=s) \right) \\
-&= I(S' ; \omega_0|S) \leq \delta^2/8.
+\textstyle \sum_{s} \Pr[S=s] \cdot D = I(S' ; \omega_0|S) \leq \delta^2/8.
 \end{align*}
 By Pinsker's inequality, we have
+\ascomment{Jieming:  you said the next eqn is not quite right!}
 \begin{align*}
-       & \sum_{s', \omega} \left| \Pr[S' = s', \omega_0 = \omega| S= s] - \Pr[S'=s'|S=s] \cdot \Pr[\omega_0 = \omega|S=s]\right| \\
-       &\cdot \sum_{s} \Pr[S = s] \\
-\leq & \sum_{s} \Pr[S=s] \cdot \sqrt{2 \ln(2)\cdot \DKL\left(S'\omega_0|S=s \| (S'|S=s) \times (\omega_0|S=s) \right)  } \\
-\leq & \sum_{s} \Pr[S=s] \cdot \sqrt{2  \DKL\left(S'\omega_0|S=s \| (S'|S=s) \times (\omega_0|S=s) \right)  } \\
-\leq &  \sqrt{2 \sum_{s} \Pr[S=s] \cdot  \DKL\left(S'\omega_0|S=s \| (S'|S=s) \times (\omega_0|S=s) \right) } \\
-\leq &\delta /2. \\
+& \sum_{s', \omega} \left| \Pr[S' = s', \omega_0 = \omega| S= s] - \Pr[S'=s'|S=s] \cdot \Pr[\omega_0 = \omega|S=s]\right| \\
+       &\qquad\qquad\cdot \sum_{s} \Pr[S = s] \\
+&\qquad\leq\textstyle  \sum_{s} \Pr[S=s] \cdot \sqrt{2 \ln(2)\cdot D_s  } \\
+%&\qquad\leq\textstyle  \sum_{s} \Pr[S=s] \cdot \sqrt{2  D_s  } \\
+&\qquad\leq\textstyle   \sqrt{2 \sum_{s} \Pr[S=s] \cdot  D_s } 
+\leq  \delta /2. \\
 \end{align*}
 
-Consider any BIC recommendation policy $\pi'$ for signal structure $\S'$. We construct $\pi$ for signature structure $\S$ by setting $\Pr[\pi(s) = m] = \sum_{s'} \Pr[\pi'(s') = m] \cdot Pr[S' = s'|S = s]$.
+Consider any BIC recommendation policy $\pi'$ for signal structure $\S'$. We construct $\pi$ for signature structure $\S$ by setting 
+\[ \textstyle \Pr[\pi(s) = m] = \sum_{s'} \Pr[\pi'(s') = m] \cdot Pr[S' = s'|S = s].\]
 
 Now we check $\pi$ is $\delta$-BIC. For any $m,m' \in \M$ and $\theta \in \varTheta$,
 \begin{align*}
 & \sum_{\omega,s} \Pr[\omega_0= \omega] \cdot \Pr[S = s | \omega_0 = \omega] \\
-&\cdot \left(u(\theta, m(\theta), \omega) - u(\theta, m'(\theta), \omega)\right) 
+&\quad\qquad \cdot \left(u(\theta, m(\theta), \omega) - u(\theta, m'(\theta), \omega)\right)
 \cdot  \Pr[\pi(s) = m] \\
-=&\sum_{\omega,s,s'} \Pr[\omega_0 = \omega, S = s] \cdot \Pr[ S'=s'|S= s] \cdot \Pr[\pi'(s') = m]   \\
-&\cdot \left(u(\theta, m(\theta), \omega) - u(\theta, m'(\theta), \omega)\right)\\
-\geq &\sum_{\omega,s,s'} \Pr[\omega_0 = \omega, S = s, S'=s'] \cdot \Pr[\pi'(s') = m]   \\
-&\cdot \left(u(\theta, m(\theta), \omega) - u(\theta, m'(\theta),
+&\quad= \sum_{\omega,s,s'} \Pr[\omega_0 = \omega, S = s] \cdot \Pr[ S'=s'|S= s] \cdot \Pr[\pi'(s') = m]   \\
+&\qquad\qquad\cdot \left(u(\theta, m(\theta), \omega) - u(\theta, m'(\theta), \omega)\right)\\
+&\quad\geq \sum_{\omega,s,s'} \Pr[\omega_0 = \omega, S = s, S'=s'] \cdot \Pr[\pi'(s') = m]   \\
+&\qquad\qquad\qquad\cdot \left(u(\theta, m(\theta), \omega) - u(\theta, m'(\theta),
  \omega)\right)\\
-& -2 \cdot \sum_{\omega,s,s'} | \Pr[\omega_0 = \omega, S = s] \cdot \Pr[ S'=s'|S= s]\\
-& -  \Pr[\omega_0 = \omega, S = s, S'=s']| \\
-= &\sum_{\omega,s'} \Pr[\omega_0 = \omega, S'=s'] \cdot \Pr[\pi'(s') = m]  \\
-& \cdot \left(u(\theta, m(\theta), \omega) - u(\theta, m'(\theta),
+&\qquad\qquad -2 \cdot \sum_{\omega,s,s'} | \Pr[\omega_0 = \omega, S = s] \cdot \Pr[ S'=s'|S= s]\\
+&\qquad\qquad -  \Pr[\omega_0 = \omega, S = s, S'=s']| \\
+&\quad= \sum_{\omega,s'} \Pr[\omega_0 = \omega, S'=s'] \cdot \Pr[\pi'(s') = m]  \\
+&\qquad\qquad \cdot \left(u(\theta, m(\theta), \omega) - u(\theta, m'(\theta),
  \omega)\right)\\
-& -2 \cdot \sum_{s} \Pr[S = s] \cdot  \sum_{s', \omega} | \Pr[S' = s', \omega_0 = \omega| S= s] \\
-&- \Pr[S'=s'|S=s] \cdot \Pr[\omega_0 = \omega|S=s]| \\
-\geq&  ~0- 2 \cdot \frac{\delta}{2}\\
- =& ~-\delta\\
+&\qquad\qquad -2 \cdot \sum_{s} \Pr[S = s] \cdot  \sum_{s', \omega} | \Pr[S' = s', \omega_0 = \omega| S= s] \\
+&\qquad\qquad- \Pr[S'=s'|S=s] \cdot \Pr[\omega_0 = \omega|S=s]| \\
+&\quad\geq  0- 2 \cdot t\frac{\delta}{2} = ~-\delta.
 \end{align*}
 
-We also have for any $s', s ,m$ such that $Pr[S' = s',S = s] >0 $ and $\Pr[\pi'(s') = m] >0$, we have $\Pr[\pi(s) = m] > 0$. This implies $\EX_{s'}[\S'] \subseteq \EX^{\delta}_s[\S]$.
+We also have for any $s', s ,m$ such that $\Pr[S' = s',S = s] >0 $ and $\Pr[\pi'(s') = m] >0$, we have $\Pr[\pi(s) = m] > 0$. This implies $\EX_{s'}[\S'] \subseteq \EX^{\delta}_s[\S]$.
 \end{proof}
 
 
@@ -99,7 +102,7 @@ for each menu $m\in \M$ and each feasible signal $s\in \X$.
  & \textbf{maximize }    x_{m_0,s_0}\  \\
 &  \textbf{subject to: }\\
  & \sum_{\omega \in \varOmega, s \in \X} \Pr[\omega] \cdot \Pr[s | \omega] &  & \cdot \left(u(\theta, m(\theta), \omega) - u(\theta, m'(\theta), \omega) + \delta\right)\\
- & \cdot x_{m,s'} \geq 0  &\ & \forall m,m' \in \M, \theta \in \varTheta \\
+    &\qquad\qquad \cdot x_{m,s'} \geq 0  &\ & \forall m,m' \in \M, \theta \in \varTheta \\
                        & \sum_{m\in \M} x_{m,s} = 1,  \ &\ & \forall s \in \X \\
                        & x_{m,s} \geq 0,  \ &\ & \forall s \in \X, m\in \M \\
 \end{alignat*}
@@ -217,7 +220,9 @@ By union bound, with probability at least $1-\gamma$, we have for all $u \in U$,
 
 \subsection{Main Recommendation Policy}
 \label{sec:private_main}
-In this subsection, we develop our main recommendation policy, Algorithm \ref{alg:nocc_main} (see pseudo-code), which explores all the eventually-explorable menus and then recommends the agents the best menu given all history. We pick $L$ to be at least $\max_{m,s:\Pr[\pi(s)=m] >0} \frac{B_m(\gamma_0)}{ \Pr[\pi(s)=m]}$ for all $\pi$ that might be chosen as $\pi^{max}$ by Algorithm \ref{alg:nocc_main}.
+In this subsection, we develop our main recommendation policy, Algorithm \ref{alg:nocc_main} (see pseudo-code), which explores all the eventually-explorable menus and then recommends the agents the best menu given all history. We pick $L$ to be at least 
+\[ \max_{m,s:\Pr[\pi(s)=m] >0} \frac{B_m(\gamma_0)}{ \Pr[\pi(s)=m]}\] 
+for all $\pi$ that might be chosen as $\pi^{max}$ by Algorithm \ref{alg:nocc_main}.
 
  \begin{algorithm}[t]
     \caption{Main procedure for private types }
@@ -251,7 +256,7 @@ In this subsection, we develop our main recommendation policy, Algorithm \ref{al
      \end{algorithmic}
 \end{algorithm}
 
-First of all, it's easy to check by Claim \ref{clm:maxexplore_nocc} that for each agent, it is $\delta$-BIC to follow the recommended action if previous agents all follow the recommended actions. Therefore we have the following claim.
+It is easy to check by Claim \ref{clm:maxexplore_nocc} that for each agent, it is $\delta$-BIC to follow the recommended action if previous agents all follow the recommended actions. Therefore we have the following claim.
 \begin{claim}
 \label{clm:nocc_BIC}
 Algorithm \ref{alg:nocc_main} is $\delta$-BIC.
@@ -271,9 +276,7 @@ The proof is similar to Lemma \ref{lem:exp_public}. We prove by induction on $l$
 
 Let $S$ be the signal of Algorithm \ref{alg:nocc_main} in phase $l$. Let $S'$ be the history of $\pi$ in the first $l-1$ rounds. More precisely, $S' = R, H_1,...,H_{l-1}$. Here $R$ is the internal randomness of $\pi$ and \\$H_t = (M_t, A_t,u(\Theta_t, M_t(\Theta_t), \omega_0))$ is the menu and the action-reward pair in round $t$ of $\pi$.
 
-Let $\M'$ to be the set of menus explored in the first $l-1$ phases of Algorithm \ref{alg:nocc_main}. By the induction hypothesis, we have $\forall t\in[l-1]$, $M_t \subseteq \M'$.
-
-First of all, we have
+Let $\M'$ to be the set of menus explored in the first $l-1$ phases of Algorithm \ref{alg:nocc_main}. By the induction hypothesis, we have $\forall t\in[l-1]$, $M_t \subseteq \M'$. Then:
 \begin{align*}
 &I(S'; \omega_0| S) = I(R,H_1,...,H_{l-1}; \omega_0| S)  \\
 = &I(R; \omega_0| S) + I(H_1,...,H_{l-1}; \omega_0|S, R) = I(H_1,...,H_{l-1}; \omega_0|S, R).
@@ -321,20 +324,19 @@ By Lemma \ref{lem:ainfomono}, we know that $\EX_{s'}[\S'] \subseteq \EX^{\delta}
 When $l > |\M|$, the proof follows from the same argument as the last paragraph of the proof of Lemma \ref{lem:exp_public}.
 \end{proof}
 
-\begin{corollary}[Restatement of Theorem \ref{thm:private_nocc}]
+
+\asdelete{\begin{corollary}[Restatement of Theorem \ref{thm:private_nocc}]
 \label{cor:private_nocc}
 For any $\delta > 0$, we have a $\delta$-BIC recommendation policy of $T$ rounds with expected total reward at least $\left(T - C\cdot \log(T) \right) \cdot \OPT$ for some constant $C$ which does not depend on $T$.
-\end{corollary}
+\end{corollary}}
 
-\begin{proof}
-
-First of all, by Claim \ref{clm:nocc_BIC}, Algorithm \ref{alg:nocc_main} is $\delta$-BIC.
+\begin{proof}[Proof of Theorem \ref{thm:private_nocc}]
+By Claim \ref{clm:nocc_BIC}, Algorithm \ref{alg:nocc_main} is $\delta$-BIC.
 
 By Lemma \ref{lem:exp_nocc}, for each state $\omega$, Algorithm \ref{alg:nocc_main} explores all the eventually-explorable menus (i.e. $\MExp_{\omega}$) by the end of $|\M|$ phases.
 
 After that, by Lemma \ref{lem:deltam} and $\gamma_2 = \frac{1}{T|\M|}$, for a fixed state $\omega$, we know that with probability $1- 1/T$, $\delta_m = D_m$ for all $m \in \MExp_{\omega}$. In this case, the agent of type $\theta$ gets expected reward at least $u(\theta,m^*(\theta),\omega)$ where menu $m^* =\arg\max_{m \in \MExp_{\omega}} \sum_{\theta \in \varTheta} \Pr[\theta] \cdot u(\theta, m(\theta), \omega)$. Taking average over types, the expected reward per round should be at least $(1-1/T) \cdot \max_{m \in \MExp_{\omega}} \sum_{\theta \in \varTheta} \Pr[\theta] \cdot u(\theta, m(\theta), \omega)$.
 
-We know that the expected number of rounds of the first $|\M|$ phases is $|\M| \cdot L = O(\ln(T))$. Therefore, Algorithm \ref{alg:nocc_main} has expected total reward at least $T \cdot \OPT- T \cdot (1/T) - O(\ln(T)) = T\cdot \OPT - O(\ln(T))$.
-
+The expected number of rounds of the first $|\M|$ phases is $|\M| \cdot L = O(\ln(T))$. Therefore, Algorithm \ref{alg:nocc_main} has expected total reward at least $T \cdot \OPT- T \cdot (1/T) - O(\ln(T)) = T\cdot \OPT - O(\ln(T))$.
 \end{proof}
 
