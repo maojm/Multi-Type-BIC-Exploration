@@ -13,7 +13,8 @@ The main result is as follows. (Throughout, $\OPT = \OPTpri$.)
 Consider Bayesian Exploration with private types, and fix $\delta > 0$. There exists a $\delta$-BIC recommendation policy with expected total reward at least $\left(T - C \log T \right) \cdot \OPT$, where $C$ depends on the problem instance but not on time horizon $T$.
 \end{theorem}
 
-Our recommendation policy and proofs have a similar structure as the ones for public types. The recommendation policy proceeds in phases: in each phase, it explores all menus that can be explored given the information collected so far. The crucial step in the proof is to show that:
+\asdelete{Our recommendation policy and proofs have a similar structure as the ones for public types.}
+The recommendation policy proceeds in phases: in each phase, it explores all menus that can be explored given the information collected so far. The crucial step in the proof is to show that:
 
 \begin{property}
 \item the first $l$ phases of our recommendation policy explore all the menus that could be possibly explored by the first $l$ rounds of any BIC recommendation policy.
@@ -50,9 +51,10 @@ Let $S$ and $S'$ be two random variables and $\S$ and $\S'$ be their signal stru
 \[ D_s =  \DKL\left(\; ((S',\omega_0) \mid S=s) \quad \|\quad  (S'|S=s) \times (\omega_0\mid S=s) \;\right).  \]
 }
 We have
-\begin{align*}
-\textstyle \sum_{s} \Pr[S=s] \cdot D = I(S' ; \omega_0|S) \leq \delta^2/8.
-\end{align*}
+%\begin{align*}
+$\sum_{s} \Pr[S=s] \cdot D = I(S' ; \omega_0|S) \leq \delta^2/8$.
+%\end{align*}
+
 By Pinsker's inequality, we have
 \ascomment{Jieming:  you said the next eqn is not quite right!}
 \begin{align*}
@@ -61,7 +63,7 @@ By Pinsker's inequality, we have
 &\qquad\leq\textstyle  \sum_{s} \Pr[S=s] \cdot \sqrt{2 \ln(2)\cdot D_s  } \\
 %&\qquad\leq\textstyle  \sum_{s} \Pr[S=s] \cdot \sqrt{2  D_s  } \\
 &\qquad\leq\textstyle   \sqrt{2 \sum_{s} \Pr[S=s] \cdot  D_s } 
-\leq  \delta /2. \\
+\leq  \delta /2. 
 \end{align*}
 
 Consider any BIC recommendation policy $\pi'$ for signal structure $\S'$. We construct $\pi$ for signature structure $\S$ by setting 
@@ -84,7 +86,7 @@ Now we check $\pi$ is $\delta$-BIC. For any $m,m' \in \M$ and $\theta \in \varTh
  \omega)\right)\\
 &\qquad\qquad -2 \cdot \sum_{s} \Pr[S = s] \cdot  \sum_{s', \omega} | \Pr[S' = s', \omega_0 = \omega| S= s] \\
 &\qquad\qquad- \Pr[S'=s'|S=s] \cdot \Pr[\omega_0 = \omega|S=s]| \\
-&\quad\geq  0- 2 \cdot t\frac{\delta}{2} = ~-\delta.
+&\quad\geq  0- 2 \cdot t\tfrac{\delta}{2} = ~-\delta.
 \end{align*}
 
 We also have for any $s', s ,m$ such that $\Pr[S' = s',S = s] >0 $ and $\Pr[\pi'(s') = m] >0$, we have $\Pr[\pi(s) = m] > 0$. This implies $\EX_{s'}[\S'] \subseteq \EX^{\delta}_s[\S]$.
@@ -189,14 +191,14 @@ The goal of this subroutine MaxExplore is to make sure that for any signal-explo
      \end{algorithmic}
 \end{algorithm}
 
-Similarly as the MaxExplore in Section \ref{sec:public}, we have the following claim.
+Similarly as the MaxExplore in Section \ref{sec:public}, we have the following: 
 \begin{claim}
 \label{clm:maxexplore_nocc}
 Given realized signal $S$, MaxExplore outputs a sequence of $L$ menus. Each menu in the sequence marginally distributed as $\pi^{max}$. For any menu $m$ such that $\Pr[\pi^{max} = m] >0$, $m$ shows up in the sequence at least $B_m(\gamma_0)$ times with probability exactly 1. MaxExplore runs in time polynomial in $L$, $|\M|$, $|\varOmega|$, $|\X|$ (size of the support of the signal).
 \end{claim}
 
 \xhdr{Menu Exploration.}
-Given a menu $m$, a action-reward pair will be revealed to the algorithm after the round. Assuming the agent is following the menu, such action-reward pair is called a sample of the menu $m$. We use $D_m$ to denote the distribution of the samples. $D_m$ is a random variable depending on the state $\omega_0$. For a fixed state $\omega$, we use $D_m(\omega)$ to denote the distribution of the samples of menu $m$.
+Given a menu $m$, an action-reward pair will be revealed to the algorithm after the round. Assuming the agent is following the menu, such action-reward pair is called a sample of the menu $m$. \asdelete{We use $D_m$ to denote the distribution of the samples. $D_m$ is a random variable depending on the state $\omega_0$.} For a fixed state $\omega$, let $D_m(\omega)$ denote the distribution of the samples of menu $m$.
 
 \begin{lemma}
 \label{lem:deltam}
@@ -207,13 +209,17 @@ For any $\gamma > 0$, we can compute $\Delta_m$ which is a function of $B_m(\gam
 \end{lemma}
 
 \begin{proof}
-Let $U$ be the union of the support of $D_m(\omega)$ for all $\omega \in \varOmega$. For each $u \in U$ ($u$ is just a sample of the menu), define $q(u,\omega) = \Pr_{v \sim D_m(\omega)}[v = u]$. Let $\delta_m$ be small enough such that for all $\omega, \omega'$ with $D_m(\omega) \neq D_m(\omega')$, there exists $u \in U$, such that $|q(u,\omega) - q(u,\omega')| > \delta_m$.
+Let $U$ be the union of the support of $D_m(\omega)$ for all $\omega \in \varOmega$. For each $u \in U$ ($u$ is just a sample of the menu), define 
+    \[ q(u,\omega) = \Pr_{v \sim D_m(\omega)}[v = u].\] 
+Let $\delta_m$ be small enough such that for all $\omega, \omega'$ with $D_m(\omega) \neq D_m(\omega')$, there exists $u \in U$, such that $|q(u,\omega) - q(u,\omega')| > \delta_m$.
 
 Now we compute $\Delta_m$ as following: Take $B_m(\gamma) = \frac{2}{\delta_m^2}\ln\left(\frac{2|U|}{\gamma}\right) $ samples and set $\hat{q}(u)$ as the empirical frequency of seeing $u$. And set $\Delta_m$ to be some $D_m(\omega)$ such that for all $u \in U$, $|q(u,\omega) - \hat{q}(u)| \leq \delta_m / 2$. Notice that if such $\omega$ exists, $\Delta_m$ will be unique. If no $\omega$ satisfies this, just pick $\Delta_m$ to be an arbitrary $D_m(\omega)$.
 
 Now let's analyze $\Pr[\Delta_m \neq D_m(\omega)]$. Let's fix the state $\omega_0 = \omega$. By Chernoff bound, for each $u \in U$,
 \[
-\Pr[|q(u,\omega) -\hat{q}(u)| > \delta_m/2] \leq 2\exp\left(-2 \cdot \left(\frac{\delta_m}{2}\right)^2 \cdot B_m(\gamma)\right) \leq \frac{\gamma}{|U|}.
+\Pr[|q(u,\omega) -\hat{q}(u)| > \delta_m/2] \leq 2\exp\left(-2 \cdot 
+    (\delta_m/2)^2 
+    \cdot B_m(\gamma)\right) \leq \gamma/|U|.
 \]
 By union bound, with probability at least $1-\gamma$, we have for all $u \in U$, $|q(u,\omega) - \hat{q}(u)| \leq \delta_m / 2$. This implies $\Delta_m = D_m(\omega)$.
 \end{proof}
@@ -274,7 +280,9 @@ The proof is similar to Lemma \ref{lem:exp_public}. We prove by induction on $l$
 
 %Base case $l=1$ is trivial by Claim \ref{clm:maxexplore}. Assuming the lemma is correct for $l-1$, let's prove it's correct for $l$.
 
-Let $S$ be the signal of Algorithm \ref{alg:nocc_main} in phase $l$. Let $S'$ be the history of $\pi$ in the first $l-1$ rounds. More precisely, $S' = R, H_1,...,H_{l-1}$. Here $R$ is the internal randomness of $\pi$ and \\$H_t = (M_t, A_t,u(\Theta_t, M_t(\Theta_t), \omega_0))$ is the menu and the action-reward pair in round $t$ of $\pi$.
+Let $S$ be the signal of Algorithm \ref{alg:nocc_main} in phase $l$. Let $S'$ be the history of $\pi$ in the first $l-1$ rounds. More precisely, $S' = R, H_1,...,H_{l-1}$. Here $R$ is the internal randomness of $\pi$ and 
+\[ H_t = (M_t, A_t,u(\Theta_t, M_t(\Theta_t), \omega_0))\] 
+is the menu and the action-reward pair in round $t$ of $\pi$.
 
 Let $\M'$ to be the set of menus explored in the first $l-1$ phases of Algorithm \ref{alg:nocc_main}. By the induction hypothesis, we have $\forall t\in[l-1]$, $M_t \subseteq \M'$. Then:
 \begin{align*}
@@ -290,34 +298,34 @@ By the chain rule of mutual information, we have
 
 For all $t \in [l-1]$, we have
 \begin{align*}
-&I(H_t; \omega_0|S,R,H_1,...,H_{t-1}) \\
-=& I(M_t,A_t, u(\Theta_t, M_t(\Theta_t), \omega_0); \omega_0|S,R,H_1,...,H_{t-1}) \\
-=& I(A_t, u(\Theta_t, M_t(\Theta_t), \omega_0); \omega_0 | S,R,H_1,...,H_{t-1}, M_t)\\
-\leq& I(D_{M_t}; \omega_0|S,R,H_1,...,H_{t-1},M_t). \\
+&I(H_t; \omega_0 \mid S,R,H_1,...,H_{t-1}) \\
+=& I(M_t,A_t, u(\Theta_t, M_t(\Theta_t), \omega_0); \omega_0 \mid S,R,H_1,...,H_{t-1}) \\
+=& I(A_t, u(\Theta_t, M_t(\Theta_t), \omega_0); \omega_0  \mid  S,R,H_1,...,H_{t-1}, M_t)\\
+\leq& I(D_{M_t}; \omega_0 \mid S,R,H_1,...,H_{t-1},M_t). 
 \end{align*}
 The second last step comes from the fact that $M_t$ is a deterministic function of $R,H_1,...,H_{t-1}$. The last step comes from the fact that $(A_t,u(\Theta_t, M_t(\Theta_t), \omega_0))$ is independent with $\omega_0$ given $D_{M_t}$.
 
 Then we have
 \begin{align*}
-& I(D_{M_t}; \omega_0|S,R,H_1,...,H_{t-1},M_t)\\
-=& \sum_{m \in \M'} \Pr[M_t = m] \cdot I(D_m;\omega_0 | S,R,H_1,...,H_{t-1},M_t = m)\\
-\leq& \sum_{m \in M'} \Pr[M_t = m] \cdot I(D_m;\omega_0| \Delta_m, M_t =m).\\
-\leq& \sum_{m \in M'} \Pr[M_t = m] \cdot H(D_m| \Delta_m, M_t =m).
+& I(D_{M_t}; \omega_0 \mid S,R,H_1,...,H_{t-1},M_t)\\
+=& \textstyle   \sum_{m \in \M'}\; \Pr[M_t = m] \cdot I(D_m;\omega_0  \mid  S,R,H_1,...,H_{t-1},M_t = m)\\
+\leq& \textstyle  \sum_{m \in M'}\; \Pr[M_t = m] \cdot I(D_m;\omega_0 \mid  \Delta_m, M_t =m).\\
+\leq& \textstyle  \sum_{m \in M'}\; \Pr[M_t = m] \cdot H(D_m \mid  \Delta_m, M_t =m).
 \end{align*}
-The last step comes from the fact that \\$I(D_m; (S\backslash \Delta_m),R,H_1,...,H_{t-1}|\omega_0, \Delta_m, M_t =m) = 0$. By Lemma \ref{lem:deltam}, we know that $\Pr[D_m \neq \Delta_m|M_t = m] \leq \gamma_1$. By Fano's inequality, we have
+The last step comes from the fact that 
+\[ I(D_m; (S\backslash \Delta_m),R,H_1,...,H_{t-1} \mid \omega_0, \Delta_m, M_t =m) = 0.\] 
+By Lemma \ref{lem:deltam}, we know that $\Pr[D_m \neq \Delta_m \mid M_t = m] \leq \gamma_1$. By Fano's inequality, we have
 \begin{align*}
-&H(D_m| \Delta_m, M_t =m) \leq H(\gamma_1) + \gamma_1 \log(|\varOmega| - 1) \\
-&\leq 2\sqrt{\gamma_1} + \gamma_1 \log(|\varOmega| - 1) \leq \frac{\delta^2}{16|\M|}+\frac{\delta^2}{16|\M|}  = \frac{\delta^2}{8|\M|}.
+&H(D_m \mid  \Delta_m, M_t =m) \leq H(\gamma_1) + \gamma_1 \log(|\varOmega| - 1) \\
+&\leq 2\sqrt{\gamma_1} + \gamma_1 \log(|\varOmega| - 1) \leq \tfrac{\delta^2}{16|\M|}+\tfrac{\delta^2}{16|\M|}  = \tfrac{\delta^2}{8|\M|}.
 \end{align*}
 
 Therefore we have
 \[
-I(H_t; \omega_0|S,R,H_1,...,H_{t-1}) \leq \frac{\delta^2}{8|\M|}, \forall t \in [l-1].
+I(H_t; \omega_0 \mid S,R,H_1,...,H_{t-1}) \leq \tfrac{\delta^2}{8|\M|}, \forall t \in [l-1].
 \]
 Then we get
-\[
-I(S'; \omega_0 | S) \leq \delta^2/8.
-\]
+    $ I(S'; \omega_0 \mid S) \leq \delta^2/8$.
 
 By Lemma \ref{lem:ainfomono}, we know that $\EX_{s'}[\S'] \subseteq \EX^{\delta}_s[\S]$. By Claim \ref{clm:maxexplore_nocc}, we know that phase $l$ will explore menu $m$ at least $B_m(\gamma_0)$ times.
 

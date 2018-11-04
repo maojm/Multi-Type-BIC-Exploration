@@ -31,8 +31,8 @@
 \DeclareMathOperator*{\argmin}{argmin}
 
 % a very useful package for edits and comments, from David Kempe (USC)
-\usepackage{color-edits}
-%\usepackage[suppress]{color-edits}  % use this to suppress the package
+%\usepackage{color-edits}
+\usepackage[suppress]{color-edits}  % use this to suppress the package
 \addauthor{as}{red}      % as for Alex
 \addauthor{jm}{blue}     % jm for Jieming
 \addauthor{ni}{green}     % ni for Nicole
@@ -50,8 +50,9 @@
 %\newtheorem{claim}{Claim}[section]
 %\newtheorem{example}{Example}[section]
 
-\newcommand{\term}[1]{\ensuremath{\mathtt{#1}}}
+\newcommand{\term}[1]{\ensuremath{\mathtt{#1}}\xspace}
 \newcommand{\thread}{\term{thread}}
+\newcommand{\ALG}{\term{ALG}}
 
 \newcommand{\DT}{\mD} % Alex' notation for distribution over types.
 \newcommand{\prior}{\mP} % Alex' notation for Bayesian Prior
