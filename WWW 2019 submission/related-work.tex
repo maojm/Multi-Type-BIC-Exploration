@@ -1,15 +1,16 @@
 
 \xhdr{Related work.}
-The problem of Bayesian Exploration was introduced in \cite{Kremer-JPE14}. The special case of homogenous agents has been largely resolved, in terms of the optimal policy for two actions \cite{Kremer-JPE14}, explorability \cite{ICexplorationGames-ec16-working}, and regret minimization for stochastic utilities \cite{ICexploration-ec15}. \cite{ICexploration-ec15} also consider an extension to public types, under a very strong assumption geared to ensure that all type-action pairs are explorable. \cite{ICexplorationGames-ec16-working} allows several agents to arrive in each round and play a game. Agents can have different types, but the tuple of types stays the same from one round to another (and is known to the principal). \cite{Bahar-ec16} enrich the model to allow agents to observe recommendations of their ``friends" in a known social network.
+The problem of Bayesian Exploration was introduced in \cite{Kremer-JPE14}. The special case of homogenous agents has been largely resolved, in terms of the optimal policy for two actions \cite{Kremer-JPE14}, explorability \cite{ICexplorationGames-ec16-working}, and regret minimization for stochastic utilities \cite{ICexploration-ec15-working}. \cite{ICexploration-ec15-working} also consider an extension to public types, under a very strong assumption geared to ensure that all type-action pairs are explorable. \cite{ICexplorationGames-ec16-working} allows several agents to arrive in each round and play a game. Agents can have different types, but the tuple of types stays the same from one round to another (and is known to the principal). \cite{Bahar-ec16} enrich the model to allow agents to observe recommendations of their ``friends" in a known social network.
 
-Several other papers study related, but technically different models. \cite{Bimpikis-exploration-ms17} consider a basic setting of Bayesian Exploration, but with time-discounted utilities. \cite{Frazier-ec14,Kempe-colt18} allow monetary incentives. \cite{Che-13} posit a continuous information flow and a continuum of agents. \cite{Bobby-Glen-ec16} propose a mechanism to coordinate costly exploration decisions in social learning. Scenarios with long-lived, exploring agents and no principal to coordinate them have been studied in \cite{Bolton-econometrica99,Keller-econometrica05} under the name \emph{strategic experimentation}.
+Several other papers study related, but technically different models. \cite{Bimpikis-exploration-ms17} consider a basic setting of Bayesian Exploration, but with time-discounted utilities. \cite{Frazier-ec14,Kempe-colt18} allow monetary incentives. \cite{Che-13} posit a continuous information flow and a continuum of agents. \cite{Bobby-Glen-ec16} propose a mechanism to coordinate costly exploration decisions in social learning. Scenarios with long-lived, exploring agents and no principal to coordinate them have been studied in \cite{Bolton-econometrica99,Keller-econometrica05}. 
+%under the name \emph{strategic experimentation}.
 
 
-%\cite{Kempe-colt18}
+\ascomment{Discuss \cite{ICexplorationGames-ec16-working} and \cite{Kempe-colt18}}
 
-\asedit{Recommendation policies with no explicit exploration, and closely related ``greedy" (exploitation-only) algorithm in multi-armed bandits, have been a subject of a recent line of work \cite{bastani2017exploiting,Sven-aistats18,kannan2018smoothed,externalities-colt18}.
-A common theme is that the greedy algorithm performs well in theory, under  substantial type diversity assumptions. Yet, it is well-known that it suffers $\Omega(T)$ regret in the worst case.}%
-\footnote{This is a well-known folklore result in various settings; \eg see \cite{CompetingBandits-itcs18,Sven-aistats18} for a concrete example.}
+\asedit{Recommendation policies with no explicit exploration, and closely related ``greedy algorithm" in multi-armed bandits, have been studied recently \cite{bastani2017exploiting,Sven-aistats18,kannan2018smoothed,externalities-colt18}.
+A common theme is that the greedy algorithm performs well under  substantial assumptions on the diversity of types. Yet, it suffers $\Omega(T)$ regret in the worst case.}%
+\footnote{This is a well-known folklore result in various settings; \eg see \cite{CompetingBandits-itcs18,Sven-aistats18}.}
 
 \OMIT{\cite{Sven-aistats18} consider a ``full-revelation" recommendation system, and show that (under some substantial assumptions) agent heterogeneity leads to exploration.}
 
