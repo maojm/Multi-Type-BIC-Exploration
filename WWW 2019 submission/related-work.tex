@@ -1,26 +1,36 @@
 
+\asedit{ %%%%%%%%%
 \xhdr{Related work.}
-The problem of Bayesian Exploration was introduced in \cite{Kremer-JPE14}. The special case of homogenous agents has been largely resolved, in terms of the optimal policy for two actions \cite{Kremer-JPE14}, explorability \cite{ICexplorationGames-ec16-working}, and regret minimization for stochastic utilities \cite{ICexploration-ec15-working}. \cite{ICexploration-ec15-working} also consider an extension to public types, under a very strong assumption geared to ensure that all type-action pairs are explorable. \cite{ICexplorationGames-ec16-working} allows several agents to arrive in each round and play a game. Agents can have different types, but the tuple of types stays the same from one round to another (and is known to the principal). \cite{Bahar-ec16} enrich the model to allow agents to observe recommendations of their ``friends" in a known social network.
+Bayesian Exploration with homogenous agents was introduced in \cite{Kremer-JPE14}, and largely resolved: for optimal policy in the case of two actions and deterministic utilities \cite{Kremer-JPE14}, for explorability \cite{ICexplorationGames-ec16}, and for regret minimization and stochastic utilities \cite{ICexploration-ec15}.
 
-Several other papers study related, but technically different models. \cite{Bimpikis-exploration-ms17} consider a basic setting of Bayesian Exploration, but with time-discounted utilities. \cite{Frazier-ec14,Kempe-colt18} allow monetary incentives. \cite{Che-13} posit a continuous information flow and a continuum of agents. \cite{Bobby-Glen-ec16} propose a mechanism to coordinate costly exploration decisions in social learning. Scenarios with long-lived, exploring agents and no principal to coordinate them have been studied in \cite{Bolton-econometrica99,Keller-econometrica05}. 
-%under the name \emph{strategic experimentation}.
+Bayesian Exploration with heterogenous agents and public types is studied in \cite{ICexploration-ec15}, under a very strong assumption which ensures explorability of all type-action pairs, and in \cite{ICexplorationGames-ec16}, where a fixed tuple of types arrives in each round and plays a game.  \cite{ICexplorationGames-ec16} is similar to the (public types case of) our paper in that it focuses on explorability. Our approach is simpler and more efficient, because we focus on type-action pairs, whereas \cite{ICexplorationGames-ec16} focus on joint actions. 
 
+A very recent paper \cite{Kempe-colt18} (published after we finalized our results) studies incentivizing exploration with heterogenous agents and private types, but allows monetary transfers. Assuming that each arm is preferred by some agent type, they design an algorithm with a (very) low regret, and conclude that \emph{diversity helps} in their setting.
 
-\ascomment{Discuss \cite{ICexplorationGames-ec16-working} and \cite{Kempe-colt18}}
+Several papers study ``incentivizing exploration" in substantially different models:
+with a social network \cite{Bahar-ec16};
+with time-discounted utilities \cite{Bimpikis-exploration-ms17};
+with monetary incentives \cite{Frazier-ec14,Kempe-colt18};  
+with a continuous information flow and a continuum of agents \cite{Che-13};
+with long-lived agents and ``exploration" separate from payoff generation \cite{Bobby-Glen-ec16,Annie-ec18-traps,Liang-ec18};
+with fairness \cite{KKMPRVW17}. Also, seminal papers \cite{Bolton-econometrica99,Keller-econometrica05} study scenarios with 
+long-lived, exploring agents and no principal.
 
-\asedit{Recommendation policies with no explicit exploration, and closely related ``greedy algorithm" in multi-armed bandits, have been studied recently \cite{bastani2017exploiting,Sven-aistats18,kannan2018smoothed,externalities-colt18}.
-A common theme is that the greedy algorithm performs well under  substantial assumptions on the diversity of types. Yet, it suffers $\Omega(T)$ regret in the worst case.}%
+Recommendation policies with no explicit exploration, and closely related ``greedy algorithm" in multi-armed bandits, have been studied recently \cite{bastani2017exploiting,Sven-aistats18,kannan2018smoothed,externalities-colt18}.
+A common theme is that the greedy algorithm performs well under  substantial assumptions on the diversity of types. Yet, it suffers $\Omega(T)$ regret in the worst case.%
 \footnote{This is a well-known folklore result in various settings; \eg see \cite{CompetingBandits-itcs18,Sven-aistats18}.}
 
 \OMIT{\cite{Sven-aistats18} consider a ``full-revelation" recommendation system, and show that (under some substantial assumptions) agent heterogeneity leads to exploration.}
 
-Exploration-exploitation tradeoff received much attention over the past decades, usually under the rubric of ``multi-armed bandits"; see  \cite{Bubeck-survey12,Gittins-book11} for background. Absent incentives, Bayesian Exploration with public types is a well-studied problem of ``contextual bandits" (with deterministic rewards and a Bayesian prior). A single round of Bayesian Exploration is a version of the Bayesian Persuasion game \cite{Kamenica-aer11}, where the signal observed by the principal is distinct from the state. Exploration-exploitation problems with incentives issues arise in several other scenarios: dynamic pricing
+Exploration-exploitation tradeoff received much attention over the past decades, usually under the rubric of ``multi-armed bandits", see books \cite{CesaBL-book,Bubeck-survey12,Gittins-book11}. Absent incentives, Bayesian Exploration with public types is a well-studied problem of ``contextual bandits" (with deterministic rewards and a Bayesian prior). A single round of Bayesian Exploration is a version of the Bayesian Persuasion game \cite{Kamenica-aer11}, where the signal observed by the principal is distinct from the state. Exploration-exploitation problems with incentives issues arise in several other scenarios: dynamic pricing, \eg
     \cite{KleinbergL03,BZ09,BwK-focs13},
-dynamic auctions
-    \cite{AtheySegal-econometrica13,DynPivot-econometrica10,Kakade-pivot-or13},
-pay-per-click ad auctions
+dynamic auctions \cite{DynAuctions-survey11}, 
+    %\cite{AtheySegal-econometrica13,DynPivot-econometrica10,Kakade-pivot-or13},
+advertising auctions
     \cite{MechMAB-ec09,DevanurK09,Transform-ec10-jacm},
-and human computation
-    \cite{RepeatedPA-ec14,Ghosh-itcs13,Krause-www13}.
-
+human computation
+    \cite{RepeatedPA-ec14,Ghosh-itcs13,Krause-www13},
+and repeated actions, \eg 
+    \cite{Amin-auctions-nips13,Amin-auctions-nips14,Jieming-ec18}.
+} %%%%%%%% \asedit
 
