@@ -21,8 +21,8 @@ Our second result shows that greater diversity (in the sense of a greater number
 } %%%%%%%
 
 \xhdr{Explorability and the model choice.}
-Fix an instance of Bayesian exploration. \asedit{Let $\pairsPub$ and $\pairsPri$ be the explorable set for a given state $\omega$, for public and private types, respectively.}%
-\footnote{Equivalently, $\pairsPri$ is the set of all type-action pairs $(\theta,m(\theta))$ that appear in some eventually-explorable menu $m\in \MExp_{\omega}$ in state $\omega$ with private types.} 
+Fix an instance of Bayesian Exploration. \asedit{Let $\pairsPub$ and $\pairsPri$ be the explorable set for a given state $\omega$, for public and private types, respectively.}%
+\footnote{Equivalently, $\pairsPri$ is the set of all type-action pairs $(\theta,m(\theta))$ that appear in some eventually-explorable menu $m\in \MExp_{\omega}$ in state $\omega$ with private types.}
 We will show in Section~\ref{sec:reported} that the explorable set for reported types is $\pairsPub$, too.
 
 
@@ -40,11 +40,11 @@ Interestingly, $\pairsPri$ can in fact be a {\em strict} subset of $\pairsPub$:
 
 \begin{example}
 	\label{exp:simple}
-	There are two states, two types and two actions:
+	There are 2 states, 2 types and 2 actions:
 	$\varOmega = \varTheta = \A = \{0,1\}$.
 	States and types are drawn uniformly at random:
 	$\Pr[\omega =0] =\Pr[\theta =0] = \tfrac12$.
-	Rewards are defined in the following table:\\
+	Rewards are defined as follows:\\
 	\begin{table}[H]
 		\centering
 		\begin{tabular}{|c||c|c|}
@@ -84,9 +84,9 @@ In the second round, the principal knows the reward of the first-round agent.  W
 For private types, samples from the first-round menu (which, as argued above, must recommend action $0$ for both types) do not convey any information about the state, as they have the same distribution in both states. Therefore, action $1$ is not eventually-explorable, for either type and either state.
 \end{proof}
 
-\xhdr{Explorability and diversity of agent types.} 
+\xhdr{Explorability and diversity of agent types.}
 %{\bf NSI: this section needs editing.}
-Fix an instance of Bayesian exploration with type distribution $\DT$. We consider how the explorable set changes if we modify the type distribution $\DT$ in this instance to some other distribution $\DT'$. Let $\pairs$ and $\pairs'$ be the corresponding explorable sets, for each state $\omega$.
+Fix an instance of Bayesian Exploration with type distribution $\DT$. We consider how the explorable set changes if we modify the type distribution $\DT$ in this instance to some other distribution $\DT'$. Let $\pairs$ and $\pairs'$ be the corresponding explorable sets, for each state $\omega$.
 
 
 For public and reported types, we show that the explorable set is determined by the support set of $\DT$, denoted $\support(\DT)$, and can only increase if the support set increases:

@@ -29,10 +29,10 @@ We then show that this approximate version of \refprop{prop:private-exploration}
 \subsection{Single-round Exploration}
 \label{sec:private_single}
 
-In this subsection, we consider a single round of the Bayesian exploration.
+In this subsection, we consider a single round of the Bayesian Exploration.
 
 \begin{definition}
-Consider a single-round of Bayesian exploration when the principal has signal $S$ from signal structure $\S$. For any $\delta \geq 0$, a menu $m \in \M$ is called $\delta$-signal-explorable, for a given signal $s$, if there exists a single-round $\delta$-BIC recommendation policy $\pi$ such that $\Pr[\pi(s) = m] > 0$. The set of all such menus is denoted as $\EX^{\delta}_s[\S]$. The $\delta$-signal-explorable set is defined as $\EX^{\delta}[\S] = \EX^{\delta}_S[\S]$. We omit $\delta$ in $\EX^{\delta}[\S]$ when $\delta = 0$.
+Consider a single-round of Bayesian Exploration when the principal has signal $S$ from signal structure $\S$. For any $\delta \geq 0$, a menu $m \in \M$ is called $\delta$-signal-explorable, for a given signal $s$, if there exists a single-round $\delta$-BIC recommendation policy $\pi$ such that $\Pr[\pi(s) = m] > 0$. The set of all such menus is denoted as $\EX^{\delta}_s[\S]$. The $\delta$-signal-explorable set is defined as $\EX^{\delta}[\S] = \EX^{\delta}_S[\S]$. We omit $\delta$ in $\EX^{\delta}[\S]$ when $\delta = 0$.
 \end{definition}
 
 \xhdr{Approximate Information Monotonicity.}
@@ -47,7 +47,7 @@ Let $S$ and $S'$ be two random variables and $\S$ and $\S'$ be their signal stru
 \end{lemma}
 
 \begin{proof}
-\asedit{For each signal realization $s$, denote 
+\asedit{For each signal realization $s$, denote
 \[ D_s =  \DKL\left(\; ((S',\omega_0) \mid S=s) \quad \|\quad  (S'|S=s) \times (\omega_0\mid S=s) \;\right).  \]
 }
 We have
@@ -62,11 +62,11 @@ By Pinsker's inequality, we have
        &\qquad\qquad\cdot \sum_{s} \Pr[S = s] \\
 &\qquad\leq\textstyle  \sum_{s} \Pr[S=s] \cdot \sqrt{2 \ln(2)\cdot D_s  } \\
 %&\qquad\leq\textstyle  \sum_{s} \Pr[S=s] \cdot \sqrt{2  D_s  } \\
-&\qquad\leq\textstyle   \sqrt{2 \sum_{s} \Pr[S=s] \cdot  D_s } 
-\leq  \delta /2. 
+&\qquad\leq\textstyle   \sqrt{2 \sum_{s} \Pr[S=s] \cdot  D_s }
+\leq  \delta /2.
 \end{align*}
 
-Consider any BIC recommendation policy $\pi'$ for signal structure $\S'$. We construct $\pi$ for signature structure $\S$ by setting 
+Consider any BIC recommendation policy $\pi'$ for signal structure $\S'$. We construct $\pi$ for signature structure $\S$ by setting
 \[ \textstyle \Pr[\pi(s) = m] = \sum_{s'} \Pr[\pi'(s') = m] \cdot Pr[S' = s'|S = s].\]
 
 Now we check $\pi$ is $\delta$-BIC. For any $m,m' \in \M$ and $\theta \in \varTheta$,
@@ -191,7 +191,7 @@ The goal of this subroutine MaxExplore is to make sure that for any signal-explo
      \end{algorithmic}
 \end{algorithm}
 
-Similarly as the MaxExplore in Section \ref{sec:public}, we have the following: 
+Similarly as the MaxExplore in Section \ref{sec:public}, we have the following:
 \begin{claim}
 \label{clm:maxexplore_nocc}
 Given realized signal $S$, MaxExplore outputs a sequence of $L$ menus. Each menu in the sequence marginally distributed as $\pi^{max}$. For any menu $m$ such that $\Pr[\pi^{max} = m] >0$, $m$ shows up in the sequence at least $B_m(\gamma_0)$ times with probability exactly 1. MaxExplore runs in time polynomial in $L$, $|\M|$, $|\varOmega|$, $|\X|$ (size of the support of the signal).
@@ -209,16 +209,16 @@ For any $\gamma > 0$, we can compute $\Delta_m$ which is a function of $B_m(\gam
 \end{lemma}
 
 \begin{proof}
-Let $U$ be the union of the support of $D_m(\omega)$ for all $\omega \in \varOmega$. For each $u \in U$ ($u$ is just a sample of the menu), define 
-    \[ q(u,\omega) = \Pr_{v \sim D_m(\omega)}[v = u].\] 
+Let $U$ be the union of the support of $D_m(\omega)$ for all $\omega \in \varOmega$. For each $u \in U$ ($u$ is just a sample of the menu), define
+    \[ q(u,\omega) = \Pr_{v \sim D_m(\omega)}[v = u].\]
 Let $\delta_m$ be small enough such that for all $\omega, \omega'$ with $D_m(\omega) \neq D_m(\omega')$, there exists $u \in U$, such that $|q(u,\omega) - q(u,\omega')| > \delta_m$.
 
 Now we compute $\Delta_m$ as following: Take $B_m(\gamma) = \frac{2}{\delta_m^2}\ln\left(\frac{2|U|}{\gamma}\right) $ samples and set $\hat{q}(u)$ as the empirical frequency of seeing $u$. And set $\Delta_m$ to be some $D_m(\omega)$ such that for all $u \in U$, $|q(u,\omega) - \hat{q}(u)| \leq \delta_m / 2$. Notice that if such $\omega$ exists, $\Delta_m$ will be unique. If no $\omega$ satisfies this, just pick $\Delta_m$ to be an arbitrary $D_m(\omega)$.
 
 Now let's analyze $\Pr[\Delta_m \neq D_m(\omega)]$. Let's fix the state $\omega_0 = \omega$. By Chernoff bound, for each $u \in U$,
 \[
-\Pr[|q(u,\omega) -\hat{q}(u)| > \delta_m/2] \leq 2\exp\left(-2 \cdot 
-    (\delta_m/2)^2 
+\Pr[|q(u,\omega) -\hat{q}(u)| > \delta_m/2] \leq 2\exp\left(-2 \cdot
+    (\delta_m/2)^2
     \cdot B_m(\gamma)\right) \leq \gamma/|U|.
 \]
 By union bound, with probability at least $1-\gamma$, we have for all $u \in U$, $|q(u,\omega) - \hat{q}(u)| \leq \delta_m / 2$. This implies $\Delta_m = D_m(\omega)$.
@@ -226,8 +226,8 @@ By union bound, with probability at least $1-\gamma$, we have for all $u \in U$,
 
 \subsection{Main Recommendation Policy}
 \label{sec:private_main}
-In this subsection, we develop our main recommendation policy, Algorithm \ref{alg:nocc_main} (see pseudo-code), which explores all the eventually-explorable menus and then recommends the agents the best menu given all history. We pick $L$ to be at least 
-\[ \max_{m,s:\Pr[\pi(s)=m] >0} \frac{B_m(\gamma_0)}{ \Pr[\pi(s)=m]}\] 
+In this subsection, we develop our main recommendation policy, Algorithm \ref{alg:nocc_main} (see pseudo-code), which explores all the eventually-explorable menus and then recommends the agents the best menu given all history. We pick $L$ to be at least
+\[ \max_{m,s:\Pr[\pi(s)=m] >0} \frac{B_m(\gamma_0)}{ \Pr[\pi(s)=m]}\]
 for all $\pi$ that might be chosen as $\pi^{max}$ by Algorithm \ref{alg:nocc_main}.
 
  \begin{algorithm}[t]
@@ -280,8 +280,8 @@ The proof is similar to Lemma \ref{lem:exp_public}. We prove by induction on $l$
 
 %Base case $l=1$ is trivial by Claim \ref{clm:maxexplore}. Assuming the lemma is correct for $l-1$, let's prove it's correct for $l$.
 
-Let $S$ be the signal of Algorithm \ref{alg:nocc_main} in phase $l$. Let $S'$ be the history of $\pi$ in the first $l-1$ rounds. More precisely, $S' = R, H_1,...,H_{l-1}$. Here $R$ is the internal randomness of $\pi$ and 
-\[ H_t = (M_t, A_t,u(\Theta_t, M_t(\Theta_t), \omega_0))\] 
+Let $S$ be the signal of Algorithm \ref{alg:nocc_main} in phase $l$. Let $S'$ be the history of $\pi$ in the first $l-1$ rounds. More precisely, $S' = R, H_1,...,H_{l-1}$. Here $R$ is the internal randomness of $\pi$ and
+\[ H_t = (M_t, A_t,u(\Theta_t, M_t(\Theta_t), \omega_0))\]
 is the menu and the action-reward pair in round $t$ of $\pi$.
 
 Let $\M'$ to be the set of menus explored in the first $l-1$ phases of Algorithm \ref{alg:nocc_main}. By the induction hypothesis, we have $\forall t\in[l-1]$, $M_t \subseteq \M'$. Then:
@@ -301,7 +301,7 @@ For all $t \in [l-1]$, we have
 &I(H_t; \omega_0 \mid S,R,H_1,...,H_{t-1}) \\
 =& I(M_t,A_t, u(\Theta_t, M_t(\Theta_t), \omega_0); \omega_0 \mid S,R,H_1,...,H_{t-1}) \\
 =& I(A_t, u(\Theta_t, M_t(\Theta_t), \omega_0); \omega_0  \mid  S,R,H_1,...,H_{t-1}, M_t)\\
-\leq& I(D_{M_t}; \omega_0 \mid S,R,H_1,...,H_{t-1},M_t). 
+\leq& I(D_{M_t}; \omega_0 \mid S,R,H_1,...,H_{t-1},M_t).
 \end{align*}
 The second last step comes from the fact that $M_t$ is a deterministic function of $R,H_1,...,H_{t-1}$. The last step comes from the fact that $(A_t,u(\Theta_t, M_t(\Theta_t), \omega_0))$ is independent with $\omega_0$ given $D_{M_t}$.
 
@@ -312,8 +312,8 @@ Then we have
 \leq& \textstyle  \sum_{m \in M'}\; \Pr[M_t = m] \cdot I(D_m;\omega_0 \mid  \Delta_m, M_t =m).\\
 \leq& \textstyle  \sum_{m \in M'}\; \Pr[M_t = m] \cdot H(D_m \mid  \Delta_m, M_t =m).
 \end{align*}
-The last step comes from the fact that 
-\[ I(D_m; (S\backslash \Delta_m),R,H_1,...,H_{t-1} \mid \omega_0, \Delta_m, M_t =m) = 0.\] 
+The last step comes from the fact that
+\[ I(D_m; (S\backslash \Delta_m),R,H_1,...,H_{t-1} \mid \omega_0, \Delta_m, M_t =m) = 0.\]
 By Lemma \ref{lem:deltam}, we know that $\Pr[D_m \neq \Delta_m \mid M_t = m] \leq \gamma_1$. By Fano's inequality, we have
 \begin{align*}
 &H(D_m \mid  \Delta_m, M_t =m) \leq H(\gamma_1) + \gamma_1 \log(|\varOmega| - 1) \\

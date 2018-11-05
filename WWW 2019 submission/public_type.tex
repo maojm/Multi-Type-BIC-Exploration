@@ -15,7 +15,7 @@ There exists a BIC recommendation policy with expected total reward at least $\l
 \label{sec:public_single}
 
 \xhdr{Signal and explorability.}
-We first analyze what actions can be explored by a BIC policy in a single round $t$ of Bayesian exploration for public types, as a function of the history. Throughout, we suppress $\theta$ and $t$ from our notation.
+We first analyze what actions can be explored by a BIC policy in a single round $t$ of Bayesian Exploration for public types, as a function of the history. Throughout, we suppress $\theta$ and $t$ from our notation.
 %and let $\theta$ be the agent's type.
 Let $S$ be a random variable equal to the history at round $t$ (referred to as a {\em signal} throughout this section), $s$ be a realization of $S$, and $\S=\DT(\Omega,\mH)$ be the signal structure.  Note different policies induce different histories and hence different signal structures.  Thus it will be important to be explicit about the signal structure throughout this section.
 
@@ -29,7 +29,7 @@ Let $S$ be a random variable equal to the history at round $t$ (referred to as a
 %\jmcomment{Reviewer 2 asked what this expectation is over. }
 
 \begin{definition}
-	Consider a single-round of Bayesian exploration when the principal receives signal $S$ with signal structure $\S$. An action $a \in \A$ is called {\em signal-explorable for a realized signal $s$} if there exists a BIC recommendation policy $\pi$ such that $\Pr[\pi(s) = a] > 0$. The set of all such actions is denoted as $\EX_s[\S]$. The {\em signal-explorable set}, denoted $\EX[\S]$, is the random subset of actions $\EX_S[\S]$.
+	Consider a single-round of Bayesian Exploration when the principal receives signal $S$ with signal structure $\S$. An action $a \in \A$ is called {\em signal-explorable for a realized signal $s$} if there exists a BIC recommendation policy $\pi$ such that $\Pr[\pi(s) = a] > 0$. The set of all such actions is denoted as $\EX_s[\S]$. The {\em signal-explorable set}, denoted $\EX[\S]$, is the random subset of actions $\EX_S[\S]$.
 \end{definition}
 
 \jmcomment{Reviewer 2: The notation about $s, S, \mathcal{S}$ are confusing. Some places say ``realized state $s$'' (e.g., in definition 4.2 and several other places) and some places say ``realized state $S$'' (e.g., in Algorithm 1, Claim 4.6 and several other places). }
