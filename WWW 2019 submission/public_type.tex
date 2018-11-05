@@ -32,7 +32,7 @@ Let $S$ be a random variable equal to the history at round $t$ (referred to as a
 	Consider a single-round of Bayesian Exploration when the principal receives signal $S$ with signal structure $\S$. An action $a \in \A$ is called {\em signal-explorable for a realized signal $s$} if there exists a BIC recommendation policy $\pi$ such that $\Pr[\pi(s) = a] > 0$. The set of all such actions is denoted as $\EX_s[\S]$. The {\em signal-explorable set}, denoted $\EX[\S]$, is the random subset of actions $\EX_S[\S]$.
 \end{definition}
 
-\jmcomment{Reviewer 2: The notation about $s, S, \mathcal{S}$ are confusing. Some places say ``realized state $s$'' (e.g., in definition 4.2 and several other places) and some places say ``realized state $S$'' (e.g., in Algorithm 1, Claim 4.6 and several other places). }
+%\jmcomment{Reviewer 2: The notation about $s, S, \mathcal{S}$ are confusing. Some places say ``realized state $s$'' (e.g., in definition 4.2 and several other places) and some places say ``realized state $S$'' (e.g., in Algorithm 1, Claim 4.6 and several other places). }
 
 %Note that $\EX[\S]$ is a random subset of actions whose realization is determined by $s$.
 
@@ -135,7 +135,7 @@ This step is essentially from \cite{ICexplorationGames-ec16};
 %%%%%%%
  we provide the details below for the sake of completeness.
 The idea is to put $C_a = L_{\theta} \cdot \Pr[\pi^{\max}(S) = a]$ copies of each action $a$ into a sequence of length $L_{\theta}$ and randomly permute the sequence.
-\jmcomment{Reviewer 2: Equation (5) used $\pi^{max}(s)$, but rightly after $\pi^{max}(S)$ is used. JM: reviewer's confusion about realized vs random values continue.}
+%\jmcomment{Reviewer 2: Equation (5) used $\pi^{max}(s)$, but rightly after $\pi^{max}(S)$ is used. JM: reviewer's confusion about realized vs random values continue.}
  However, $C_a$ might not be an integer, and in particular may be smaller than 1. The latter issue is resolved by making $L_{\theta}$ sufficiently large. For the former issue, we first put $\lfloor C_a \rfloor$ copies of each action $a$ into the sequence, and then sample the remaining
     $L_\theta - \sum_a \lfloor C_a \rfloor$
 actions according to distribution
@@ -145,7 +145,7 @@ For details, see Algorithm \ref{alg:public_explore}.
     \caption{Subroutine MaxExplore}
     	\label{alg:public_explore}
     \begin{algorithmic}[1]
-	\STATE \textbf{Input:} type $\theta$, realized signal $S$ and signal structure $\S$.
+	\STATE \textbf{Input:} type $\theta$, signal $S$ and signal structure $\S$.
 	\STATE \textbf{Output:} a list of actions $\alpha$
 	\STATE Compute $\pi^{\max}$ as per \eqref{eq:pimax}
 	%\IF {$l \leq |\A| \cdot |\varTheta|$}
@@ -168,7 +168,7 @@ For details, see Algorithm \ref{alg:public_explore}.
 
 \begin{claim}
 \label{clm:maxexplore}
-Given type $\theta$ and realized signal $S$, MaxExplore outputs a sequence of $L_{\theta}$ actions.
+Given type $\theta$ and signal $S$, MaxExplore outputs a sequence of $L_{\theta}$ actions.
 Each action in the sequence marginally distributed as $\pi^{\max}$.
 For any action $a$ such that $\Pr[\pi^{\max} =a] >0$, $a$ shows up in the sequence at least once with probability exactly 1.
 MaxExplore runs in time polynomial in $L_{\theta}$, $|\A|$, $|\varOmega|$ and $|\X|$ (size of the support of the signal).

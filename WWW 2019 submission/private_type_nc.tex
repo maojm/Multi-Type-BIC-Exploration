@@ -48,7 +48,7 @@ Let $S$ and $S'$ be two random variables and $\S$ and $\S'$ be their signal stru
 
 \begin{proof}
 \asedit{For each signal realization $s$, denote
-\[ D_s =  \DKL\left(\; ((S',\omega_0) \mid S=s) \quad \|\quad  (S'|S=s) \times (\omega_0\mid S=s) \;\right).  \]
+\[ D_s =  \DKL\left(\; ((S',\omega_0) \mid S=s)\quad \|\quad  (S'|S=s) \times (\omega_0\mid S=s) \;\right).  \]
 }
 We have
 %\begin{align*}
@@ -56,13 +56,13 @@ $\sum_{s} \Pr[S=s] \cdot D = I(S' ; \omega_0|S) \leq \delta^2/8$.
 %\end{align*}
 
 By Pinsker's inequality, we have
-\ascomment{Jieming:  you said the next eqn is not quite right!}
+\ascomment{Jieming:  you said the next eqn is not quite right!} \jmcomment{fixed.}
 \begin{align*}
-& \sum_{s', \omega} \left| \Pr[S' = s', \omega_0 = \omega| S= s] - \Pr[S'=s'|S=s] \cdot \Pr[\omega_0 = \omega|S=s]\right| \\
-       &\qquad\qquad\cdot \sum_{s} \Pr[S = s] \\
-&\qquad\leq\textstyle  \sum_{s} \Pr[S=s] \cdot \sqrt{2 \ln(2)\cdot D_s  } \\
+       &\sum_{s} \Pr[S = s]\cdot \sum_{s', \omega} | \Pr[S' = s', \omega_0 = \omega| S= s]\\
+       & \qquad \qquad\qquad\qquad- \Pr[S'=s'|S=s] \cdot \Pr[\omega_0 = \omega|S=s]| \\
+&\leq\textstyle  \sum_{s} \Pr[S=s] \cdot \sqrt{2 \ln(2)\cdot D_s  } \\
 %&\qquad\leq\textstyle  \sum_{s} \Pr[S=s] \cdot \sqrt{2  D_s  } \\
-&\qquad\leq\textstyle   \sqrt{2 \sum_{s} \Pr[S=s] \cdot  D_s }
+&\leq\textstyle   \sqrt{2 \sum_{s} \Pr[S=s] \cdot  D_s }
 \leq  \delta /2.
 \end{align*}
 
