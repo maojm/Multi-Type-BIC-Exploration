@@ -5,12 +5,12 @@
 
 \newcommand{\pipub}{\pi_{\term{pub}}}
 
-We sketch how to extend our ideas for public types to handle the case of reported types. We'd like to simulate the recommendation policy for public types, call it $\pipub$. We simulate it separately for the exploration part and the exploitation part. The exploitation part is fairly easy: we provide a menu that recommends the best explored action for each agent types. In the exploration part, in each round $t$ we guess the agent type to be $\hat{\theta}_t$, with equal probability among all types.
-\jmedit{We are not guessing types according to their probabilities. The reason is that our goal in each phase is to explore each type for certain number of rounds. Guessing a type according to its probability will make rare types even rarer to appear and be guessed correctly. And this is against us.}
-The idea is to simulate $\pipub$ only in \emph{lucky rounds} when we guess correctly, \ie $\hat{\theta}_t=\theta_t$. Thus,
-in each round $t$ we simulate the $\ell_t$-th round of $\pipub$, where $\ell_t$ is the number of lucky rounds before round $t$.
+We sketch how to extend our ideas for public types to handle the case of reported types. We'd like to simulate the recommendation policy for public types, call it $\pipub$. We simulate it separately for the exploration part and the exploitation part. The exploitation part is fairly easy: we provide a menu that recommends the best explored action for each agent types. 
 
-In each round $t$ of exploration, we suggest the following menu. For type $\hat{\theta}_t$, we recommend the same action as $\pipub$ would recommend for this type in the $\ell_t$-th round, namely
+In the exploration part, in each round $t$ we guess the agent type to be $\hat{\theta}_t$, with equal probability among all types.%
+\footnote{\asedit{We guess the types uniformly, rather than according to their probabilities, because our goal is to explore each type for certain number of rounds. Guessing a type according to its probability will only make rare types appear even rarer.}}
+The idea is to simulate $\pipub$ only in \emph{lucky rounds} when we guess correctly, \ie $\hat{\theta}_t=\theta_t$. Thus,
+in each round $t$ we simulate the $\ell_t$-th round of $\pipub$, where $\ell_t$ is the number of lucky rounds before round $t$. In each round $t$ of exploration, we suggest the following menu. For type $\hat{\theta}_t$, we recommend the same action as $\pipub$ would recommend for this type in the $\ell_t$-th round, namely
     $\hat{a}_t = \pipub^{\ell_t}(\hat{\theta}_t)$.
 For any other type, we recommend the action which has the best expected reward given the ``common knowledge" (information available before round $1$) and the action $\hat{a}_t$. This is to ensure that in a lucky round, the menu does not convey any information beyond action  $\hat{a}_t$. When we receive the reported type, we can check whether our guess was correct. If so, we input the type-action-reward triple back to $\pipub$. Else, we ignore this round, as if it never happened.
 
@@ -21,8 +21,8 @@ Thus, our recommendation policy eventually explores the same type-action pairs a
 Consider Bayesian Exploration with reported types.
 There exists a BIC recommendation policy whose expected total reward is at least $\left(T - C \right) \cdot \OPTpub$,
 for some constant $C$ that depends on the problem instance but not on $T$.
-This policy explores all type-action pairs that are eventually-explorable 
-%for a given state in the case of 
+This policy explores all type-action pairs that are eventually-explorable
+%for a given state in the case of
 for public types.
 \end{theorem}
 

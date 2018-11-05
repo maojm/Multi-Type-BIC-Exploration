@@ -47,16 +47,14 @@ Let $S$ and $S'$ be two random variables and $\S$ and $\S'$ be their signal stru
 \end{lemma}
 
 \begin{proof}
-\asedit{For each signal realization $s$, denote
+For each signal realization $s$, denote
 \[ D_s =  \DKL\left(\; ((S',\omega_0) \mid S=s)\quad \|\quad  (S'|S=s) \times (\omega_0\mid S=s) \;\right).  \]
-}
 We have
 %\begin{align*}
 $\sum_{s} \Pr[S=s] \cdot D = I(S' ; \omega_0|S) \leq \delta^2/8$.
 %\end{align*}
 
 By Pinsker's inequality, we have
-\ascomment{Jieming:  you said the next eqn is not quite right!} \jmcomment{fixed.}
 \begin{align*}
        &\sum_{s} \Pr[S = s]\cdot \sum_{s', \omega} | \Pr[S' = s', \omega_0 = \omega| S= s]\\
        & \qquad \qquad\qquad\qquad- \Pr[S'=s'|S=s] \cdot \Pr[\omega_0 = \omega|S=s]| \\
@@ -71,12 +69,12 @@ Consider any BIC recommendation policy $\pi'$ for signal structure $\S'$. We con
 
 Now we check $\pi$ is $\delta$-BIC. For any $m,m' \in \M$ and $\theta \in \varTheta$,
 \begin{align*}
-& \textstyle \sum_{\omega,s}\; 
+& \textstyle \sum_{\omega,s}\;
     \Pr[\omega_0= \omega] \cdot \Pr[S = s | \omega_0 = \omega] \\
 &\quad\qquad \cdot \left(u(\theta, m(\theta), \omega) - u(\theta, m'(\theta), \omega)\right)
 \cdot  \Pr[\pi(s) = m] \\
-&\quad= 
-    \textstyle \sum_{\omega,s,s'}\; 
+&\quad=
+    \textstyle \sum_{\omega,s,s'}\;
         \Pr[\omega_0 = \omega, S = s] \cdot \Pr[ S'=s'|S= s] \cdot \Pr[\pi'(s') = m]   \\
 &\qquad\qquad\cdot \left(u(\theta, m(\theta), \omega) - u(\theta, m'(\theta), \omega)\right)\\
 &\quad\geq \textstyle \sum_{\omega,s,s'}\;
@@ -110,7 +108,7 @@ for each menu $m\in \M$ and each feasible signal $s\in \X$.
  & \sum_{\omega \in \varOmega, s \in \X} \Pr[\omega] \cdot \Pr[s | \omega] &  & \cdot \left(u(\theta, m(\theta), \omega) - u(\theta, m'(\theta), \omega) + \delta\right)\\
     &\qquad\qquad \cdot x_{m,s'} \geq 0  &\ & \forall m,m' \in \M, \theta \in \varTheta \\
 & \textstyle  \sum_{m\in \M}\; x_{m,s} = 1,  \ &\ & \forall s \in \X \\
-& x_{m,s} \geq 0,  \ &\ & \forall s \in \X, m\in \M 
+& x_{m,s} \geq 0,  \ &\ & \forall s \in \X, m\in \M
 \end{alignat*}
 \end{mdframed}
 %\caption{LP}
@@ -234,6 +232,8 @@ In this subsection, we develop our main recommendation policy, Algorithm \ref{al
 \[ \max_{m,s:\Pr[\pi(s)=m] >0} \frac{B_m(\gamma_0)}{ \Pr[\pi(s)=m]}\]
 for all $\pi$ that might be chosen as $\pi^{max}$ by Algorithm \ref{alg:nocc_main}.
 
+\newcommand{\TAB}{\hspace{3mm}}
+
  \begin{algorithm}[t]
     \caption{Main procedure for private types }
     	\label{alg:nocc_main}
@@ -252,10 +252,15 @@ for all $\pi$ that might be chosen as $\pi^{max}$ by Algorithm \ref{alg:nocc_mai
 		\STATE Suggest menu $\mu [ (t-1) \mod L + 1]$ to the agent.
 		\IF {$t \equiv 0 \pmod L$}
 			\STATE End of a phase:
-			\STATE For each explored menu $m$ in the previous phase, use $B_m(\gamma_1)$ samples to compute $\Delta_m$ stated in Lemma \ref{lem:deltam}.
-			\STATE If there does not exist a state $w$ which is consistent with $\Delta_m$ ($\Delta_m = D_m(\omega)$) for all explored menu $m$, pick an arbitrary state $\omega$ and set $\Delta_m \leftarrow D_m(\omega)$ for all explored menu $m$. This step just make sure the number of signals is bounded by $|\varOmega|$.
+			\STATE For each explored menu $m$ in the previous phase, \\
+            \TAB use $B_m(\gamma_1)$ samples to compute $\Delta_m$ from Lemma \ref{lem:deltam}.
+			\STATE {\bf If} no state $\omega\in \varOmega$ is consistent with $\Delta_m$ \\
+            (\ie $\Delta_m = D_m(\omega)$) for all explored menus $m$ {\bf then} \\
+            \TAB pick any state $\omega$ and \\
+            \TAB set $\Delta_m \leftarrow D_m(\omega)$ for all explored menus $m$. \\
+            \COMMENT{to ensure that \#signals is bounded by $|\varOmega|$.}
 			\STATE $l \leftarrow l + 1$.
-			\STATE Set $S_l$ to be the collection of $\Delta_m$'s for all explored menu $m$.
+			\STATE Set $S_l = \{ \text{ $\Delta_m$:\; all explored menus $m$.} \}$
 		\ENDIF
 	\ELSE
 		\STATE \textbf{Exploitation:}
@@ -336,11 +341,11 @@ By Lemma \ref{lem:ainfomono}, we know that $\EX_{s'}[\S'] \subseteq \EX^{\delta}
 When $l > |\M|$, the proof follows from the same argument as the last paragraph of the proof of Lemma \ref{lem:exp_public}.
 \end{proof}
 
-
-\asdelete{\begin{corollary}[Restatement of Theorem \ref{thm:private_nocc}]
+\OMIT{%%%%%%%%
+\begin{corollary}[Restatement of Theorem \ref{thm:private_nocc}]
 \label{cor:private_nocc}
 For any $\delta > 0$, we have a $\delta$-BIC recommendation policy of $T$ rounds with expected total reward at least $\left(T - C\cdot \log(T) \right) \cdot \OPT$ for some constant $C$ which does not depend on $T$.
-\end{corollary}}
+\end{corollary}} %%%%%%
 
 \begin{proof}[Proof of Theorem \ref{thm:private_nocc}]
 By Claim \ref{clm:nocc_BIC}, Algorithm \ref{alg:nocc_main} is $\delta$-BIC.

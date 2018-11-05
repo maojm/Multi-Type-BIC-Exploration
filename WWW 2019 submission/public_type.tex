@@ -261,7 +261,7 @@ Given the sequence $\theta_1,...,\theta_T$, the partition of phases in Algorithm
 \end{claim}
 } %%%%%
 
-\jmedit{The following lemma compares the exploration of Algorithm \ref{alg:public_main} with $l$ phases and some other BIC recommendation policy with $l$ rounds. Notice that a phase in Algorithm \ref{alg:public_main} has many rounds.} 
+\jmedit{The following lemma compares the exploration of Algorithm \ref{alg:public_main} with $l$ phases and some other BIC recommendation policy with $l$ rounds. Notice that a phase in Algorithm \ref{alg:public_main} has many rounds.}
 \begin{lemma}
 \label{lem:exp_public}
 Fix phase $\ell>0$ and the sequence of agent types $\theta_1,...,\theta_T$. Assume Algorithm \ref{alg:public_main} has been running for at least $\min(l, |\A|\cdot |\varTheta|)$ phases.
@@ -315,7 +315,9 @@ Now consider the case when $\ell > |\A| \cdot |\varTheta|$. Define \ALG to be th
 
 \begin{proof}[Proof of Theorem \ref{thm:public}]
 Algorithm \ref{alg:public_main} is BIC  by Claim \ref{clm:maxexplore}. By Lemma \ref{lem:exp_public}, Algorithm \ref{alg:public_main} explores all the eventually-explorable type-actions pairs after $|\A|\cdot |\varTheta|$ phases.
-After that, for each agent type $\theta$, Algorithm \ref{alg:public_main} recommends the best explored action: \\$ \arg\max_{a \in \AExp_{\omega,\theta}} u(\theta, a, \omega)$ \jmedit{with probability exactly 1. You may wonder how we guarantee this probability to be 1 if some low-probability event happens (e.g. all agents have the same type). The answer is, in that case, our algorithm would never finish $|\A|\cdot |\varTheta|$ phases. But as long as the algorithm finishes $|\A|\cdot |\varTheta|$ phases, we have the above guarantee.} 
+After that, for each agent type $\theta$, Algorithm \ref{alg:public_main} recommends the best explored action: \\$ \arg\max_{a \in \AExp_{\omega,\theta}} u(\theta, a, \omega)$ with probability exactly 1.% 
+\footnote{\asedit{This holds with probability is exactly 1, provided that our algorithm finishes $|\A|\cdot |\varTheta|$  phases. If some undesirable low-probability event happens, \eg if all agents seen so far have had the same type, our algorithm would never finish $|\A|\cdot |\varTheta|$ phases.}}
+
 Therefore Algorithm \ref{alg:public_main} gets reward $\OPT$ except rounds in the first $|\A|\cdot |\varTheta|$ phases.  It remains to prove that the expected number of rounds in exploration (i.e. first $|\A|\cdot |\varTheta|$ phases) does not depend on the time horizon $T$. Let $N_\ell$ be the duration of phase $\ell$.
 Recall that the phase ends as soon as each type has shown up at least $L_{\theta}$ times. It follows that
 $ \E[N_\ell] \leq  \sum_{\theta\in\varTheta} \frac{L_{\theta}}{\Pr[\theta]}$.
