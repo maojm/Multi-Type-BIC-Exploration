@@ -238,34 +238,43 @@ for all $\pi$ that might be chosen as $\pi^{max}$ by Algorithm \ref{alg:nocc_mai
     \caption{Main procedure for private types }
     	\label{alg:nocc_main}
     \begin{algorithmic}[1]
-    	\STATE Initial signal $S_1 = \S_1= \perp$.
-    	\STATE Set $\gamma_1 =\min\left(\frac{\delta^2}{16|\M|\log(|\varOmega|)},\left( \frac{\delta^2}{32|M|}\right)^2\right)$ and $\gamma_2 =  \frac{1}{T|\M|}$ and $\gamma_0=\min(\gamma_1,\gamma_2)$.
-	\STATE Initial phase count $l = 1$.
-	\FOR {$t=1$ to $T$}
-		\IF {$l\leq |\M|$}
-		\STATE \textbf{Exploration:}
+    	\STATE {\bf Initialize:} signal $S_1 = \S_1= \perp$, phase $l=1$.
+        \STATE \COMMENT{ $S_l$ and $\S_l$ are the signal and signal structure in phase $l$. }
+    	\STATE Set $\gamma_1 =\min\left(\frac{\delta^2}{16|\M|\log(|\varOmega|)},\left( \frac{\delta^2}{32|M|}\right)^2\right)$ and $\gamma_2 =  \frac{1}{T|\M|}$. 
+    \STATE Set $\gamma_0=\min(\gamma_1,\gamma_2)$.
+%	\STATE Initial phase count $l = 1$.
+	\FOR {rounds $t=1$ to $T$}
+		\IF {phase $l\leq |\M|$}
+		\STATE \COMMENT{\textbf{Exploration}}
 		\IF {$t \equiv 1 \pmod L$}
 			\STATE Start a new phase:
-			
-			\STATE Use the current $S_l$ and $\S_l$ to compute a list of $L$ menus $\mu \leftarrow $ MaxExplore($S_l, \S_l$).
+            \STATE $\mu \leftarrow $ MaxExplore($S_l, \S_l$)
+                \TAB\COMMENT{compute a list of $L$ menus}
 		\ENDIF
 		\STATE Suggest menu $\mu [ (t-1) \mod L + 1]$ to the agent.
 		\IF {$t \equiv 0 \pmod L$}
 			\STATE End of a phase:
-			\STATE For each explored menu $m$ in the previous phase, \\
-            \TAB use $B_m(\gamma_1)$ samples to compute $\Delta_m$ from Lemma \ref{lem:deltam}.
+			\FOR{each explored menu $m$ in the previous phase} 
+            \STATE use $B_m(\gamma_1)$ samples to compute $\Delta_m$ from Lemma \ref{lem:deltam}
+            \ENDFOR
 			\STATE {\bf If} no state $\omega\in \varOmega$ is consistent with $\Delta_m$ \\
             (\ie $\Delta_m = D_m(\omega)$) for all explored menus $m$ {\bf then} \\
-            \TAB pick any state $\omega$ and \\
-            \TAB set $\Delta_m \leftarrow D_m(\omega)$ for all explored menus $m$. \\
+            \STATE \TAB pick any state $\omega$, and \\
+            \STATE \TAB set $\Delta_m \leftarrow D_m(\omega)$ for all explored menus $m$. \\
             \COMMENT{to ensure that \#signals is bounded by $|\varOmega|$.}
 			\STATE $l \leftarrow l + 1$.
-			\STATE Set $S_l = \{ \text{ $\Delta_m$:\; all explored menus $m$.} \}$
+			\STATE Set $S_l = \{ \text{ $\Delta_m$:\; all explored menus $m$} \}$.
 		\ENDIF
 	\ELSE
-		\STATE \textbf{Exploitation:}
-		\STATE If this is the first exploitation round, for each explored menu $m$ in the exploration, use $B_m(\gamma_2)$ samples to compute $\Delta_m$ stated in Lemma \ref{lem:deltam}. Set $S_l$ to be the collection of $\Delta_m$'s for all explored menu $m$.
-		\STATE Suggest the menu which consists of the best action of each type conditioned on $S_l$ and the prior.
+		\STATE \COMMENT{\textbf{Exploitation}}
+		\IF {this is the first exploitation round} 
+        \FOR {each menu $m$ explored during exploration} 
+            \STATE use $B_m(\gamma_2)$ samples to compute $\Delta_m$ from Lemma \ref{lem:deltam}.
+        \ENDFOR
+        \STATE Set $S_l = \{ \text{ $\Delta_m$:\; all explored menus $m$} \}$.
+        \ENDIF 
+		\STATE Suggest the menu which consists of the best action \\
+        \STATE \TAB of each type conditioned on $S_l$ and the prior.
 	\ENDIF
 	\ENDFOR
      \end{algorithmic}
