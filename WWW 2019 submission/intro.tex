@@ -1,4 +1,4 @@
-%\pagebreak
+%!TEX root = main.tex
 \section{Introduction}
 %\jmcomment{Reviewer 4: the authors interchange between $l$ and $\ell$. Please commit to one of the two and use this consistently.}
 Recommendation systems are ubiquitous in online markets \asedit{(\eg Netflix for movies, Amazon for products, Yelp for restaurants, etc.),
@@ -35,8 +35,8 @@ the principal asks agents to report the type after the recommendation is issued,
 and the type is never revealed (\emph{private types}).
 %
 We design a near-optimal recommendation policy for each modeling choice.
-\asdelete{Our policies compete with the ``best-in-hindsight"
-policy: a recommendation policy whose Bayesian-expected reward is optimal for a particular problem instance.}
+%\asdelete{Our policies compete with the ``best-in-hindsight"
+%policy: a recommendation policy whose Bayesian-expected reward is optimal for a particular %problem instance.}
 %\jmcomment{Reviewer 2: what is a particular problem instance?}
 \OMIT{In fact, we consider a stronger benchmark: optimal Bayesian-expected reward achieved by any recommendation policy in any one round.}
 
@@ -51,7 +51,7 @@ We provide a concrete example when the latter transition makes a huge difference
 \asedit{\xhdr{Our techniques.}
 As a warm-up, we first develop a recommendation policy for public types. In the long run, our policy}
 matches the benchmark of ``best explorable action''.
-\asdelete{in the long run, i.e., after a ``constant" number of rounds (which depends on the problem instance but not the time horizon).}
+%\asdelete{in the long run, i.e., after a ``constant" number of rounds (which depends on the problem instance but not the time horizon).}
 While it is easy to prove that such a policy exists, the challenge is to provide it as an explicit procedure.
 %{\bf NSI: cite old paper here and say we differentiate by providing it as an explicit procedure? maybe also say ``As a warm-up, we first develop a recommendation policy for public types.'' at the beginning of this paragraph so people don't think it's our main result.}
 % A.S.: the old paper just doesn't do it.

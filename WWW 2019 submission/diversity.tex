@@ -113,7 +113,7 @@ Consider Bayesian exploration with public or reported types. Then:
 
 \begin{proof}[Proof Sketch]
 Consider public types (the case of reported types then follows by arguments in Section~\ref{sec:reported}).  Let $\pi$ be a BIC recommendation policy for the instance with type distribution $\DT$ and suppose $\pi$ eventually explores type-action pairs $\pairs$ for this instance and state $\omega$.  Consider the instance with type distribution $\DT'$.  Extend $\pi$ to a policy $\pi'$ as follows: let $T'$ be the subsequence of $T$ for which $\DT(\theta_t)>0$. If $t\not\in T'$, then recommend the action $a$ that maximizes agent $t$'s Bayesian-expected reward.  If $t\in T'$, then consider the sub-history $H\equiv H^{T'}_t$ restricted to $T'$ and recommend action $a\sim\pi(H)$.  Then $\pi'$ is BIC for the instance with type distribution $\DT'$. Furthermore, $\pi'$ eventually explores the same set of type-action pairs $\pairs$ for this modified instance as well (and possibly more) as every history that occurs with positive probability in the original instance occurs as a sub-history in the modified instance with positive probability as well.
-{\bf NSI: check this.}
+%{\bf NSI: check this.}
 %We follow the steps of the proof of Lemma \ref{lem:exp_public}. The idea is that the proof carries through even if $\pi$ is a BIC recommendation policy for the less diverse problem instance, \ie an instance with type distribution $\DT'$ such that $\support(\DT')\subset \support(\DT)$. Then for a given state $\omega$, Algorithm \ref{alg:public_main} for the original distribution $\DT$ instance explores all type-action pairs in $\pairs'$.
 \end{proof}
 

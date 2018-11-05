@@ -31,18 +31,18 @@ the current history $H_t$ to a distribution over messages $m_t$ which, in genera
 
 The recommendation policy $\pi$, the type distribution $\DT$, the state distribution $\prior$, and the reward function $u$ induce a joint distribution $\DT(\varOmega,\mH_t)$ over states and histories, henceforth called the {\em signal structure} at round $t$. Note that it is known to agent $t$.
 
-We are ready to state agents' decision model. Each agent $t$, given the message $m_t$, chooses an action $a_t$ so as to maximize her {\em Bayesian-expected reward}
-\begin{align}
- \E[r_t]\equiv
-    \E_{(\omega,H_t)\sim\DT(\varOmega,\mH_t)}
-    \left[
-        u(\theta_t,a_t,\omega)\; \mid m_t\sim\pi(H_t)
-    \right].
-\end{align}
-%$$\E[r_t]\equiv\E_{(\omega,H_t)\sim\DT(\varOmega,\mH_t)}
-%[\; \E_{m_t\sim\pi(H_t)}[u(\theta_t,a_t,\omega)\; ]].$$
+We are ready to state agents' decision model. Each agent $t$, given the realized message $m$, chooses an action $a_t$ so as to maximize her {\em Bayesian-expected reward}
+%\begin{align}
+% \E[r_t]\equiv
+ %   \E_{(\omega,H_t)\sim\DT(\varOmega,\mH_t)}
+  %  \left[
+   %     u(\theta_t,a_t,\omega)\; \mid m_t\sim\pi(H_t)
+   % \right].
+%\end{align}
+$$\E[r_t]\equiv\E_{(\omega,H_t)\sim\DT(\varOmega,\mH_t)}
+\left[\; \E_{m_t\sim\pi(H_t)}[u(\theta_t,a_t,\omega)\;|m_t = m ]\right].$$
 \nicomment{I prefer the double expectation I wrote which is commented out here (I neglected to condition on $m_t$ in the commented-out version, so add that back).  Why did you do this weird notation, Alex?}
-
+\jmcomment{I also prefer double expectation.}
 Given the instance of Bayesian Exploration, the goal of the principal is to choose a policy $\pi$ that maximizes (Bayesian-expected) {\em total} reward, \ie $\sum_{t=1}^T \E[r_t]$.\footnote{While the principal must commit to the policy given only the problem instance, the policy itself observes the history and thus can adapt recommendations to inferences about the state based on the history.  See Example~\ref{exp:simple}.}
 
 We assume that the sets $\mA$, $\varTheta$ and $\varOmega$ are finite. We use $\omega_0$ as the random variable for the state, and write $\Pr[\omega]$ for $\Pr[\omega_0=\omega]$. Similarly, we write $\Pr[\theta]$ for $\Pr[\theta_t=\theta]$.
