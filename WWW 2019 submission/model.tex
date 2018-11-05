@@ -6,8 +6,8 @@
 }}
 
 \emph{Bayesian Exploration} is a game between a principal and $T$ agents. The game consists of $T$ rounds. Each round $t\in [T]$ proceeds as follows: a new agent $t$ arrives, receives a message $m_t$ from the principal, chooses an action $a_t$ from a fixed action space $\A$, and collects a reward $r_t\in [0,1]$ that is immediately observed by the principal. Each agent $t$ has a {\em type} $\theta_t\in\varTheta$, drawn independently from a fixed distribution $\DT$, and an {\em action space} $\mA$ (same for all agents).  There is uncertainty, captured by a ``state of nature" $\omega\in \varOmega$, henceforth simply the \emph{state}, drawn from a Bayesian prior $\prior$ at the beginning of time and fixed across rounds. The {\em reward} $r_t = u(\theta_t,a_t,\omega)\in[0,1]$ of agent $t$ is determined by its type $\theta_t$, the action $a_t\in\mA$ chosen by this agent, and the state $\omega$, for some fixed and deterministic \emph{reward function}
-$u:\varTheta\times \A \times \varOmega \to [0,1]$.  
-The principal's messages $m_t$ are generated according to a randomized online algorithm $\pi$ termed ``recommendation policy". 
+$u:\varTheta\times \A \times \varOmega \to [0,1]$.
+The principal's messages $m_t$ are generated according to a randomized online algorithm $\pi$ termed ``recommendation policy".
 Thus, an {\em instance}
     %$\I=(T,\mA,\varTheta,\varOmega,\DT,\prior,u)$
 of Bayesian Exploration consists of the time horizon $T$, the sets $\mA,\varTheta,\varOmega$,
@@ -20,7 +20,7 @@ The knowledge structure is as follows. The type distribution $\DT$, the Bayesian
 %{\bf NSI: do we assume $r_t$ is bounded or anything like that?}
 %\jmcomment{Reward is defined as the utility which is defined to be in $[0,1]$.}
 
-%The Bayesian Exploration game proceeds sequentially in rounds $t=1,\ldots, T$.  
+%The Bayesian Exploration game proceeds sequentially in rounds $t=1,\ldots, T$.
 
 Let $H_t$ denote the \emph{history} observed by the principal at round $t$, immediately before it chooses its message $m_t$. Hence, it equals $\{(r_1,\theta_1),\ldots,(r_{t-1},\theta_{t-1}),r_t\}$ for public types, $\{(r_1,\theta_1),\ldots,(r_{t-1},\theta_{t-1})\}$ for reported types, and $\{r_1,\ldots,r_{t-1}\}$ for private types.%
 \footnote{For randomized policies, the history also contains policy's random seed in each round.}
@@ -35,7 +35,7 @@ We are ready to state agents' decision model. Each agent $t$, given the message 
 \begin{align}
  \E[r_t]\equiv
     \E_{(\omega,H_t)\sim\DT(\varOmega,\mH_t)}
-    \left[ 
+    \left[
         u(\theta_t,a_t,\omega)\; \mid m_t\sim\pi(H_t)
     \right].
 \end{align}
@@ -48,16 +48,16 @@ Given the instance of Bayesian Exploration, the goal of the principal is to choo
 We assume that the sets $\mA$, $\varTheta$ and $\varOmega$ are finite. We use $\omega_0$ as the random variable for the state, and write $\Pr[\omega]$ for $\Pr[\omega_0=\omega]$. Similarly, we write $\Pr[\theta]$ for $\Pr[\theta_t=\theta]$.
 
 \xhdr{Bayesian-incentive compatibility.}
-For public types, we assume the message $m_t$ in each round is a recommended action $a \in \mA$ which, for convenience, we sometimes write as $m_t(\theta_t)$. For private and reported types, we assume that the message $m_t$ in each round is a \emph{menu} mapping types to actions, i.e., $m_t:\varTheta\rightarrow\mA$.  
-%In either case, we can write the {\em recommended action} for agent $t$ as $m_t(\theta_t)$. 
- We further assume $\pi$ is Bayesian incentive-compatible. 
+For public types, we assume the message $m_t$ in each round is a recommended action $a \in \mA$ which, for convenience, we sometimes write as $m_t(\theta_t)$. For private and reported types, we assume that the message $m_t$ in each round is a \emph{menu} mapping types to actions, i.e., $m_t:\varTheta\rightarrow\mA$.
+%In either case, we can write the {\em recommended action} for agent $t$ as $m_t(\theta_t)$.
+ We further assume $\pi$ is Bayesian incentive-compatible.
 \begin{definition}
 Let $\EE_t$ be the event that the agents have followed principal's recommendations before round $t$, \ie $a_s = m_s(\theta_s)$ for all rounds $s<t$.
 The recommendation policy $\pi$ is {\em Bayesian incentive compatible} (\emph{BIC}) if for all rounds $t$ and messages $m$ such that
 \[ \Pr_{(\omega,H_t)\sim\DT(\varOmega,\mH_t)}
     [m = \pi(H_t)\; \mid\; \EE_{t}] > 0,
 \]
-it holds that for all types $\theta$ and arms $a$,
+it holds that for all types $\theta$ and actions $a$,
 \begin{align}\label{eq:model-BIC}
 \E\left[\; u(\theta,m(\theta),\omega) - u(\theta,a,\omega) \; \mid\; m_t=m, \EE_{t}\;\right] \geq 0,
 \end{align}
@@ -67,7 +67,7 @@ where the expectation is over $(\omega,H_t)\sim\DT(\varOmega,\mH_t)$.
 
 \noindent The above assumptions are without loss of generality, by a suitable version of Myerson's ``revelation principle".
 %(see {\bf NSI: citation} for more details).
-% A.S. no citations to give! We have smth in the ec16 paper, 
+% A.S. no citations to give! We have smth in the ec16 paper,
 % but it is not quite the same. We'll need to write it out eventually!
 
 \iffalse
@@ -82,7 +82,7 @@ For reported types and private types, we assume that the message in each round i
 
 \xhdr{Explorability and benchmarks.}
 %For these definitions, recommendation policies proceed indefinitely.
-For public types, a type-action pair $(\theta,a)\in \Theta\times \A$ is called \emph{eventually-explorable} in state $\omega$ if there is some BIC recommendation policy that, for $T$ large enough, eventually recommends this action to this agent type with positive probability. Then action $a$ is called \emph{eventually-explorable} for type $\theta$ and state $\omega$. The set of all such actions is denoted $\AExp_{\omega,\theta}$. 
+For public types, a type-action pair $(\theta,a)\in \Theta\times \A$ is called \emph{eventually-explorable} in state $\omega$ if there is some BIC recommendation policy that, for $T$ large enough, eventually recommends this action to this agent type with positive probability. Then action $a$ is called \emph{eventually-explorable} for type $\theta$ and state $\omega$. The set of all such actions is denoted $\AExp_{\omega,\theta}$.
 
 Likewise, for private types, a menu is called \emph{eventually-explorable} in state $\omega$ if there is some BIC recommendation policy that eventually recommends this menu with positive probability. The set of all such menus is denoted $\MExp_{\omega}$.
 
