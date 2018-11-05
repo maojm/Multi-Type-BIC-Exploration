@@ -124,7 +124,7 @@ It is easy to see that we obtain max-support recommendation policy by averaging 
 \xhdr{Maximal Exploration.}
 %\label{sec:public_maxe}
 %This section is very similar to the EC16's paper, we include this section to make our paper self-contained.
-We design a subroutine \term{MaxExplore} which outputs a sequence of actions with two properties: it includes every signal-explorable action at least once, and the marginal distribution at each location is $\pi^{\max}$. The length of this sequence, denoted $L_{\theta}$, should satisfy
+We design a subroutine \term{MaxExplore} which outputs a sequence of actions with two properties: it includes every signal-explorable action at least once, and each action in the sequence marginally distributed as $\pi^{\max}$. The length of this sequence, denoted $L_{\theta}$, should satisfy
 \begin{align}\label{eq:public-L}
 L_{\theta} \geq \max_{(a,s)\in \A\times \X \text{ with }\quad \Pr[\pi^{\max}(s)=a] \neq 0} \frac{1}{\Pr[\pi^{\max}(s)=a]}.
 \end{align}
@@ -174,11 +174,11 @@ For any action $a$ such that $\Pr[\pi^{\max} =a] >0$, $a$ shows up in the sequen
 MaxExplore runs in time polynomial in $L_{\theta}$, $|\A|$, $|\varOmega|$ and $|\X|$ (size of the support of the signal).
 \end{claim}
 
-\jmcomment{
-Reviewer 2: In the definition of Maximal Exploration, you mentioned``the marginal distribution at each location is $\pi^max$''. Whose marginal distribution do you mean? Actions’? But $\pi^{max}$ is a randomized map from S to actions, how could it be a marginal distribution of actions? Do you mean $\pi^{max}(S)$?
+%\jmcomment{
+%Reviewer 2: In the definition of Maximal Exploration, you mentioned``the marginal distribution at each location is $\pi^max$''. Whose marginal distribution do you mean? Actions’? But $\pi^{max}$ is a randomized map from S to actions, how could it be a marginal distribution of actions? Do you mean $\pi^{max}(S)$?
 
-JM: Marginal distribution means is the distribution of one action not the distribution of joint actions.
-}
+%JM: Marginal distribution means is the distribution of one action not the distribution of joint actions.
+%}
 \subsection{Main Recommendation Policy}
 \label{sec:public_main}
 
@@ -233,11 +233,11 @@ There is a separate thread for each type $\theta$, denoted $\thread(\theta)$,  w
 
 The BIC property follows easily from Claim \ref{clm:maxexplore}. The key is that Algorithm \ref{alg:public_main} explores all  eventually-explorable type-action pairs.
 
-\jmcomment{
-Reviewer 2: I did not follow the the statement and proof of Lemma 4.7. Is a phase equivalent to a round? If so, then why within each phase the algorithm interacts with agents for multiple rounds? If not, then why the lemma refers to both phase $l$ and round $l$? Also $\pi$ is the policy at round l, why it has history which is denoted by $S'$? The definition of $H_t$ seems to imply that $\pi$ is played every round…
+%\jmcomment{
+%Reviewer 2: I did not follow the the statement and proof of Lemma 4.7. Is a phase equivalent to a round? If so, then why within each phase the algorithm interacts with agents for multiple rounds? If not, then why the lemma refers to both phase $l$ and round $l$? Also $\pi$ is the policy at round l, why it has history which is denoted by $S'$? The definition of $H_t$ seems to imply that $\pi$ is played every round…
 
-JM: A phase is not a round. The answer to the question is that we are comparing our policy with $l$ phases with other poilcy with $l$ rounds.
-}
+%JM: A phase is not a round. The answer to the question is that we are comparing our policy with $l$ phases with other poilcy with $l$ rounds.
+%}
 
 \OMIT{The performance analysis proceeds as follows. First, we upper-bound the expected number of rounds of a phase (Lemma \ref{lem:epoch}). Then we show, in Lemma \ref{lem:exp_public}, that Algorithm \ref{alg:public_main} explores all  eventually-explorable type-action pairs in $|\A| \cdot |\varTheta|$ phases. We use these two lemmas to prove the main theorem.}
 
@@ -261,7 +261,7 @@ Given the sequence $\theta_1,...,\theta_T$, the partition of phases in Algorithm
 \end{claim}
 } %%%%%
 
-
+\jmedit{The following lemma compares the exploration of Algorithm \ref{alg:public_main} with $l$ phases and some other BIC recommendation policy with $l$ rounds. Notice that a phase in Algorithm \ref{alg:public_main} has many rounds.} 
 \begin{lemma}
 \label{lem:exp_public}
 Fix phase $\ell>0$ and the sequence of agent types $\theta_1,...,\theta_T$. Assume Algorithm \ref{alg:public_main} has been running for at least $\min(l, |\A|\cdot |\varTheta|)$ phases.
@@ -314,13 +314,15 @@ Now consider the case when $\ell > |\A| \cdot |\varTheta|$. Define \ALG to be th
 \end{proof}
 
 \begin{proof}[Proof of Theorem \ref{thm:public}]
-Algorithm \ref{alg:public_main} is BIC  by Claim \ref{clm:maxexplore}. By Lemma \ref{lem:exp_public}, Algorithm \ref{alg:public_main} explores all the eventually-explorable type-actions pairs after $|\A|\cdot |\varTheta|$ phases. After that, for each agent type $\theta$, Algorithm \ref{alg:public_main} always recommends the best explored action: $ \arg\max_{a \in \AExp_{\omega,\theta}} u(\theta, a, \omega)$. Therefore Algorithm \ref{alg:public_main} gets reward $\OPT$ except rounds in the first $|\A|\cdot |\varTheta|$ phases.  It remains to prove that the expected number of rounds in exploration does not depend on the time horizon $T$. Let $N_\ell$ be the duration of phase $\ell$.
+Algorithm \ref{alg:public_main} is BIC  by Claim \ref{clm:maxexplore}. By Lemma \ref{lem:exp_public}, Algorithm \ref{alg:public_main} explores all the eventually-explorable type-actions pairs after $|\A|\cdot |\varTheta|$ phases.
+After that, for each agent type $\theta$, Algorithm \ref{alg:public_main} recommends the best explored action: \\$ \arg\max_{a \in \AExp_{\omega,\theta}} u(\theta, a, \omega)$ \jmedit{with probability exactly 1. You may wonder how we guarantee this probability to be 1 if some low-probability event happens (e.g. all agents have the same type). The answer is, in that case, our algorithm would never finish $|\A|\cdot |\varTheta|$ phases. But as long as the algorithm finishes $|\A|\cdot |\varTheta|$ phases, we have the above guarantee.} 
+Therefore Algorithm \ref{alg:public_main} gets reward $\OPT$ except rounds in the first $|\A|\cdot |\varTheta|$ phases.  It remains to prove that the expected number of rounds in exploration (i.e. first $|\A|\cdot |\varTheta|$ phases) does not depend on the time horizon $T$. Let $N_\ell$ be the duration of phase $\ell$.
 Recall that the phase ends as soon as each type has shown up at least $L_{\theta}$ times. It follows that
 $ \E[N_\ell] \leq  \sum_{\theta\in\varTheta} \frac{L_{\theta}}{\Pr[\theta]}$.
 So, one can take $C = |\A|\cdot |\varTheta|\cdot \sum_{\theta\in\varTheta} \frac{L_{\theta}}{\Pr[\theta]}$.
 \end{proof}
-\jmcomment{
-Reviewer 2: Above Section 3.3, I also did not follow the proof of Theorem 3.1. It claims that "Algorithm 2 always recommends the best explored action" after some phases, why? Is this a high-probability guarantee or 100 percent guarantee? It seems to me that this should have been a high-probability guarantee since there is a strictly positive probability that the agent comes at each round has exactly the same agent type and in this case you can never learn the other agent's best action. If so, what's the algorithm's success probability? If not, why the above is not a concern? At the end, I also did not see why C depends linearly on the expectation of $N_l$ (the duration of phase l). Do we need to guarantee that each type has shown up at least $L_{\theta}$ times FOR SURE, which may never happen if you get unlucky?
+%\jmcomment{
+%Reviewer 2: Above Section 3.3, I also did not follow the proof of Theorem 3.1. It claims that "Algorithm 2 always recommends the best explored action" after some phases, why? Is this a high-probability guarantee or 100 percent guarantee? It seems to me that this should have been a high-probability guarantee since there is a strictly positive probability that the agent comes at each round has exactly the same agent type and in this case you can never learn the other agent's best action. If so, what's the algorithm's success probability? If not, why the above is not a concern? At the end, I also did not see why C depends linearly on the expectation of $N_l$ (the duration of phase l). Do we need to guarantee that each type has shown up at least $L_{\theta}$ times FOR SURE, which may never happen if you get unlucky?
 
-JM: It seems the reviewer does not understand we are proving expected regret bound. The example mentioned by the reviewer will stop us from getting enough phases. But once we have enough phases, it is 100 percent guarantee.
-} 
+%JM: It seems the reviewer does not understand we are proving expected regret bound. The example mentioned by the reviewer will stop us from getting enough phases. But once we have enough phases, it is 100 percent guarantee.
+%} 

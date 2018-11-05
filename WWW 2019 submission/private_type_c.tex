@@ -6,7 +6,7 @@
 \newcommand{\pipub}{\pi_{\term{pub}}}
 
 We sketch how to extend our ideas for public types to handle the case of reported types. We'd like to simulate the recommendation policy for public types, call it $\pipub$. We simulate it separately for the exploration part and the exploitation part. The exploitation part is fairly easy: we provide a menu that recommends the best explored action for each agent types. In the exploration part, in each round $t$ we guess the agent type to be $\hat{\theta}_t$, with equal probability among all types.
-\jmcomment{Reviewer 2: why not guess a type according to its probability? This seems more intuitive to me. JM: notice our goal is to explore type certain rounds. Guessing a type according to its probability will make rare types even more rare to appear and be guessed correctly. And this is against us.}
+\jmedit{We are not guessing types according to their probabilities. The reason is that our goal in each phase is to explore each type for certain number of rounds. Guessing a type according to its probability will make rare types even rarer to appear and be guessed correctly. And this is against us.}
 The idea is to simulate $\pipub$ only in \emph{lucky rounds} when we guess correctly, \ie $\hat{\theta}_t=\theta_t$. Thus,
 in each round $t$ we simulate the $\ell_t$-th round of $\pipub$, where $\ell_t$ is the number of lucky rounds before round $t$.
 
