@@ -37,7 +37,7 @@ Let $S$ be a random variable equal to the history at round $t$ (referred to as a
 %Note that $\EX[\S]$ is a random subset of actions whose realization is determined by $s$.
 
 \xhdr{Information-monotonicity.}
-We compare the information content of two signals using the notion of conditional mutual information (see Appendix~\ref{app:info-theory} for definition and background). Essentially, we show that a more informative signal leads to the same or larger explorable set.
+We compare the information content of two signals using the notion of conditional mutual information (see Appendix~\ref{app:info-theory} for background). Essentially, we show that a more informative signal leads to the same or larger explorable set.
 
 \begin{definition}
 	We say that signal $S$ \emph{is at least as informative} as signal $S'$ if $I(S' ; \omega\mid S) = 0$.
@@ -231,7 +231,7 @@ There is a separate thread for each type $\theta$, denoted $\thread(\theta)$,  w
      \end{algorithmic}
 \end{algorithm}
 
-The BIC property follows easily from Claim \ref{clm:maxexplore}. The key argument is that Algorithm \ref{alg:public_main} explores all  eventually-explorable type-action pairs.
+The BIC property follows easily from Claim \ref{clm:maxexplore}. The key is that Algorithm \ref{alg:public_main} explores all  eventually-explorable type-action pairs.
 
 \jmcomment{
 Reviewer 2: I did not follow the the statement and proof of Lemma 4.7. Is a phase equivalent to a round? If so, then why within each phase the algorithm interacts with agents for multiple rounds? If not, then why the lemma refers to both phase $l$ and round $l$? Also $\pi$ is the policy at round l, why it has history which is denoted by $S'$? The definition of $H_t$ seems to imply that $\pi$ is played every round…
