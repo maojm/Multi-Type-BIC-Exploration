@@ -29,7 +29,7 @@ We then show that this approximate version of \refprop{prop:private-exploration}
 \subsection{A Single round of Bayesian Exploration}
 \label{sec:private_single}
 
-%We consider a single round of the Bayesian Exploration.
+Recall that for a random variable $S$, called \emph{signal}, the \asedit{signal structure} is a joint distribution of $(\omega,S)$.
 
 \begin{definition}
 Consider a single-round of Bayesian Exploration when the principal has signal $S$ from signal structure $\S$. For any $\delta \geq 0$, a menu $m \in \M$ is called $\delta$-signal-explorable, for a given signal $s$, if there exists a single-round $\delta$-BIC recommendation policy $\pi$ such that $\Pr[\pi(s) = m] > 0$. The set of all such menus is denoted as $\EX^{\delta}_s[\S]$. The $\delta$-signal-explorable set is defined as $\EX^{\delta}[\S] = \EX^{\delta}_S[\S]$. We omit $\delta$ in $\EX^{\delta}[\S]$ when $\delta = 0$.
@@ -200,13 +200,19 @@ Given realized signal $S$, MaxExplore outputs a sequence of $L$ menus. Each menu
 \end{claim}
 
 \xhdr{Menu Exploration.}
-Given a menu $m$, an action-reward pair will be revealed to the algorithm after the round. Assuming the agent is following the menu, such action-reward pair is called a sample of the menu $m$. \asdelete{We use $D_m$ to denote the distribution of the samples. $D_m$ is a random variable depending on the state $\omega_0$.} For a fixed state $\omega$, let $D_m(\omega)$ denote the distribution of the samples of menu $m$.
+\asedit{If an agent in a given round follows a given menu $m$,  an action-reward pair is revealed to the algorithm after the round. Such action-reward pair is called a \emph{sample} of the menu $m$. Let $D_m(\omega)$ denote the distribution of this action-reward pair for a fixed state $\omega$
+(with randomness coming from the agent arrivals).}
+
+\asedit{We compute an estimate $\Delta_m$ of $D_m(\omega_0)$. This estimate is a \emph{triple-list}: an explicit list of (action, reward, positive probability) triples.}
 
 \begin{lemma}
 \label{lem:deltam}
-For any $\gamma > 0$, we can compute $\Delta_m$ which is a function of $B_m(\gamma) = O\left(\ln\left(\frac{1}{\gamma}\right)\right)$ samples of menu $m$ such that for any state $\omega$,
+For any $\gamma > 0$, we can compute a \asedit{triple-list} $\Delta_m$ which is a function of 
+    $B_m(\gamma) = O\left(\ln 1/\gamma \right)$ 
+samples of menu $m$ such that
 \[
-\Pr[\Delta_m \neq D_m(\omega) | \omega_0 = \omega] \leq \gamma.
+\forall \omega\in\varOmega \quad
+\Pr[\Delta_m \neq D_m(\omega) \mid \omega_0 = \omega] \leq \gamma.
 \]
 \end{lemma}
 
@@ -215,7 +221,7 @@ Let $U$ be the union of the support of $D_m(\omega)$ for all $\omega \in \varOme
     \[ q(u,\omega) = \Pr_{v \sim D_m(\omega)}[v = u].\]
 Let $\delta_m$ be small enough such that for all $\omega, \omega'$ with $D_m(\omega) \neq D_m(\omega')$, there exists $u \in U$, such that $|q(u,\omega) - q(u,\omega')| > \delta_m$.
 
-Now we compute $\Delta_m$ as following: Take $B_m(\gamma) = \frac{2}{\delta_m^2}\ln\left(\frac{2|U|}{\gamma}\right) $ samples and set $\hat{q}(u)$ as the empirical frequency of seeing $u$. And set $\Delta_m$ to be some $D_m(\omega)$ such that for all $u \in U$, $|q(u,\omega) - \hat{q}(u)| \leq \delta_m / 2$. Notice that if such $\omega$ exists, $\Delta_m$ will be unique. If no $\omega$ satisfies this, just pick $\Delta_m$ to be an arbitrary $D_m(\omega)$.
+Now we compute $\Delta_m$ as follows: Take $B_m(\gamma) = \frac{2}{\delta_m^2}\ln\left(\frac{2|U|}{\gamma}\right) $ samples and set $\hat{q}(u)$ as the empirical frequency of seeing $u$. And set $\Delta_m$ to be some $D_m(\omega)$ such that for all $u \in U$, $|q(u,\omega) - \hat{q}(u)| \leq \delta_m / 2$. Notice that if such $\omega$ exists, $\Delta_m$ will be unique. If no $\omega$ satisfies this, just pick $\Delta_m$ to be an arbitrary $D_m(\omega)$.
 
 Now let's analyze $\Pr[\Delta_m \neq D_m(\omega)]$. Let's fix the state $\omega_0 = \omega$. By Chernoff bound, for each $u \in U$,
 \[
@@ -231,8 +237,6 @@ By union bound, with probability at least $1-\gamma$, we have for all $u \in U$,
 In this subsection, we develop our main recommendation policy, Algorithm \ref{alg:nocc_main} (see pseudo-code), which explores all the eventually-explorable menus and then recommends the agents the best menu given all history. We pick $L$ to be at least
 \[ \max_{m,s:\Pr[\pi(s)=m] >0} \frac{B_m(\gamma_0)}{ \Pr[\pi(s)=m]}\]
 for all $\pi$ that might be chosen as $\pi^{max}$ by Algorithm \ref{alg:nocc_main}.
-
-\newcommand{\TAB}{\hspace{3mm}}
 
  \begin{algorithm}[t]
     \caption{Main procedure for private types }
@@ -263,7 +267,8 @@ for all $\pi$ that might be chosen as $\pi^{max}$ by Algorithm \ref{alg:nocc_mai
             \STATE \TAB set $\Delta_m \leftarrow D_m(\omega)$ for all explored menus $m$. \\
             \COMMENT{to ensure that \#signals is bounded by $|\varOmega|$.}
 			\STATE $l \leftarrow l + 1$.
-			\STATE Set $S_l = \{ \text{ $\Delta_m$:\; all explored menus $m$} \}$.
+			\STATE Set $S_l = \{ \text{ $\Delta_m$:\; all explored menus $m$ } \}$.
+            \STATE Set $\S_l$ to be the signal structure of $S_l$.
 		\ENDIF
 	\ELSE
 		\STATE \COMMENT{\textbf{Exploitation}}
@@ -271,7 +276,7 @@ for all $\pi$ that might be chosen as $\pi^{max}$ by Algorithm \ref{alg:nocc_mai
         \FOR {each menu $m$ explored during exploration} 
             \STATE use $B_m(\gamma_2)$ samples to compute $\Delta_m$ from Lemma \ref{lem:deltam}.
         \ENDFOR
-        \STATE Set $S_l = \{ \text{ $\Delta_m$:\; all explored menus $m$} \}$.
+        \STATE Set $S_l = \{ \text{ $\Delta_m$:\; all explored menus $m$ } \}$.
         \ENDIF 
 		\STATE Suggest the menu which consists of the best action \\
         \STATE \TAB of each type conditioned on $S_l$ and the prior.

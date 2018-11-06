@@ -17,7 +17,7 @@ There exists a BIC recommendation policy with expected total reward at least $\l
 \xhdr{Signal and explorability.}
 We first analyze what actions can be explored by a BIC policy in a single round $t$ of Bayesian Exploration for public types, as a function of the history. Throughout, we suppress $\theta$ and $t$ from our notation.
 %and let $\theta$ be the agent's type.
-Let $S$ be a random variable equal to the history at round $t$ (referred to as a {\em signal} throughout this section), $s$ be a realization of $S$, and $\S=\DT(\Omega,\mH)$ be the signal structure.  Note different policies induce different histories and hence different signal structures.  Thus it will be important to be explicit about the signal structure throughout this section.
+Let $S$ be a random variable equal to the history at round $t$ (referred to as a {\em signal} throughout this section), $s$ be a realization of $S$, and $\S=\DT(\Omega,\mH)$ be the signal structure: \asedit{the joint distribution of $(\omega,S)$}.  Note different policies induce different histories and hence different signal structures.  Thus it will be important to be explicit about the signal structure throughout this section.
 
 %We posit that the principal receives a signal $S$ before the round starts, where $S$ is a random variable.  The \emph{signal structure} of $S$, denoted $\S$, consists of the support set $\X$ and a joint distribution of $(S, \omega_0)$. Here $S$ represents the history of the previous rounds and the internal random seed, and the signal structure represents information about $S$ available to the current agent. However, for this subsection it is more lucid to consider an arbitrary signal structure.
 %
@@ -198,9 +198,10 @@ Algorithm \ref{alg:public_main} is the main procedure of our recommendation poli
 		Call thread $\thread(\theta_t)$.
 			\IF {every type $\theta$ has finished $L_{\theta}$ rounds in the current phase ($i_{\theta} \geq L_{\theta}$)}
 				\STATE Start a new phase: $\ell \leftarrow \ell + 1$.
-				\STATE Let $S_\ell$ be the signal for phase $\ell$:
-                 the set of all observed type-action-reward triples.
-        \STATE Let $\S_\ell$ be the signal structure for $S_\ell$ given the realized type sequence $(\theta_1,...,\theta_t)$.
+				\STATE Let $S_\ell$ be the signal for phase $\ell$: \\
+                 \TAB the set of all observed type-action-reward triples.
+        \STATE Let $\S_\ell$ be the signal structure for $S_\ell$\\
+         \TAB given the realized type sequence $(\theta_1,...,\theta_t)$.
 			\ENDIF
 		\ELSE
 			\STATE \COMMENT{Exploitation}
@@ -315,7 +316,7 @@ Now consider the case when $\ell > |\A| \cdot |\varTheta|$. Define \ALG to be th
 
 \begin{proof}[Proof of Theorem \ref{thm:public}]
 Algorithm \ref{alg:public_main} is BIC  by Claim \ref{clm:maxexplore}. By Lemma \ref{lem:exp_public}, Algorithm \ref{alg:public_main} explores all the eventually-explorable type-actions pairs after $|\A|\cdot |\varTheta|$ phases.
-After that, for each agent type $\theta$, Algorithm \ref{alg:public_main} recommends the best explored action: \\$ \arg\max_{a \in \AExp_{\omega,\theta}} u(\theta, a, \omega)$ with probability exactly 1.% 
+After that, for each agent type $\theta$, Algorithm \ref{alg:public_main} recommends the best explored action: \\$ \arg\max_{a \in \AExp_{\omega,\theta}} u(\theta, a, \omega)$ with probability exactly 1.%
 \footnote{\asedit{This holds with probability is exactly 1, provided that our algorithm finishes $|\A|\cdot |\varTheta|$  phases. If some undesirable low-probability event happens, \eg if all agents seen so far have had the same type, our algorithm would never finish $|\A|\cdot |\varTheta|$ phases.}}
 
 Therefore Algorithm \ref{alg:public_main} gets reward $\OPT$ except rounds in the first $|\A|\cdot |\varTheta|$ phases.  It remains to prove that the expected number of rounds in exploration (i.e. first $|\A|\cdot |\varTheta|$ phases) does not depend on the time horizon $T$. Let $N_\ell$ be the duration of phase $\ell$.
