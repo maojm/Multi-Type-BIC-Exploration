@@ -195,7 +195,7 @@ Algorithm \ref{alg:public_main} is the main procedure of our recommendation poli
 	\FOR {rounds $t=1$ to $T$}
 		\IF {$\ell \leq |\A|\cdot |\varTheta|$}
 		 \STATE \COMMENT{Exploration}
-		Call thread $\thread(\theta_t)$.
+		\STATE Call thread $\thread(\theta_t)$.
 			\IF {every type $\theta$ has finished $L_{\theta}$ rounds in the current phase ($i_{\theta} \geq L_{\theta}$)}
 				\STATE Start a new phase: $\ell \leftarrow \ell + 1$.
 				\STATE Let $S_\ell$ be the signal for phase $\ell$: \\
@@ -205,7 +205,7 @@ Algorithm \ref{alg:public_main} is the main procedure of our recommendation poli
 			\ENDIF
 		\ELSE
 			\STATE \COMMENT{Exploitation}
-			Recommend the best explored action for agent type $\theta_t$.
+			\STATE Recommend the best explored action for agent type $\theta_t$.
 		\ENDIF
 	\ENDFOR
      \end{algorithmic}
