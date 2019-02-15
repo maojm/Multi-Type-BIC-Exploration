@@ -1,0 +1,175 @@
+\documentclass[sigconf]{acmart}
+
+
+\copyrightyear{2019}
+\acmYear{2019} 
+\setcopyright{iw3c2w3}
+\acmConference[WWW '19]{Proceedings of the 2019 World Wide Web Conference}{May 13--17, 2019}{San Francisco, CA, USA}
+\acmBooktitle{Proceedings of the 2019 World Wide Web Conference (WWW '19), May 13--17, 2019, San Francisco, CA, USA}
+\acmPrice{}
+\acmDOI{10.1145/3308558.3313649}
+\acmISBN{978-1-4503-6674-8/19/05}
+
+\fancyhead{}
+%\documentclass{article}
+
+%\usepackage{fullpage}
+%\usepackage{mathrsfs}
+\usepackage{float}
+% ======    PACKAGES
+\usepackage{slivkins-setup,slivkins-theorems}
+%\usepackage{amsmath, amsfonts, amssymb, amsthm, amsbsy, amscd, bm, bbm}
+\usepackage{amsbsy, amscd, bm, bbm}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{graphicx}
+%\usepackage[small,bf]{caption}
+%\setlength{\captionmargin}{30pt}
+%\usepackage{subcaption}
+%\captionsetup[sub]{margin=10pt,font=small}
+\usepackage{color}
+\usepackage{ifthen}
+\usepackage{xspace}
+\usepackage[noend]{algorithmic}
+\usepackage{algorithm}
+\newcommand{\TAB}{\hspace{3mm}} % TAB in algorithms
+
+%\usepackage[colorlinks,citecolor={black},urlcolor={black},linkcolor={black}]{hyperref}
+%\usepackage{url}
+%\usepackage{tocbibind}
+\usepackage{enumerate}
+\usepackage{mdframed}
+\usepackage{comment}
+
+
+\DeclareMathOperator*{\argmin}{argmin}
+
+% a very useful package for edits and comments, from David Kempe (USC)
+%\usepackage{color-edits}
+\usepackage[suppress]{color-edits}  % use this to suppress the package
+\addauthor{as}{red}      % as for Alex
+\addauthor{jm}{blue}     % jm for Jieming
+\addauthor{ni}{green}     % ni for Nicole
+\addauthor{sw}{magenta}     % sw for Steven
+% e.g. for Alex, provides \asedit{}, \ascomment{} and \asdelete{}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\newtheorem{theorem}{Theorem}[section]
+%\newtheorem{corollary}[theorem]{Corollary}
+%\newtheorem{conjecture}[theorem]{Conjecture}
+%\newtheorem{proposition}[theorem]{Proposition}
+%\newtheorem{definition}[theorem]{Definition}
+%\newtheorem{lemma}[theorem]{Lemma}
+%\newtheorem{remark}{Remark}[section]
+%\newtheorem{claim}{Claim}[section]
+%\newtheorem{example}{Example}[section]
+
+\newcommand{\term}[1]{\ensuremath{\mathtt{#1}}\xspace}
+\newcommand{\thread}{\term{thread}}
+\newcommand{\ALG}{\term{ALG}}
+
+\newcommand{\DT}{\mD} % Alex' notation for distribution over types.
+\newcommand{\prior}{\mP} % Alex' notation for Bayesian Prior
+%\newcommand{\SS}{\mP} % Alex' notation for Signal Structure
+
+\def\DKL{\textbf{D}_{\term{KL}}}
+\def\D{\mathbb{D}}
+\def\E{\mathop{\mathbb{E}}}
+\def\I{\mathcal{I}}
+
+\def\A{\mathcal{A}}
+\def\M{\mathcal{M}}
+\def\S{\mathcal{S}}
+\def\X{\mathcal{X}}
+\def\EX{\term{EX}}
+\def\Ds{*}
+\def\EE{\mathcal{E}}
+\def\varTheta{\bold{\Theta}}
+\def\varOmega{\bold{\Omega}}
+\def\ell{l}
+
+% exploration sets
+\newcommand{\AExp}{\mA} % actions
+\newcommand{\MExp}{\mM}  % menus
+
+% benchmarks
+\def\OPT{\term{OPT}}
+\newcommand{\OPTpub}{\OPT_{\term{pub}}}
+\newcommand{\OPTpri}{\OPT_{\term{pri}}}
+
+% residual distribution for public types
+\newcommand{\pRes}{p^{\term{res}}}
+
+
+
+
+\begin{document}
+
+\title{Bayesian Exploration with Heterogeneous Agents}
+
+\author{Nicole Immorlica}
+\affiliation{\institution{Microsoft Research}}
+\email{nicimm@microsoft.com}
+
+\author{Jieming Mao}
+\affiliation{\institution{University of Pennsylvania}}
+\email{maojm517@gmail.com}
+
+\author{Aleksandrs Slivkins}
+\affiliation{\institution{Microsoft Research}}
+\email{slivkins@microsoft.com}
+
+\author{Zhiwei Steven Wu}
+\affiliation{\institution{University of Minnesota}}
+\email{zsw@umn.edu}
+
+\begin{abstract}
+\input{abstract}
+\end{abstract}
+
+\begin{CCSXML}
+<ccs2012>
+<concept>
+<concept_id>10003752.10010070.10010099.10010101</concept_id>
+<concept_desc>Theory of computation~Algorithmic mechanism design</concept_desc>
+<concept_significance>500</concept_significance>
+</concept>
+<concept>
+<concept_id>10003752.10010070.10010071.10011194</concept_id>
+<concept_desc>Theory of computation~Regret bounds</concept_desc>
+<concept_significance>300</concept_significance>
+</concept>
+</ccs2012>
+\end{CCSXML}
+
+\ccsdesc[500]{Theory of computation~Algorithmic mechanism design}
+\ccsdesc[300]{Theory of computation~Regret bounds}
+
+%
+% Keywords. The author(s) should pick words that accurately describe the work being
+% presented. Separate the keywords with commas.
+\keywords{bayesian exploration, incentivizing exploration, heterogeneous agents}
+
+\maketitle
+
+\input{intro}
+\input{related-work}
+
+\input{model}
+
+\input{diversity}
+
+\input{public_type}
+
+\input{private_type_c}
+
+\input{private_type_nc}
+
+
+\appendix
+\input{prelim}
+
+\bibliographystyle{ACM-Reference-Format}
+\bibliography{references,bib-abbrv,bib-slivkins,bib-bandits,bib-AGT,bib-ML}
+
+\end{document}
