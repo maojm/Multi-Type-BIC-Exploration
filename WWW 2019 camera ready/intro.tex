@@ -68,3 +68,7 @@ One difficulty is that exploring a given menu does not immediately reveal the re
 
 In the reported types model, we face a similar issue, but achieve a much stronger result: we design a policy which matches our public-types benchmark in the long run. This may seem counterintuitive because ``reported types'' are completely useless to the principal in the single-round game (whereas public types are very useful). Essentially, we reduce the problem to the public types case, at the cost of a much longer exploration.
 
+\asedit{\xhdr{Discussion.}
+This paper, as well as all prior work on incentivizing exploration, relies on very standard yet idealized assumptions of Bayesian rationality and the “power to commit” (i.e., principal can announce a policy and commit to implementing it). A recent paper \cite{Jieming-unbiased18} attempts to mitigate these assumptions (in a setting with homogenous agents). However, some form of the ``power to commit" assumption appears necessary to make any progress.
+
+We do not attempt to \emph{elicit} agents' types when they are not public, in the sense that our recommendation to a given agent is not contingent on anything that this agent reports. However, our result for reported types is already the best possible, in the sense that the explorable set is the same as for public types, so (in the same sense) elicitation is not needed.}
