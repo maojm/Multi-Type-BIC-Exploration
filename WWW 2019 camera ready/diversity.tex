@@ -13,15 +13,13 @@
 
 \newcommand{\support}{\term{support}}
 
-\asedit{We discuss how the set of all eventually-explorable type-action pairs (\emph{explorable set}) is affected by the model choice and the diversity of types. The explorable set is all information that can possibly be learned in the public-types model. All else equal, settings with larger explorable set have greater or equal total expected reward, both in benchmark \eqref{eq:bench-public} and in our approximation guarantees. For private types, the exploration set provides an ``upper bound" on the information available to the principal, because the principal does not directly observe the agent types.}
+We discuss how the set of all eventually-explorable type-action pairs (\emph{explorable set}) is affected by the model choice and the diversity of types. The explorable set is all information that can possibly be learned in the public-types model. All else equal, settings with larger explorable set have greater or equal total expected reward, both in benchmark \eqref{eq:bench-public} and in our approximation guarantees. For private types, the exploration set provides an ``upper bound" on the information available to the principal, because the principal does not directly observe the agent types.
 %%%% A.S.: no need to repeat what's in the intro, I think?
-\asdelete{Our first result shows that models with public or reported types can explore (strictly) more actions for each type than models with private types.  Thus more information about types (strictly) improves the outcomes.
-%
-Our second result shows that greater diversity (in the sense of a greater number of possible agent types) improves exploration for public or reported types but, in fact, can {\em harm} exploration for private types.  The intuition is that with private types, diversity can muddle the information of the principal, hindering her ability to learn about the state, whereas for public or reported types diversity only helps the principal refine her beliefs about the state.
+\OMIT{Our first result shows that models with public or reported types can explore (strictly) more actions for each type than models with private types.  Thus more information about types (strictly) improves the outcomes. Our second result shows that greater diversity (in the sense of a greater number of possible agent types) improves exploration for public or reported types but, in fact, can {\em harm} exploration for private types.  The intuition is that with private types, diversity can muddle the information of the principal, hindering her ability to learn about the state, whereas for public or reported types diversity only helps the principal refine her beliefs about the state.
 } %%%%%%%
 
 \xhdr{Explorability and the model choice.}
-Fix an instance of Bayesian Exploration. \asedit{Let $\pairsPub$ and $\pairsPri$ be the explorable set for a given state $\omega$, for public and private types, respectively.}%
+Fix an instance of Bayesian Exploration. Let $\pairsPub$ and $\pairsPri$ be the explorable set for a given state $\omega$, for public and private types, respectively.%
 \footnote{Equivalently, $\pairsPri$ is the set of all type-action pairs $(\theta,m(\theta))$ that appear in some eventually-explorable menu $m\in \MExp_{\omega}$ in state $\omega$ with private types.}
 We will show in Section~\ref{sec:reported} that the explorable set for reported types is $\pairsPub$, too.
 
@@ -90,8 +88,6 @@ Fix an instance of Bayesian Exploration with type distribution $\DT$. We conside
 
 
 For public and reported types, we show that the explorable set is determined by the support set of $\DT$, denoted $\support(\DT)$, and can only increase if the support set increases:
-
-\ascomment{restored the old version of the claim because I like it better and it takes less space.}
 
 \begin{claim}\label{cl:statics-diversity-public}
 Consider Bayesian Exploration with public types. Then:

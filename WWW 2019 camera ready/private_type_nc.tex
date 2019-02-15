@@ -13,7 +13,9 @@ The main result is as follows. (Throughout, $\OPT = \OPTpri$.)
 Consider Bayesian Exploration with private types, and fix $\delta > 0$. There exists a $\delta$-BIC recommendation policy with expected total reward at least $\left(T - C \log T \right) \cdot \OPT$, where $C$ depends on the problem instance but not on time horizon $T$.
 \end{theorem}
 
-\asdelete{Our recommendation policy and proofs have a similar structure as the ones for public types.}
+%Our recommendation policy and proofs have a similar structure 
+%as the ones for public types.
+
 The recommendation policy proceeds in phases: in each phase, it explores all menus that can be explored given the information collected so far. The crucial step in the proof is to show that:
 
 \begin{property}
@@ -29,7 +31,7 @@ We then show that this approximate version of \refprop{prop:private-exploration}
 \subsection{A Single round of Bayesian Exploration}
 \label{sec:private_single}
 
-Recall that for a random variable $S$, called \emph{signal}, the \asedit{signal structure} is a joint distribution of $(\omega,S)$.
+Recall that for a random variable $S$, called \emph{signal}, the signal structure is a joint distribution of $(\omega,S)$.
 
 \begin{definition}
 Consider a single-round of Bayesian Exploration when the principal has signal $S$ from signal structure $\S$. For any $\delta \geq 0$, a menu $m \in \M$ is called $\delta$-signal-explorable, for a given signal $s$, if there exists a single-round $\delta$-BIC recommendation policy $\pi$ such that $\Pr[\pi(s) = m] > 0$. The set of all such menus is denoted as $\EX^{\delta}_s[\S]$. The $\delta$-signal-explorable set is defined as $\EX^{\delta}[\S] = \EX^{\delta}_S[\S]$. We omit $\delta$ in $\EX^{\delta}[\S]$ when $\delta = 0$.
@@ -200,15 +202,15 @@ Given realized signal $S$, MaxExplore outputs a sequence of $L$ menus. Each menu
 \end{claim}
 
 \xhdr{Menu Exploration.}
-\asedit{If an agent in a given round follows a given menu $m$,  an action-reward pair is revealed to the algorithm after the round. Such action-reward pair is called a \emph{sample} of the menu $m$. Let $D_m(\omega)$ denote the distribution of this action-reward pair for a fixed state $\omega$
-(with randomness coming from the agent arrivals).}
+If an agent in a given round follows a given menu $m$,  an action-reward pair is revealed to the algorithm after the round. Such action-reward pair is called a \emph{sample} of the menu $m$. Let $D_m(\omega)$ denote the distribution of this action-reward pair for a fixed state $\omega$
+(with randomness coming from the agent arrivals).
 
-\asedit{We compute an estimate $\Delta_m$ of $D_m(\omega_0)$. This estimate is a \emph{triple-list}: an explicit list of (action, reward, positive probability) triples.}
+We compute an estimate $\Delta_m$ of $D_m(\omega_0)$. This estimate is a \emph{triple-list}: an explicit list of (action, reward, positive probability) triples.
 
 \begin{lemma}
 \label{lem:deltam}
-For any $\gamma > 0$, we can compute a \asedit{triple-list} $\Delta_m$ which is a function of 
-    $B_m(\gamma) = O\left(\ln 1/\gamma \right)$ 
+For any $\gamma > 0$, we can compute a triple-list $\Delta_m$ which is a function of
+    $B_m(\gamma) = O\left(\ln 1/\gamma \right)$
 samples of menu $m$ such that
 \[
 \forall \omega\in\varOmega \quad
@@ -244,7 +246,7 @@ for all $\pi$ that might be chosen as $\pi^{max}$ by Algorithm \ref{alg:nocc_mai
     \begin{algorithmic}[1]
     	\STATE {\bf Initialize:} signal $S_1 = \S_1= \perp$, phase $l=1$.
         \STATE \COMMENT{ $S_l$ and $\S_l$ are the signal and signal structure in phase $l$. }
-    	\STATE Set $\gamma_1 =\min\left(\frac{\delta^2}{16|\M|\log(|\varOmega|)},\left( \frac{\delta^2}{32|M|}\right)^2\right)$ and $\gamma_2 =  \frac{1}{T|\M|}$. 
+    	\STATE Set $\gamma_1 =\min\left(\frac{\delta^2}{16|\M|\log(|\varOmega|)},\left( \frac{\delta^2}{32|M|}\right)^2\right)$ and $\gamma_2 =  \frac{1}{T|\M|}$.
     \STATE Set $\gamma_0=\min(\gamma_1,\gamma_2)$.
 %	\STATE Initial phase count $l = 1$.
 	\FOR {rounds $t=1$ to $T$}
@@ -258,7 +260,7 @@ for all $\pi$ that might be chosen as $\pi^{max}$ by Algorithm \ref{alg:nocc_mai
 		\STATE Suggest menu $\mu [ (t-1) \mod L + 1]$ to the agent.
 		\IF {$t \equiv 0 \pmod L$}
 			\STATE End of a phase:
-			\FOR{each explored menu $m$ in the previous phase} 
+			\FOR{each explored menu $m$ in the previous phase}
             \STATE use $B_m(\gamma_1)$ samples to compute $\Delta_m$ from Lemma \ref{lem:deltam}
             \ENDFOR
 			\STATE {\bf If} no state $\omega\in \varOmega$ is consistent with $\Delta_m$ \\
@@ -272,12 +274,12 @@ for all $\pi$ that might be chosen as $\pi^{max}$ by Algorithm \ref{alg:nocc_mai
 		\ENDIF
 	\ELSE
 		\STATE \COMMENT{\textbf{Exploitation}}
-		\IF {this is the first exploitation round} 
-        \FOR {each menu $m$ explored during exploration} 
+		\IF {this is the first exploitation round}
+        \FOR {each menu $m$ explored during exploration}
             \STATE use $B_m(\gamma_2)$ samples to compute $\Delta_m$ from Lemma \ref{lem:deltam}.
         \ENDFOR
         \STATE Set $S_l = \{ \text{ $\Delta_m$:\; all explored menus $m$ } \}$.
-        \ENDIF 
+        \ENDIF
 		\STATE Suggest the menu which consists of the best action \\
         \STATE \TAB of each type conditioned on $S_l$ and the prior.
 	\ENDIF
