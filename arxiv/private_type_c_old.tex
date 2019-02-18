@@ -1,0 +1,90 @@
+%!TEX root = main.tex
+
+\section{Bayesian Exploration with Reported Types}
+\label{sec:private_c}
+In this section, we show a BIC scheme for private types when communication is allowed. The main idea is to guess the type of each agent and then use the scheme in Section \ref{sec:public}. In each round, we also ask the agent to report its type in the end. Since this report has nothing to do with the recommended actions received, the agent has no incentive to misreport its type. Our scheme only uses information collected in rounds when the guessed type equals to the actual type and therefore the expected length of each epoch becomes longer than the one in Section \ref{sec:public} (as shown in Lemma \ref{lem:epoch_private}. Once the scheme explores all the explorable type-action pairs, it just shows agents the best action for each type among all explorable actions. 
+
+Algorithm \ref{alg:private_main} is the main procedure of the scheme. It is very similar to the main procedure in Section \ref{sec:public} (Algorithm \ref{alg:public_main}). The only difference is that the scheme guesses types and only uses information collected in rounds when the scheme guesses the type correctly. 
+
+ \begin{algorithm}[H]
+    \caption{Main procedure for private types }
+    	\label{alg:private_main}
+    \begin{algorithmic}[1]
+    	\STATE Initial signal $S_1 = \S_1 = \perp$.
+	\STATE Initial epoch count $l = 1$. 
+	\FOR {$t=1$ to $T$}
+		\STATE The principal receives information $I_t$ about $\theta_t$. 
+		\STATE Sample $\hat{\theta}_t$ from $\varTheta$ uniformly. Run subroutine Private-Sub-$\hat{\theta}_t$.
+		\IF {every type has finished a complete phase in the current epoch}
+			\STATE Start a new epoch:
+			\STATE $l \leftarrow l + 1$.
+			\STATE Let $S_l$ be the type-action-reward triples in rounds when $\bar{\theta}_{\tau} = \hat{\theta}_{\tau}$, and $\S_l$ be the signal structure.
+		\ENDIF
+	\ENDFOR
+     \end{algorithmic}
+\end{algorithm}
+
+Algorithm \ref{alg:private_sub} describes the thread when the algorithm guesses the type to be $\theta$. It is very similar to Algorithm \ref{alg:public_sub} in Section \ref{sec:public}. We use the same $L_{\theta}$ as Section \ref{sec:public}.
+
+ \begin{algorithm}[H]
+    \caption{Subroutine for type $\theta$: Private-Sub-$\theta$ }
+    	\label{alg:private_sub}
+    \begin{algorithmic}[1]
+	\FOR {each call from Algorithm \ref{alg:public_main}}
+		\IF {previous phase has finished ($i_{\theta} > L_{\theta}$) or this is the first call}
+			\STATE Start a new phase:
+			\IF {$l \leq |\A| \cdot |\varTheta|$}
+				\STATE Use the current $S_l$ and $\S_l$ to compute a list of $L_{\theta}$ actions $\alpha_{\theta} \leftarrow $ MaxExplore($\theta, S_l, \S_l$).
+			\ELSE
+				\STATE Add $L_{\theta}$ copies of the best explored action of type $\theta$ according to signal $S$ into action list $\alpha_{\theta}$. 
+			\ENDIF
+			\STATE Intialize the index of current phase $i_{\theta} \leftarrow 1$.
+		\ENDIF
+		\STATE Recommend $(\alpha_{\theta} [i_{\theta}]$ for type $\theta$ and for other types, recommend the best actions given the agents' prior and the fact that $(\alpha_{\theta} [i_{\theta}]$ is recommended for type $\theta$ .
+		\STATE Agent reports its type $\bar{\theta}$.
+		\IF {$\bar{\theta} = \theta$}
+			\STATE $i_{\theta} \leftarrow i_{\theta} + 1$.
+		\ENDIF
+	\ENDFOR
+     \end{algorithmic}
+\end{algorithm}
+
+For similar reasons as Claim \ref{clm:public_BIC}, we have the following claim. 
+\begin{claim}
+\label{clm:private_BIC}
+The scheme in this section is BIC. 
+\end{claim}
+
+Finally, we prove the main theorem of this section (Theorem \ref{thm:private}). It is based on Lemma \ref{lem:epoch_private} and Lemma \ref{lem:exp_private}.
+
+\begin{lemma}
+\label{lem:epoch_private}
+For any $l>0$, the expected number of rounds of the first $l$ epochs is at most $l \cdot \sum_{\theta\in\varTheta} \frac{2\cdot L_{\theta}\cdot |\varTheta|}{\Pr[\theta]}$. 
+\end{lemma}
+
+\begin{proof}
+First of all, if a type $\theta$ is guessed correctly $2L_{\theta}$ times, type $\theta$ must have finished a complete phase in these rounds. Therefore, the expected number of rounds of an epoch is at most the expected number of rounds in which each type $\theta$ is guessed correctly at least $2L_{\theta}$ times. The latter expectation can be easily bounded by $\sum_{\theta\in\varTheta} \frac{2L_{\theta}\cdot |\varTheta| }{\Pr[\theta]}$. Therefore, the expected number of rounds of the first $l$ epochs is at most $l \cdot \sum_{\theta\in\varTheta} \frac{2L_{\theta}\cdot |\varTheta|}{\Pr[\theta]}$. 
+\end{proof}
+
+\begin{lemma}
+\label{lem:exp_private}
+For each state $\omega$, Algorithm \ref{alg:private_main} explores all the eventually explorable actions (i.e. $\A_{\omega,\theta}^{exp}$) for each type $\theta$ by the end of $|\A|\cdot |\varTheta|$ epochs. 
+\end{lemma}
+
+\begin{proof}
+Fix state $\omega$. Consider any type sequence $\theta_1, \theta_2, ..., \theta_T$ that are the types encountered by Algorithm \ref{alg:private_main} in each round. And consider another type sequence $\bar{\theta}_1,\bar{\theta}_2, ...,\bar{\theta}_T$ that are the guesses by Algorithm \ref{alg:private_main}. Assume Algorithm \ref{alg:private_main} finished the $(|\A|\cdot |\varTheta|)$-th epoch after round $t$. Let $r_1<r_2 < \cdots < r_{\tau} = t$ be the rounds that Algorithm \ref{alg:private_main} guesses the type correctly (i.e. $\theta = \bar{\theta}$) in the first $t$ rounds. Assume Algorithm \ref{alg:private_main} uses randomness $R$ for MaxExplore. Now consider Algorithm \ref{alg:public_main} also uses the same randomness $R$ for MaxExplore when facing types $\theta_{r_1},\theta_{r_2},...,\theta_{r_{\tau}}$ in each round. By the definition of Algorithm \ref{alg:private_main} and Algorithm \ref{alg:public_main}, it's not hard to check that the $i$-th round of Algorithm \ref{alg:public_main} and the $r_i$-th round of Algorithm \ref{alg:private_main} play the same action. 
+
+Since Algorithm \ref{alg:private_main} finishes $|\A|\cdot |\varTheta|$ epochs at round $t$, Algorithm \ref{alg:public_main} also finishes $|\A|\cdot |\varTheta|$ epochs at round $\tau$. By Lemma \ref{lem:exp_public}, we know Algorithm \ref{alg:public_main} has explored all the eventually explorable actions by the end of round $\tau$. Therefore,  Algorithm \ref{alg:private_main} has explored all the eventually explorable actions by the end of round $t$ (i.e. the end of $|\A|\cdot |\varTheta|$ epochs).
+\end{proof}
+
+\begin{theorem}
+\label{thm:private}
+We have a BIC recommendation policy of $T$ rounds with expected total reward at least $\left(T - C \right) \cdot \OPT$ for some constant $C = |\A| \cdot |\varTheta| \cdot \sum_{\theta\in\varTheta} \frac{2L_{\theta}\cdot |\varTheta|}{\Pr[\theta]}$. 
+\end{theorem}
+
+\begin{proof}
+First of all, by Claim \ref{clm:private_BIC}, Algorithm \ref{alg:private_main} is BIC. 
+
+By Lemma \ref{lem:exp_private}, for each state $\omega$, Algorithm \ref{alg:private_main} explores all the eventually explorable actions (i.e. $\A_{\omega,\theta}^{exp}$) for each type $\theta$ by the end of $|\A|\cdot |\varTheta|$ epochs. After that, for each type $\theta$, Algorithm \ref{alg:private_main} will always recommend action $ \max_{a \in \A_{\omega,\theta}^{exp}} u(\theta, a, \omega)$. Therefore Algorithm \ref{alg:private_main} gets reward $OPT$ except rounds in first $|\A|\cdot |\varTheta|$ epochs. By Lemma \ref{lem:epoch_private}, we know that the expected number of rounds of the first  $|\A|\cdot |\varTheta|$ epochs is at most $C$. Therefore, Algorithm \ref{alg:private_main} has expected total reward at least  $\left(T - C \right) \cdot \OPT$.
+
+\end{proof}
