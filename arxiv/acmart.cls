@@ -5,17 +5,17 @@
 %% The original source files were:
 %%
 %% acmart.dtx  (with options: `class')
-%% 
+%%
 %% IMPORTANT NOTICE:
-%% 
+%%
 %% For the copyright see the source file.
-%% 
+%%
 %% Any modified versions of this file must be renamed
 %% with new filenames distinct from acmart.cls.
-%% 
+%%
 %% For distribution of the original source see the terms
 %% for copying and modification in the file acmart.dtx.
-%% 
+%%
 %% This generated file may be distributed as long as the
 %% original source files, as listed above, are part of the
 %% same distribution. (The sources need not necessarily be
@@ -1694,7 +1694,7 @@ Computing Machinery]
       \@copyrightyear.\
     \fi
     \if@ACM@manuscript
-      Manuscript submitted to ACM\\
+      \\
     \else
       \if@ACM@authorversion
           This is the author's version of the work. It is posted here for
@@ -2324,7 +2324,7 @@ Computing Machinery]
     \fancyhead[RE]{\@shortauthors}%
     \fancyhead[LO]{\ACM@linecountL\shorttitle}%
     \if@ACM@nonacm\else%
-      \fancyfoot[RO,LE]{\footnotesize Manuscript submitted to ACM}
+      \fancyfoot[RO,LE]{\footnotesize }
     \fi%
   \or % acmsmall
     \fancyhead[LE]{\ACM@linecountL\@headfootfont\@acmArticlePage}%
@@ -2424,7 +2424,7 @@ Computing Machinery]
     \fancyhead[L]{\ACM@linecountL}%
     \fancyfoot[RO,LE]{\if@ACM@printfolios\small\thepage\fi}%
     \if@ACM@nonacm\else%
-      \fancyfoot[RE,LO]{\footnotesize Manuscript submitted to ACM}%
+      \fancyfoot[RE,LO]{\footnotesize }%
     \fi%
   \or % acmsmall
     \if@ACM@nonacm\else%
@@ -2463,7 +2463,7 @@ Computing Machinery]
     \ifnum\ACM@format@nr=0\relax % Manuscript
     \fancyfoot[LO,RE]{\ACM@timestamp\quad
       \if@ACM@nonacm\else
-        \footnotesize Manuscript submitted to ACM
+        \footnotesize 
       \fi}
     \else
     \fancyfoot[LO,RE]{\ACM@timestamp}
