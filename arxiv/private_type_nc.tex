@@ -13,7 +13,7 @@ The main result is as follows. (Throughout, $\OPT = \OPTpri$.)
 Consider Bayesian Exploration with private types, and fix $\delta > 0$. There exists a $\delta$-BIC recommendation policy with expected total reward at least $\left(T - C \log T \right) \cdot \OPT$, where $C$ depends on the problem instance but not on time horizon $T$.
 \end{theorem}
 
-%Our recommendation policy and proofs have a similar structure 
+%Our recommendation policy and proofs have a similar structure
 %as the ones for public types.
 
 The recommendation policy proceeds in phases: in each phase, it explores all menus that can be explored given the information collected so far. The crucial step in the proof is to show that:
@@ -60,9 +60,9 @@ By Pinsker's inequality, we have
 \begin{align*}
        &\sum_{s} \Pr[S = s]\cdot \sum_{s', \omega} | \Pr[S' = s', \omega_0 = \omega| S= s]\\
        & \qquad \qquad\qquad\qquad- \Pr[S'=s'|S=s] \cdot \Pr[\omega_0 = \omega|S=s]| \\
-&\leq\textstyle  \sum_{s} \Pr[S=s] \cdot \sqrt{2 \ln(2)\cdot D_s  } \\
+&\qquad\leq\textstyle   \sum_{s} \Pr[S=s] \cdot \sqrt{2 \ln(2)\cdot D_s  } \\
 %&\qquad\leq\textstyle  \sum_{s} \Pr[S=s] \cdot \sqrt{2  D_s  } \\
-&\leq\textstyle   \sqrt{2 \sum_{s} \Pr[S=s] \cdot  D_s }
+&\qquad\leq\textstyle   \sqrt{2 \sum_{s} \Pr[S=s] \cdot  D_s }
 \leq  \delta /2.
 \end{align*}
 
@@ -189,7 +189,7 @@ The goal of this subroutine MaxExplore is to make sure that for any signal-explo
 			\STATE $p^{Res}(m)\leftarrow  C_m -  \lfloor C_m\rfloor$
 		\ENDFOR
 		\STATE $p^{Res}(m) \leftarrow p^{Res}(m) / Res$, $\forall m \in \M$.
-		\STATE Sample $Res$ many menus from distribution according to $p^{Res}$ independently and add these menus into $\mu$.
+		\STATE Sample $Res$ many menus from distribution $p^{Res}$ independently and add these menus into $\mu$.
 		\STATE Randomly permute the menus in $\mu$.
 	\RETURN $\mu$.	
      \end{algorithmic}
@@ -263,10 +263,10 @@ for all $\pi$ that might be chosen as $\pi^{max}$ by Algorithm \ref{alg:nocc_mai
 			\FOR{each explored menu $m$ in the previous phase}
             \STATE use $B_m(\gamma_1)$ samples to compute $\Delta_m$ from Lemma \ref{lem:deltam}
             \ENDFOR
-			\STATE {\bf If} no state $\omega\in \varOmega$ is consistent with $\Delta_m$ \\
+			\STATE {\bf If} no state $\omega\in \varOmega$ is consistent with $\Delta_m$ 
             (\ie $\Delta_m = D_m(\omega)$) for all explored menus $m$ {\bf then} \\
-            \STATE \TAB pick any state $\omega$, and \\
-            \STATE \TAB set $\Delta_m \leftarrow D_m(\omega)$ for all explored menus $m$. \\
+            \STATE \TAB pick any state $\omega$, and 
+                set $\Delta_m \leftarrow D_m(\omega)$ for all explored menus $m$. \\
             \COMMENT{to ensure that \#signals is bounded by $|\varOmega|$.}
 			\STATE $l \leftarrow l + 1$.
 			\STATE Set $S_l = \{ \text{ $\Delta_m$:\; all explored menus $m$ } \}$.
@@ -280,8 +280,7 @@ for all $\pi$ that might be chosen as $\pi^{max}$ by Algorithm \ref{alg:nocc_mai
         \ENDFOR
         \STATE Set $S_l = \{ \text{ $\Delta_m$:\; all explored menus $m$ } \}$.
         \ENDIF
-		\STATE Suggest the menu which consists of the best action \\
-        \STATE \TAB of each type conditioned on $S_l$ and the prior.
+		\STATE Suggest the menu which consists of the best action of each type conditioned on $S_l$ and the prior.
 	\ENDIF
 	\ENDFOR
      \end{algorithmic}
@@ -311,31 +310,33 @@ is the menu and the action-reward pair in round $t$ of $\pi$.
 
 Let $\M'$ to be the set of menus explored in the first $l-1$ phases of Algorithm \ref{alg:nocc_main}. By the induction hypothesis, we have $\forall t\in[l-1]$, $M_t \subseteq \M'$. Then:
 \begin{align*}
-&I(S'; \omega_0| S) = I(R,H_1,...,H_{l-1}; \omega_0| S)  \\
-= &I(R; \omega_0| S) + I(H_1,...,H_{l-1}; \omega_0|S, R) = I(H_1,...,H_{l-1}; \omega_0|S, R).
+I(S'; \omega_0| S) 
+    &= I(R,H_1,...,H_{l-1}; \omega_0| S)  \\
+    &= I(R; \omega_0| S) + I(H_1,...,H_{l-1}; \omega_0|S, R) \\
+    &= I(H_1,...,H_{l-1}; \omega_0|S, R).
 \end{align*}
 
 By the chain rule of mutual information, we have
 \begin{align*}
-& I(H_1,...,H_{l-1}; \omega_0|S, R) \\
- =& I(H_1;\omega_0|S,R) + I(H_2;\omega_0|S, R ,H_1) + \cdots + I(H_{l-1}; \omega_0|S,R,H_1,...,H_{l-2}).
+I(H_1,...,H_{l-1}; \omega_0|S, R) 
+ = I(H_1;\omega_0|S,R) + I(H_2;\omega_0|S, R ,H_1) + \cdots + I(H_{l-1}; \omega_0|S,R,H_1,...,H_{l-2}).
 \end{align*}
 
 For all $t \in [l-1]$, we have
 \begin{align*}
-&I(H_t; \omega_0 \mid S,R,H_1,...,H_{t-1}) \\
-=& I(M_t,A_t, u(\Theta_t, M_t(\Theta_t), \omega_0); \omega_0 \mid S,R,H_1,...,H_{t-1}) \\
-=& I(A_t, u(\Theta_t, M_t(\Theta_t), \omega_0); \omega_0  \mid  S,R,H_1,...,H_{t-1}, M_t)\\
-\leq& I(D_{M_t}; \omega_0 \mid S,R,H_1,...,H_{t-1},M_t).
+I(H_t; \omega_0 \mid S,R,H_1,...,H_{t-1}) 
+&= I(M_t,A_t, u(\Theta_t, M_t(\Theta_t), \omega_0); \omega_0 \mid S,R,H_1,...,H_{t-1}) \\
+&= I(A_t, u(\Theta_t, M_t(\Theta_t), \omega_0); \omega_0  \mid  S,R,H_1,...,H_{t-1}, M_t)\\
+&\leq I(D_{M_t}; \omega_0 \mid S,R,H_1,...,H_{t-1},M_t).
 \end{align*}
 The second last step comes from the fact that $M_t$ is a deterministic function of $R,H_1,...,H_{t-1}$. The last step comes from the fact that $(A_t,u(\Theta_t, M_t(\Theta_t), \omega_0))$ is independent with $\omega_0$ given $D_{M_t}$.
 
 Then we have
 \begin{align*}
-& I(D_{M_t}; \omega_0 \mid S,R,H_1,...,H_{t-1},M_t)\\
-=& \textstyle   \sum_{m \in \M'}\; \Pr[M_t = m] \cdot I(D_m;\omega_0  \mid  S,R,H_1,...,H_{t-1},M_t = m)\\
-\leq& \textstyle  \sum_{m \in M'}\; \Pr[M_t = m] \cdot I(D_m;\omega_0 \mid  \Delta_m, M_t =m).\\
-\leq& \textstyle  \sum_{m \in M'}\; \Pr[M_t = m] \cdot H(D_m \mid  \Delta_m, M_t =m).
+I(D_{M_t}; \omega_0 \mid S,R,H_1,...,H_{t-1},M_t)
+&= \textstyle   \sum_{m \in \M'}\; \Pr[M_t = m] \cdot I(D_m;\omega_0  \mid  S,R,H_1,...,H_{t-1},M_t = m)\\
+&\leq \textstyle  \sum_{m \in M'}\; \Pr[M_t = m] \cdot I(D_m;\omega_0 \mid  \Delta_m, M_t =m).\\
+&\leq \textstyle  \sum_{m \in M'}\; \Pr[M_t = m] \cdot H(D_m \mid  \Delta_m, M_t =m).
 \end{align*}
 The last step comes from the fact that
 \[ I(D_m; (S\backslash \Delta_m),R,H_1,...,H_{t-1} \mid \omega_0, \Delta_m, M_t =m) = 0.\]
@@ -354,7 +355,7 @@ Then we get
 
 By Lemma \ref{lem:ainfomono}, we know that $\EX_{s'}[\S'] \subseteq \EX^{\delta}_s[\S]$. By Claim \ref{clm:maxexplore_nocc}, we know that phase $l$ will explore menu $m$ at least $B_m(\gamma_0)$ times.
 
-When $l > |\M|$, the proof follows from the same argument as the last paragraph of the proof of Lemma \ref{lem:exp_public}.
+When $l > |\M|$, we use the same argument as the last paragraph of the proof of Lemma \ref{lem:exp_public}.
 \end{proof}
 
 \OMIT{%%%%%%%%

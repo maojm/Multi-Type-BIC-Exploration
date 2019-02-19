@@ -37,7 +37,7 @@ Let $S$ be a random variable equal to the history at round $t$ (referred to as a
 %Note that $\EX[\S]$ is a random subset of actions whose realization is determined by $s$.
 
 \xhdr{Information-monotonicity.}
-We compare the information content of two signals using the notion of conditional mutual information (see 
+We compare the information content of two signals using the notion of conditional mutual information (see
 Appendix~\ref{app:info-theory} for background). Essentially, we show that a more informative signal leads to the same or larger explorable set.
 
 \begin{definition}
@@ -88,7 +88,7 @@ for each action $a\in \A$ and each feasible signal $s\in \X$.
 &\textbf{subject to: }\\
     & \textstyle \sum_{\omega \in \varOmega, s \in \X} \;
     \Pr[\omega] \cdot \Pr[s \mid  \omega] \cdot\\
-        &\left(u(\theta, a, \omega) - u(\theta, a', \omega)\right) \cdot x_{a,s} \geq 0   &\ & \forall a,a' \in \A \\
+        &\left(u(\theta, a, \omega) - u(\theta, a', \omega)\right) \cdot x_{a,s} \geq 0   &\qquad & \forall a,a' \in \A \\
     & \textstyle \sum_{a\in \A}\; x_{a,s} = 1,  \ &\ & \forall s \in \X \\
     & x_{a,s} \geq 0,  \ &\ & \forall s \in \X, a\in \A
 \end{alignat*}
@@ -127,7 +127,7 @@ It is easy to see that we obtain max-support recommendation policy by averaging 
 %This section is very similar to the EC16's paper, we include this section to make our paper self-contained.
 We design a subroutine \term{MaxExplore} which outputs a sequence of actions with two properties: it includes every signal-explorable action at least once, and each action in the sequence marginally distributed as $\pi^{\max}$. The length of this sequence, denoted $L_{\theta}$, should satisfy
 \begin{align}\label{eq:public-L}
-L_{\theta} \geq \max_{(a,s)\in \A\times \X \text{ with }\quad \Pr[\pi^{\max}(s)=a] \neq 0} \frac{1}{\Pr[\pi^{\max}(s)=a]}.
+L_{\theta} \geq \max_{(a,s)\in \A\times \X \text{ with } \Pr[\pi^{\max}(s)=a] \neq 0} \quad \frac{1}{\Pr[\pi^{\max}(s)=a]}.
 \end{align}
 
 This step is essentially from \cite{ICexplorationGames-ec16};
@@ -158,7 +158,7 @@ For details, see Algorithm \ref{alg:public_explore}.
 			\STATE $\pRes(a)\leftarrow  C_a -  \lfloor C_a\rfloor$
 		\ENDFOR
 		\STATE $\pRes(a) \leftarrow \pRes(a) / Res$, $\forall a \in \A$.
-		\STATE Sample $Res$ many actions from distribution according to $\pRes$ independently and add these actions into $\alpha$.
+		\STATE Sample $Res$ many actions from distribution $\pRes$ independently and add these actions into $\alpha$.
 		\STATE Randomly permute the actions in $\alpha$.
 	%\ELSE
 		%\STATE Add $L_{\theta}$ copies of the best explored action of type $\theta$ according to signal $S$ into action list $\alpha$.
@@ -199,10 +199,10 @@ Algorithm \ref{alg:public_main} is the main procedure of our recommendation poli
 		\STATE Call thread $\thread(\theta_t)$.
 			\IF {every type $\theta$ has finished $L_{\theta}$ rounds in the current phase ($i_{\theta} \geq L_{\theta}$)}
 				\STATE Start a new phase: $\ell \leftarrow \ell + 1$.
-				\STATE Let $S_\ell$ be the signal for phase $\ell$: \\
-                 \TAB the set of all observed type-action-reward triples.
-        \STATE Let $\S_\ell$ be the signal structure for $S_\ell$\\
-         \TAB given the realized type sequence $(\theta_1,...,\theta_t)$.
+				\STATE Let $S_\ell$ be the signal for phase $\ell$: 
+                 the set of all observed type-action-reward triples.
+        \STATE Let $\S_\ell$ be the signal structure for $S_\ell$
+         given the realized type sequence $(\theta_1,...,\theta_t)$.
 			\ENDIF
 		\ELSE
 			\STATE \COMMENT{Exploitation}
@@ -291,17 +291,17 @@ I(S'; \omega_0\mid  S)
 
 By the chain rule of mutual information, we have
 \begin{align*}
- &I(H_1,...,H_{l-1}; \omega_0\mid S, R) \\
- &\qquad = I(H_1;\omega_0\mid S,R) + \cdots + I(H_{l-1}; \omega_0\mid S,R,H_1,...,H_{l-2}).
+ I(H_1,...,H_{l-1}; \omega_0\mid S, R) 
+ = I(H_1;\omega_0\mid S,R) + \cdots + I(H_{l-1}; \omega_0\mid S,R,H_1,...,H_{l-2}).
 \end{align*}
 
 For all $t \in [l-1]$, we have
 \begin{align*}
-&I(H_t; \omega_0\mid S,R,H_1,...,H_{t-1}) \\
-&\qquad= I(\Theta_t, A_t, u(\Theta_t, A_t, \omega_0); \omega_0\mid S,R,H_1,...,H_{t-1}) \\
-&\qquad= I(\Theta_t ; \omega_0\mid S,R,H_1,...,H_{t-1})\\
-&\qquad\qquad+  I(A_t, u(\Theta_t, A_t, \omega_0); \omega_0\mid S,R,H_1,...,H_{t-1},\Theta_t) \\
-&\qquad= I(A_t, u(\Theta_t, A_t, \omega_0); \omega_0\mid S,R,H_1,...,H_{t-1},\Theta_t).
+I(H_t; \omega_0\mid S,R,H_1,...,H_{t-1}) 
+&= I(\Theta_t, A_t, u(\Theta_t, A_t, \omega_0); \omega_0\mid S,R,H_1,...,H_{t-1}) \\
+&= I(\Theta_t ; \omega_0\mid S,R,H_1,...,H_{t-1})\\
+&\qquad+  I(A_t, u(\Theta_t, A_t, \omega_0); \omega_0\mid S,R,H_1,...,H_{t-1},\Theta_t) \\
+&= I(A_t, u(\Theta_t, A_t, \omega_0); \omega_0\mid S,R,H_1,...,H_{t-1},\Theta_t).
 \end{align*}
 Notice that the suggested action $A_t$ is a deterministic function of randomness of the recommendation policy $R$,  history of previous rounds $H_1,...,H_{t-1}$ and type in the current round $\Theta_t$. Also notice that, by induction hypothesis, $u(\Theta_t, A_t, \omega_0)$ is a deterministic function of $S,R,H_1,...,H_{t-1},\Theta_t, A_t$. Therefore we have
 \[
