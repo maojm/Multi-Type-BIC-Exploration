@@ -33,24 +33,25 @@
 \usepackage[noend]{algorithmic}
 \usepackage{algorithm}
 \newcommand{\TAB}{\hspace{3mm}} % TAB in algorithms
+\usepackage{balance}
 
 %\usepackage[colorlinks,citecolor={black},urlcolor={black},linkcolor={black}]{hyperref}
 %\usepackage{url}
 %\usepackage{tocbibind}
 \usepackage{enumerate}
-\usepackage{mdframed}
+%\usepackage{mdframed}
 \usepackage{comment}
 
 
 \DeclareMathOperator*{\argmin}{argmin}
 
 % a very useful package for edits and comments, from David Kempe (USC)
-\usepackage{color-edits}
+%\usepackage{color-edits}
 %\usepackage[suppress]{color-edits}  % use this to suppress the package
-\addauthor{as}{red}      % as for Alex
-\addauthor{jm}{blue}     % jm for Jieming
-\addauthor{ni}{green}     % ni for Nicole
-\addauthor{sw}{magenta}     % sw for Steven
+%\addauthor{as}{red}      % as for Alex
+%\addauthor{jm}{blue}     % jm for Jieming
+%\addauthor{ni}{green}     % ni for Nicole
+%\addauthor{sw}{magenta}     % sw for Steven
 % e.g. for Alex, provides \asedit{}, \ascomment{} and \asdelete{}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -170,6 +171,7 @@
 %\input{prelim}
 \newpage
 \bibliographystyle{ACM-Reference-Format}
+\balance
 \bibliography{references,bib-abbrv,bib-slivkins,bib-bandits,bib-AGT,bib-ML}
 
 \end{document}
